@@ -32,10 +32,62 @@ Plugin creation has been made a streamlined and easy as possible even for novice
 I highly recommend Spring Tool Suite and Eclipse as the tutorial I provide will be a one-to-one translation in terms of the steps taken to create a plugin.
 ### Steps
 1. Create a Java Project by navigating to `New > Project` within Eclipse or STS and selecting the Java Project creation wizard.
-![alt text](https://i.imgur.com/K7EkJkY.png)
+
+![alt text]((https://i.imgur.com/Mw7MG5T.png))
 
 2. Create a `Java Class` file that will represent your plugin by right clikiking on your projects `src` folder and selecting `New > Class` You can name it whatever you like however, it's best to use proper naming conventions.
+
 ![alt text](https://i.imgur.com/ArdGJy4.png)
 
-3. Add a reference to your project that allows you to access the important methods and functions of  `JRelayLib.jar'
+3. Add a reference to your project that allows you to access the important methods and functions of  `JRelayLib.jar` by right clicking on your plugin project and navigating to `Properties > Java Build Path > Libraries > Add External Jars`
+
+![alt text](https://i.imgur.com/SSXHzgO.png)
+
+4. Locate `JRelayLib.jar` on your file system and add it to your projects referenced external libraries. This will allow you to incorporate methods for intercepting and manipulating game data.
+
+![alt text](https://i.imgur.com/xwmSGa6.png)
+
+5. Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto generate them for you if you wish. However, if you dont plan on using an IDE for developing **JRelay** plugins please observe the following **__required__** structure:
+
+```
+import com.relay.User;
+
+public class MyPlugin extends JPlugin{
+
+	public MyPlugin(User user) {
+		super(user);
+	}
+  
+	@Override
+	public void attach() {
+		//Attach packet and command hooks here
+	}
+  
+	@Override
+	public String getAuthor() {
+		return "";
+	}
+  
+	@Override
+	public String[] getCommands() {
+		return new String[]{};
+	}
+  
+	@Override
+	public String getDescription() {
+		return "";
+	}
+  
+	@Override
+	public String getName() {
+		return "";
+	}
+
+	@Override
+	public String[] getPackets() {
+		return String[]{};
+	}
+}
+```
+
 

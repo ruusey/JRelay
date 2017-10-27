@@ -49,7 +49,7 @@ I highly recommend Spring Tool Suite and Eclipse as the tutorial I provide will 
 
 5. Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto generate them for you if you wish. However, if you dont plan on using an IDE for developing **JRelay** plugins please observe the following **__required__** structure:
 
-```
+```Java
 import com.relay.User;
 
 public class MyPlugin extends JPlugin{
@@ -89,5 +89,28 @@ public class MyPlugin extends JPlugin{
 	}
 }
 ```
+
+Notes:
+A plugin built using the superclass `JPlugin` requires the following methods as determined by its class heiarchy:
+
+```Java
+public void attach();
+public String getAuthor();
+public String getName();
+public String getDescription();
+public String[] getCommands();
+public String[] getPackets();
+```
+
+6. Hooking packets, commands and adding your own code to your **JRelay** plugin.
+All plugin related hooking into packets and user commands handled by **JRelay** is done within your plugin's `attach()` method.
+Within the attach method you have the option to bind user commands or have the ingestion of a specified `PacketType` trigger events.
+These two means of proxy data manipulation are available to the plugin creater through the methods
+
+```Java
+hookPacket(PacketType type, Class<? extends JPlugin> location, String callback);
+hookCommand(String command, Class<? extends JPlugin> location, String callback);
+```
+
 
 

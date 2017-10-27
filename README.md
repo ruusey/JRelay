@@ -30,24 +30,25 @@ As mentioned, **JRelay** supports the implementation of User created plugins. Th
 ## Plugin Creation
 Plugin creation has been made a streamlined and easy as possible even for novice developers. JRelay plugins can be writtin in any IDE such as **Eclipse,** **Net Beans,** **Spring Tool Suite (STS)** or even a simple **Text Editor.** 
 I highly recommend Spring Tool Suite and Eclipse as the tutorial I provide will be a one-to-one translation in terms of the steps taken to create a plugin.
-### Steps
-1. Create a Java Project by navigating to `New > Project` within Eclipse or STS and selecting the Java Project creation wizard.
 
-![alt text]((https://i.imgur.com/Mw7MG5T.png))
+### Steps
+**1)** Create a Java Project by navigating to `New > Project` within Eclipse or STS and selecting the Java Project creation wizard.
+
+![alt text](https://i.imgur.com/Mw7MG5T.png)
 
 **2)** Create a `Java Class` file that will represent your plugin by right clikiking on your projects `src` folder and selecting `New > Class` You can name it whatever you like however, it's best to use proper naming conventions.
 
 ![alt text](https://i.imgur.com/ArdGJy4.png)
 
-3. Add a reference to your project that allows you to access the important methods and functions of  `JRelayLib.jar` by right clicking on your plugin project and navigating to `Properties > Java Build Path > Libraries > Add External Jars`
+**3)** Add a reference to your project that allows you to access the important methods and functions of  `JRelayLib.jar` by right clicking on your plugin project and navigating to `Properties > Java Build Path > Libraries > Add External Jars`
 
 ![alt text](https://i.imgur.com/SSXHzgO.png)
 
-4. Locate `JRelayLib.jar` on your file system and add it to your projects referenced external libraries. This will allow you to incorporate methods for intercepting and manipulating game data.
+**4)** Locate `JRelayLib.jar` on your file system and add it to your projects referenced external libraries. This will allow you to incorporate methods for intercepting and manipulating game data.
 
 ![alt text](https://i.imgur.com/xwmSGa6.png)
 
-5. Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto generate them for you if you wish. However, if you dont plan on using an IDE for developing **JRelay** plugins please observe the following **__required__** structure:
+**5)** Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto generate them for you if you wish. However, if you dont plan on using an IDE for developing **JRelay** plugins please observe the following **__required__** structure:
 
 ```Java
 import com.relay.User;
@@ -102,15 +103,28 @@ A plugin built using the superclass `JPlugin` requires the following methods as 
 	public String[] getPackets();
 ```
 
-6. Hooking packets, commands and adding your own code to your **JRelay** plugin.
+**6)** Hooking packets, commands and adding your own code to your **JRelay** plugin.
 All plugin related hooking into packets and user commands handled by **JRelay** is done within your plugin's `attach()` method.
 Within the attach method you have the option to bind user commands or have the ingestion of a specified `PacketType` trigger events.
 These two means of proxy data manipulation are available to the plugin creater through the methods
 
 ```Java
-hookPacket(PacketType type, Class<? extends JPlugin> location, String callback);
-hookCommand(String command, Class<? extends JPlugin> location, String callback);
+	hookPacket(PacketType type, Class<? extends JPlugin> location, String callback);
+	hookCommand(String command, Class<? extends JPlugin> location, String callback);
 ```
 
-
-
+**7)** To make use of **JRelay's** ability to hook packets and commands simply:
+- For Packets
+	```Java
+	hookPacket(PacketType type, Class<? extends JPlugin> location, String callback);
+		   @param type = enum PacketType(value)
+		   @param location - Your plugin's Class `MyPlugin.class`
+		   @param callback - the name of the method you wish to invoke when PacketType is captured. This methoid will be passed  			              an instance of the packet object that was captured when your method is invoked
+	```
+- For Commands
+	```Java
+	hookCommand(String command, Class<? extends JPlugin> location, String callback);
+		   @param command = text command you wish to trigger your callback, **do not prepend with '/'**
+		   @param location - Your plugin's Class `MyPlugin.class`
+		   @param callback - the name of the method you wish to invoke when PacketType is captured
+	```

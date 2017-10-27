@@ -114,20 +114,18 @@ These two means of proxy data manipulation are available to the plugin creater t
 ```
 
 **7)** To make use of **JRelay's** ability to hook packets and commands simply:
-- For Packets
+- **For Packets**
 	```Java
+	/**
+ 	* @param type - enum value of type PacketType.
+        * @param location - Your plugin's Class `MyPlugin.class`
+        * @param callback - The method to invoke when PacketType is captured by JRelay. 
+	*	            This method will receive an instance of the packet captured.
+	*/
 	hookPacket(PacketType type, Class<? extends JPlugin> location, String callback);	  
 	```
-	` @param type = enum PacketType;
-          @param location - Your plugin's Class `MyPlugin.class`
-          @param callback - the name of the method you wish to invoke when PacketType is captured. 
-		            This methoid will be passed an instance of the packet object that was 
-		            captured when your method is invoked;
-	`
-- For Commands
+- **For Commands**
 	```Java
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);
-		   @param command = text command you wish to trigger your callback, **do not prepend with '/'**
-		   @param location - Your plugin's Class `MyPlugin.class`
-		   @param callback - the name of the method you wish to invoke when PacketType is captured
+		  
 	```

@@ -9,4 +9,4 @@ JRelay is a man in the middle proxy for the popular flash browser game Realm of 
 There will be a guide for creating your own plugins as well as how to use the information made available to you through JRelay.
 
 ## Project Structure
-JRelay is structured to allow the user acess to their plugins, game XML, packet structures and fields all contained within the install directory of JRelay. The JRelayGUI can be run by simply **double clicking JRelay.jar.** For windows users, it is wise to create a batch program to execute JRelay using the batch script command 'java -jar /path/to/JRelay.jar' <br/>'pause'
+JRelay is structured to allow the user acess to their plugins, game XML, packet structures and fields all contained within the install directory of JRelay. The JRelayGUI can be run by simply **double clicking JRelay.jar.** For windows users, it is wise to create a batch program to execute JRelay using the batch script command `java -jar /path/to/JRelay.jar` <br/>`pause` which can be executed from any location so long as the location of `JRelay.jar`

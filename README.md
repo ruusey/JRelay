@@ -95,12 +95,14 @@ Notes:
 A plugin built using the superclass `JPlugin` requires the following methods as determined by its class heiarchy:
 
 ```Java
+public interface PluginData {
 	public void attach();
 	public String getAuthor();
 	public String getName();
 	public String getDescription();
 	public String[] getCommands();
 	public String[] getPackets();
+}
 ```
 
 **6)** Hooking packets, commands and adding your own code to your **JRelay** plugin.
@@ -115,13 +117,11 @@ These two means of proxy data manipulation are available to the plugin creater t
 
 **7)** To make use of **JRelay's** ability to hook packets and commands simply:
 - **For Packets**
-	```Java
-	/**
- 	* @param type - enum value of type PacketType.
-        * @param location - Your plugin's Class `MyPlugin.class`
-        * @param callback - The method to invoke when PacketType is captured by JRelay. 
-	*	            This method will receive an instance of the packet captured.
-	*/
+	```Java	
+	@param(type) //enum value of type PacketType.
+	@param(location) //Your plugin's Class **MyPlugin.class**
+	@param(callback) //The method to invoke when PacketType is captured by JRelay. 
+			 //This method will receive an instance of the packet captured.
 	hookPacket(PacketType type, Class<? extends JPlugin> location, String callback);	  
 	```
 - **For Commands**

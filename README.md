@@ -13,6 +13,8 @@ There will be a guide for creating your own plugins as well as how to use the in
 ## Project Structure
 **JRelay** is structured to allow the user acess to their plugins, game XML, packet structures and fields all contained within the install directory of **JRelay**. **JRelay** is built using basic Java socket IO to communicate with the Remote RotMG servers and your Local Client. The JRelayGUI can be run by simply **double clicking JRelay.jar.** For windows users, it is wise to create a batch program to execute JRelay. 
 
+**JRelay** makes use of a modular plugin system to allow third parties to write their own programs to manipulate the game's data. Plugins in **JRelay** operate slightly different from plugins for `KRelay` which most of you are used to. Plugins for **JRelay** are not attached to individual user instances until they connect
+
 ## Windows Users:
 Please feel free to use the following pre-written batch script as well as add your own custom JVM arguments:
 ```
@@ -183,7 +185,9 @@ public void attach() {
 ```
 In this case, we have hooked the command `"hi"` to the callback function `onHiCommand()` within our plugin class `Core`. This means that when the user types `/hi` in chat in-game, the code within your plugin will be executed. Again it is important to ensure your class location matches the name of the compilation unit for your plugin. 
 
-Like packet hooks, after we have hooked our command to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a `public void` method that shares the same name ("onHiCommand") as the callback you specified in your hook. Unlike packet hook callbacks, command hook callbacks will be passed two parameters: A `String` containing the command invoked and a `String[]` containing the command and all arguments included with the command. **Arguments are space delimited** It looks as follows:
+Like packet hooks, after we have hooked our command to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a `public void` method that shares the same name ("onHiCommand") as the callback you specified in your hook. Unlike packet hook callbacks, command hook callbacks will be passed two parameters: A `String` containing the command invoked and a `String[]` containing the command and all arguments included with the command. It looks as follows:
+> Example from `JRelay.Glow` plugin included with release.
+>**Arguments are space delimited**
 ```Java
 public void onHiCommand(String command, String[] args){
 	if(args.length<2){
@@ -198,4 +202,11 @@ public void onHiCommand(String command, String[] args){
 	}
 }
 ```
+## Packet Manipulation Explained
+Once you have set up your very own plugin to run with **JRelay** it is important to know some of the important ins and outs of the packet capture and manipulation process.
 
+#### Capturing Packets
+Packets are containers for data exchanged between your RotMG client and Deca's servers. Some types of packets are only sent from the client to the server while some are only sent from the server and received by the client. The respective packets and their transmission source can be viewed under the `Packets` of the JRelayGUI. If you chose to capture packets and modify their data or stop their transmission there are a few important things to note:
+1. Because packet hook callbacks receive a generic untyped packet, The generic packet must be cast to the desired packet type. If you chose to capture **AND MODIFY** a packet through the means mentioned above you **MUST** explicitly send the modified packet to your required destination using the included `sendToClient(Packet packet)` and `sendToServer(Packet packet)` superclass methods of `JPlugin`
+2. If you wish to capture a specific packet and prevent its transmission simply change the Packet's `boolean send;` field to `false`
+3. Any packet can be created using  `Packet.create(byte id)` or `Packet.create(PacketType type)`

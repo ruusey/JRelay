@@ -228,10 +228,132 @@ public static HashMap<Integer, Object> objects = new HashMap<Integer, Object>();
 public static HashMap<String, Object> nameToObject = new HashMap<String, Object>();
 public static HashMap<Byte, PacketModel> packets = new HashMap<Byte,PacketModel>();
 public static HashMap<String, Server> abbrToServer = new HashMap<String,Server>();
-public static HashMap<String, Server> ipToServer = new HashMap<String,Server>();
+public static HashMap<String, Server> servers = new HashMap<String,Server>();
 public static HashMap<Integer, PacketModel> packetIdToName = new HashMap<Integer,PacketModel>();
 public static HashMap<String, Integer> packetNameToId = new HashMap<String,Integer>();
 ```
-There are maps for `id -> model` and `name -> model` meaning that you can search for entities using their ID or often more simply name
+There are maps for `id -> model` and `name -> model` meaning that you can search for entities using their ID or Name.
+This can be extremely useful when manipulating tiles and objects.
 Example:
+```Java
+int sand = GameData.nameToTile.get("Light Sand").id;
+int sand2 = GameData.nameToTile.get("Dark Sand").id;
+```
+
+## Packet Type
+`PacketType` is an enumeration of RotMG's server and client packets referenced by packet ID.
+```Java
+FAILURE(0),
+CREATESUCCESS(87),
+CREATE(7),
+PLAYERSHOOT(82),
+MOVE(51),
+PLAYERTEXT(84),
+TEXT(23),
+SERVERPLAYERSHOOT(39),
+DAMAGE(36),
+UPDATE(79),
+UPDATEACK(80),
+NOTIFICATION(26),
+NEWTICK(85),
+INVSWAP(59),
+USEITEM(49),
+SHOWEFFECT(21),
+HELLO(30),
+GOTO(78),
+INVDROP(102),
+INVRESULT(9),
+RECONNECT(1),
+PING(97),
+PONG(103),
+MAPINFO(83),
+LOAD(3),
+PIC(64),
+SETCONDITION(5),
+TELEPORT(31),
+USEPORTAL(48),
+DEATH(91),
+BUY(56),
+BUYRESULT(67),
+AOE(40),
+GROUNDDAMAGE(98),
+PLAYERHIT(35),
+ENEMYHIT(76),
+AOEACK(8),
+SHOOTACK(27),
+OTHERHIT(89),
+SQUAREHIT(66),
+GOTOACK(99),
+EDITACCOUNTLIST(100),
+ACCOUNTLIST(93),
+QUESTOBJID(44),
+CHOOSENAME(10),
+NAMERESULT(88),
+CREATEGUILD(57),
+GUILDRESULT(13),
+GUILDREMOVE(77),
+GUILDINVITE(33),
+ALLYSHOOT(41),
+ENEMYSHOOT(75),
+REQUESTTRADE(60),
+TRADEREQUESTED(63),
+TRADESTART(46),
+CHANGETRADE(47),
+TRADECHANGED(68),
+ACCEPTTRADE(20),
+CANCELTRADE(25),
+TRADEDONE(17),
+TRADEACCEPTED(94),
+CLIENTSTAT(6),
+CHECKCREDITS(62),
+ESCAPE(37),
+FILE(96),
+INVITEDTOGUILD(101),
+JOINGUILD(61),
+CHANGEGUILDRANK(53),
+PLAYSOUND(19),
+GLOBALNOTIFICATION(22),
+RESKIN(69),
+PETUPGRADEREQUEST(55),
+ACTIVEPETUPDATEREQUEST(4),
+ACTIVEPETUPDATE(38),
+NEWABILITY(12),
+PETYARDUPDATE(24),
+EVOLVEPET(50),
+DELETEPET(15),
+HATCHPET(14),
+ENTERARENA(86),
+IMMINENTARENAWAVE(92),
+ARENADEATH(74),
+ACCEPTARENADEATH(18),
+VERIFYEMAIL(34),
+RESKINUNLOCK(95),
+PASSWORDPROMPT(81),
+QUESTFETCHASK(104),
+QUESTREDEEM(52),
+QUESTFETCHRESPONSE(28),
+QUESTREDEEMRESPONSE(65),
+PETCHANGEFORMMSG(16),
+KEYINFOREQUEST(90),
+KEYINFORESPONSE(11),
+CLAIMLOGINREWARDMSG(45),
+LOGINREWARDMSG(42),
+QUESTROOMMSG(58);
+```
+## ConditionEffects & ConditionEffectIndex
+`ConditionEffect` and `ConditionEffectIndex` are enumerations containing RotMG's status effects. They are both very similar but should be used in different cases. `ConditionEffect` values should be used in conjunction with `PlayerData`s `hasConditionEffect(ConditionEffect condition)` method. `ConditionEffectIndex` should be used to compare any packets `effect` field.
+For instance:
+```Java
+//Check if the player's armor is broken
+boolean armorBroken = user.playerData.hasConditionEffect(ConditionEffect.ArmorBroken);
+
+//Simulate AOEPacket capture and check if it will break the players armor
+AOEPacket aeo = new AOEPacket();
+boolean armorBroken = false;
+if (aeo.effect == ConditionEffectIndex.ArmorBroken.index) {
+	armorBroken = true;
+}
+```	
+
+
 

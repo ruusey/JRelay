@@ -1,4 +1,4 @@
-<img align="center" src="https://i.imgur.com/K7EkJkY.png">
+![alt text](https://i.imgur.com/K7EkJkY.png)
 # **JRelay**  1.0.0 - RotMG 17.0.0
 
 A modular Java man in the middle proxy for the flash game Realm of the Mad God
@@ -13,9 +13,13 @@ There will be a guide for creating your own plugins as well as how to use the in
 ## Project Structure
 **JRelay** is structured to allow the user acess to their plugins, game XML, packet structures and fields all contained within the install directory of **JRelay**. **JRelay** is built using basic Java socket IO to communicate with the Remote RotMG servers and your Local Client. The JRelayGUI can be run by simply **double clicking JRelay.jar.** For windows users, it is wise to create a batch program to execute JRelay. 
 
+## Windows Users:
 Please feel free to use the following pre-written batch script as well as add your own custom JVM arguments:
 ```
 `java -jar /path/to/JRelay.jar`
 `pause` 
 ```
-For Windows Users the batch script can be executed from any location so long as the location of `JRelay.jar`
+For Windows Users the batch script can be executed from any location so long as the location of `JRelay.jar` is correct in terms of its absolute or relative path.
+
+## Mac/Solaris/UNIX/Linux Users:
+After confirming you have **Java 1.8+** installed on your machine you should have no issues simply executing `JRelay.jar`, you may however create shorcuts or other execution scripts for you specific environment depending on your needs 

@@ -1,4 +1,4 @@
-# **JRelay** ![alt text](https://i.imgur.com/K7EkJkY.png) 1.0.0 - RotMG 17.0.0
+# ![alt text](https://i.imgur.com/I9S24Wm.png) **JRelay**  1.0.0 - RotMG 17.0.0
 A modular Java man in the middle proxy for the flash game Realm of the Mad God
 
 ![alt text](https://i.imgur.com/8CJnRVb.png)

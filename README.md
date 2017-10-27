@@ -216,6 +216,7 @@ Packets are containers for data exchanged between your RotMG client and Deca's s
 
 # Useful Data and Fields
 There are a number of extremely useful data collections in **JRelay** to help you write plugins. This section will detail the data you can access and the means by which to do so.
+>All enumerations also contain a static hashmap of their values if you prefer to access the data that way
 
 ## GameData
 The `GameData` class contains useful mappings of all of RotMG's out of the box xml data. These data sets are stored in Java `HashMap` objects. A `HashMap` is a one-to-one map of keys to values. When **JRelay** runs it will create object models of all entities within the game's XML. The XML of the entitity will be serialized into raw data and constructed into a model representing the entity. A map of the entity's ID(byte/int) **AND** name(String) to the Java model will be created. Once you have started **JRelay** and loaded all game assets, you can access any of this data statically within your plugins.
@@ -239,6 +240,7 @@ Example:
 int sand = GameData.nameToTile.get("Light Sand").id;
 int sand2 = GameData.nameToTile.get("Dark Sand").id;
 ```
+
 
 ## Packet Type
 `PacketType` is an enumeration of RotMG's server and client packets referenced by packet ID.
@@ -340,6 +342,7 @@ CLAIMLOGINREWARDMSG(45),
 LOGINREWARDMSG(42),
 QUESTROOMMSG(58);
 ```
+
 ## ConditionEffects & ConditionEffectIndex
 `ConditionEffect` and `ConditionEffectIndex` are enumerations containing RotMG's status effects. They are both very similar but should be used in different cases. `ConditionEffect` values should be used in conjunction with `PlayerData`s `hasConditionEffect(ConditionEffect condition)` method. `ConditionEffectIndex` should be used to compare any packets `effect` field.
 For instance:
@@ -353,7 +356,148 @@ boolean armorBroken = false;
 if (aeo.effect == ConditionEffectIndex.ArmorBroken.index) {
 	armorBroken = true;
 }
-```	
+```
 
+## EffectTypes
+`EffectType` is an enumeration containing visual effects for RotMG. I've personally never played around with these but I beleive they are used in the server `ShowEffectPacket`s `effect` field.
+```Java
+Unknown(0), 
+Heal(1), 
+Teleport(2), 
+Stream(3), 
+Throw(4), 
+Nova(5), 
+Poison(6), 
+Line(7), 
+Burst(8), 
+Flow(9), 
+Ring(10), 
+Lightning(11), 
+Collapse(12), 
+ConeBlast(13), 
+Earthquake(14), 
+Flash(15), 
+BeachBall(16), 
+ElectricBolts(17), 
+ElectricFlashing(18), 
+RisingFury(19);
+```
+
+## PetAbility
+`PetAbility` is an enumeration of all avaiable pet abilities.
+```Java
+Normal(0x500),
+Purple(0x503),
+Pink(0x506),
+Cyan(0x509),
+Red(0x510),
+Blue(0x050B),
+Purple2(0x507),
+Egg(0x508),
+White(0x050C),
+White2(0x050E),
+White3(0x50F);
+```
+
+## StatsType
+`StatsType` is an type containing all possible fields that might be updated in an `UPDATE` packet. It also contains useful methods for comparing and checking Stats.
+```Java
+public static StatsType MaximumHP = new StatsType(0);
+public static StatsType HP = new StatsType(1);
+public static StatsType Size = new StatsType(2);
+public static StatsType MaximumMP = new StatsType(3);
+public static StatsType MP = new StatsType(4);
+public static StatsType NextLevelExperience = new StatsType(5);
+public static StatsType Experience = new StatsType(6);
+public static StatsType Level = new StatsType(7);
+public static StatsType Inventory0 = new StatsType(8);
+public static StatsType Inventory1 = new StatsType(9);
+public static StatsType Inventory2 = new StatsType(10);
+public static StatsType Inventory3 = new StatsType(11);
+public static StatsType Inventory4 = new StatsType(12);
+public static StatsType Inventory5 = new StatsType(13);
+public static StatsType Inventory6 = new StatsType(14);
+public static StatsType Inventory7 = new StatsType(15);
+public static StatsType Inventory8 = new StatsType(16);
+public static StatsType Inventory9 = new StatsType(17);
+public static StatsType Inventory10 = new StatsType(18);
+public static StatsType Inventory11 = new StatsType(19);
+public static StatsType Attack = new StatsType(20);
+public static StatsType Defense = new StatsType(21);
+public static StatsType Speed = new StatsType(22);
+public static StatsType Vitality = new StatsType(26);
+public static StatsType Wisdom = new StatsType(27);
+public static StatsType Dexterity = new StatsType(28);
+public static StatsType Effects = new StatsType(29);
+public static StatsType Stars = new StatsType(30);
+public static StatsType Name = new StatsType(31); //Is UTF
+public static StatsType Texture1 = new StatsType(32);
+public static StatsType Texture2 = new StatsType(33);
+public static StatsType MerchandiseType = new StatsType(34);
+public static StatsType Credits = new StatsType(35);
+public static StatsType MerchandisePrice = new StatsType(36);
+public static StatsType PortalUsable = new StatsType(37); 
+public static StatsType AccountId = new StatsType(38); //Is UTF
+public static StatsType AccountFame = new StatsType(39);
+public static StatsType MerchandiseCurrency = new StatsType(40);
+public static StatsType ObjectConnection = new StatsType(41);
+public static StatsType MerchandiseRemainingCount = new StatsType(42);
+public static StatsType MerchandiseRemainingMinutes = new StatsType(43);
+public static StatsType MerchandiseDiscount = new StatsType(44);
+public static StatsType MerchandiseRankRequirement = new StatsType(45);
+public static StatsType HealthBonus = new StatsType(46);
+public static StatsType ManaBonus = new StatsType(47);
+public static StatsType AttackBonus = new StatsType(48);
+public static StatsType DefenseBonus = new StatsType(49);
+public static StatsType SpeedBonus = new StatsType(50);
+public static StatsType VitalityBonus = new StatsType(51);
+public static StatsType WisdomBonus = new StatsType(52);
+public static StatsType DexterityBonus = new StatsType(53);
+public static StatsType OwnerAccountId = new StatsType(54); //Is UTF
+public static StatsType RankRequired = new StatsType(55);
+public static StatsType NameChosen = new StatsType(56);
+public static StatsType CharacterFame = new StatsType(57);
+public static StatsType CharacterFameGoal = new StatsType(58);
+public static StatsType Glowing = new StatsType(59);
+public static StatsType SinkLevel = new StatsType(60);
+public static StatsType AltTextureIndex = new StatsType(61);
+public static StatsType GuildName = new StatsType(62); //Is UTF
+public static StatsType GuildRank = new StatsType(63);
+public static StatsType OxygenBar = new StatsType(64);
+public static StatsType XpBoosterActive = new StatsType(65);
+public static StatsType XpBoostTime = new StatsType(66);
+public static StatsType LootDropBoostTime = new StatsType(67);
+public static StatsType LootTierBoostTime = new StatsType(68);
+public static StatsType HealthPotionCount = new StatsType(69);
+public static StatsType MagicPotionCount = new StatsType(70);
+public static StatsType Backpack0 = new StatsType(71);
+public static StatsType Backpack1 = new StatsType(72);
+public static StatsType Backpack2 = new StatsType(73);
+public static StatsType Backpack3 = new StatsType(74);
+public static StatsType Backpack4 = new StatsType(75);
+public static StatsType Backpack5 = new StatsType(76);
+public static StatsType Backpack6 = new StatsType(77);
+public static StatsType Backpack7 = new StatsType(78);
+public static StatsType HasBackpack = new StatsType(79);
+public static StatsType Skin = new StatsType(80);
+public static StatsType PetInstanceId = new StatsType(81);
+public static StatsType PetName = new StatsType(82); //Is UTF
+public static StatsType PetType = new StatsType(83);
+public static StatsType PetRarity = new StatsType(84);
+public static StatsType PetMaximumLevel = new StatsType(85);
+public static StatsType PetFamily = new StatsType(86); 
+public static StatsType PetPoints0 = new StatsType(87);
+public static StatsType PetPoints1 = new StatsType(88);
+public static StatsType PetPoints2 = new StatsType(89);
+public static StatsType PetLevel0 = new StatsType(90);
+public static StatsType PetLevel1 = new StatsType(91);
+public static StatsType PetLevel2 = new StatsType(92);
+public static StatsType PetAbilityType0 = new StatsType(93);
+public static StatsType PetAbilityType1 = new StatsType(94);
+public static StatsType PetAbilityType2 = new StatsType(95);
+public static StatsType Effects2 = new StatsType(96); // Other Effects
+public static StatsType FortuneTokens = new StatsType(97);
+```
+This is very useful for keeping track of certain aspects of the player anytime a packet containing a `Status` field is intercepted (UpdatePacket, NewTickPacket). The `Status` type contains a `StatData[]`. The `id` field of `StatData` can be compared with `StatsType` to cherry-pick the data you are looking for.
 
 

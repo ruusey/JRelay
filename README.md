@@ -134,23 +134,23 @@ These two means of proxy data manipulation are available to the plugin creater t
 			 //As well as any arguments passed by the user	
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);  
 	```
-**8)** Implementing custom packet and command handlers for proxy events. Since we have introduced the means by which you can intercept packets and create command based functionality with JRelay, we will not cover how to implement these methods into useful plugins for manipulating the game.
+**8)** Implementing custom packet and command handlers for proxy events. Since we have introduced the means by which you can intercept packets and create command based functionality with **JRelay**, we will not cover how to implement these methods into useful plugins for manipulating the game.
 
 
 # JRelay Usage
 
 ## **Example Packet Hook**
-Here is an example of hooking a plugin to the game's UpdatePacket:
-> Example from JRelay.Glow plugin included with release.
+We will now take a look at an example how you can hook a callback function to the game's `UpdatePacket`:
+> Example from `JRelay.Glow` plugin included with release.
 ```Java
 @Override
 public void attach() {
 	user.hookPacket(PacketType.UPDATE, Glow.class, "onUpdatePacket");		
 }
 ```
-As you see we have hooked PacketType.UPDATE to trigger the method `onUpdatePacket()` within our plugin titled **Glow** as seen by referencing `Glow.class` as the second argument for the `hookPacket` method. It is **__VERY__** important to ensure your class location matches the name of the compilation unit for your plugin otherwise JRelay will not be able to detect your packet and command hooks.
+As you see we have hooked `PacketType.UPDATE` to trigger the method `onUpdatePacket()` within our plugin titled **Glow** as seen by referencing `Glow.class` as the second argument for the `hookPacket` method. It is **__VERY__** important to ensure your class location matches the name of the compilation unit for your plugin otherwise JRelay will not be able to detect your packet and command hooks.
 
-After we have hooked our packet to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a public void method that shares the same name as the callback you specified in your hook. For packet hooks, the only parameter passed into the callback function is the packet that was captured. Continuing the example above, it would look like so:
+After we have hooked our packet to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a `public void` method that shares the same name ("onUpdatePacket") as the callback you specified in your hook. Your callback must take an argument for type `com.models.Packet` which the only parameter passed into the callback function is the packet that was captured. Continuing the example above, it would look like so:
 
 ```Java
 public void onUpdatePacket(Packet p){
@@ -169,6 +169,33 @@ public void onUpdatePacket(Packet p){
          }
 }
 ```
+While Packet is a generic `superclass` of all packets sent and received by the server, Since your packet hook specified the `PacketType` to be triggered on, you may freely cast the received packet parameter to the type expected as seen on line 2.
+`UpdatePacket update = (UpdatePacket)p;` This is the case with all packet hook routines.
 
+## **Example Command Hook**
+We will now take a look at an example how you can hook a user inputted command to a callback method:
+> Example from `JRelay.Core` plugin included with release.
+```Java
+@Override
+public void attach() {
+	user.hookCommand("hi", Core.class, "onHiCommand");		
+}
+```
+In this case, we have hooked the command `"hi"` to the callback function `onHiCommand()` within our plugin class `Core`. This means that when the user types `/hi` in chat in-game, the code within your plugin will be executed. Again it is important to ensure your class location matches the name of the compilation unit for your plugin. 
 
+Like packet hooks, after we have hooked our command to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a `public void` method that shares the same name ("onHiCommand") as the callback you specified in your hook. Unlike packet hook callbacks, command hook callbacks will be passed two parameters: A `String` containing the command invoked and a `String[]` containing the command and all arguments included with the command. **Arguments are space delimited** It looks as follows:
+```Java
+public void onHiCommand(String command, String[] args){
+	if(args.length<2){
+		TextPacket packet = EventUtils.createText("hi", "Too few argumenets /hi [on/off]");
+		sendToClient(packet);
+	}else if(args[1].equals("on")){
+		TextPacket packet = EventUtils.createText("hi", "Hello! heres some player data: name="+user.playerData.name+" 				fame="+user.playerData.characterFame);
+		sendToClient(packet);
+	}else if(args[1].equals("off")){
+		TextPacket packet = EventUtils.createText("hi", "Hello! no player data requested");
+		sendToClient(packet);
+	}
+}
+```
 

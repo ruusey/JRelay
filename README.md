@@ -94,12 +94,12 @@ Notes:
 A plugin built using the superclass `JPlugin` requires the following methods as determined by its class heiarchy:
 
 ```Java
-public void attach();
-public String getAuthor();
-public String getName();
-public String getDescription();
-public String[] getCommands();
-public String[] getPackets();
+	public void attach();
+	public String getAuthor();
+	public String getName();
+	public String getDescription();
+	public String[] getCommands();
+	public String[] getPackets();
 ```
 
 6. Hooking packets, commands and adding your own code to your **JRelay** plugin.

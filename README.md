@@ -500,4 +500,18 @@ public static StatsType FortuneTokens = new StatsType(97);
 ```
 This is very useful for keeping track of certain aspects of the player anytime a packet containing a `Status` field is intercepted (UpdatePacket, NewTickPacket). The `Status` type contains a `StatData[]`. The `id` field of `StatData` can be compared with `StatsType` to cherry-pick the data you are looking for.
 
-
+## BagType
+`BagType` is an enumeration containing the different types of loot bags in RotMG.
+```Java
+Normal(0x500),
+Purple(0x503),
+Pink(0x506),
+Cyan(0x509),
+Red(0x510),
+Blue(0x050B),
+Purple2(0x507),
+Egg(0x508),
+White(0x050C),
+White2(0x050E),
+White3(0x50F);
+```

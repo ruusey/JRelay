@@ -1,18 +1,14 @@
 ![alt text](https://i.imgur.com/K7EkJkY.png)
 # **JRelay**  1.0.0 - RotMG 17.0.0
 
-A modular Java man in the middle proxy for the flash game Realm of the Mad God
+A modular Java man in the middle proxy for the flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/8CJnRVb.png)
 
 # Overview
-**JRelay** is a man in the middle proxy for the popular flash browser game Realm of Mad God. **JRelay's** intended use is to allow users to create plugins that intercept and modify the games data which is transmitted in objects called Packets. JRelay is written in Java meaning it is platform independent so long as you have a compatible JRE installed on your Operating System. **JRelay requires Java 1.8+ to run.** 
-
-There will be a guide for creating your own plugins as well as how to use the information made available to you through JRelay.
+**JRelay** is a man in the middle proxy for the popular flash browser game Realm of Mad God. **JRelay's** intended use is for users to create plugins that intercept and modify the games data which is transmitted in objects called Packets. JRelay is written in Java meaning it is platform independent so long as you have a compatible JRE installed on your Operating System. **JRelay requires Java 1.8+ to run.** 
 
 ## Project Structure
-**JRelay** is structured to allow the user acess to their plugins, game XML, packet structures and fields all contained within the install directory of **JRelay**. **JRelay** is built using basic Java socket IO to communicate with the Remote RotMG servers and your Local Client. The JRelayGUI can be run by simply **double clicking JRelay.jar.** For windows users, it is wise to create a batch program to execute JRelay. 
-
-**JRelay** makes use of a modular plugin system to allow third parties to write their own programs to manipulate the game's data. Plugins in **JRelay** operate slightly different from plugins for `KRelay` which most of you are used to. Plugins for **JRelay** are not attached to individual user instances until they connect
+**JRelay** is built using basic `Java Socket IO` to bridge the gap between your game client and Deca's servers. **JRelay** incorporates aspects of existing RotMG proxies bundled with the platform independence of Java. **JRelay** makes use of a modular plugin system to allow third parties to write their own programs to capture and manipulate the game's data. 
 
 ## Windows Users:
 Please feel free to use the following pre-written batch script as well as add your own custom JVM arguments:
@@ -25,11 +21,9 @@ For Windows Users the batch script can be executed from any location so long as 
 ## Mac/Solaris/UNIX/Linux Users:
 After confirming you have **Java 1.8+** installed on your machine you should have no issues simply executing `JRelay.jar`, you may however create shorcuts or other execution scripts for you specific environment depending on your needs.
 
-## JRelay Plugins
+# Plugin Creation
 As mentioned, **JRelay** supports the implementation of User created plugins. The support for users to create thier own plugins will be made avaialable through acessing the distributed `JRelayLib.jar` library. `JRelayLib` contains all essential data and methods neccesarry to create your very own **JRelay** plugins.
 
-
-# Plugin Creation
 Plugin creation has been made a streamlined and easy as possible even for novice developers. JRelay plugins can be writtin in any IDE such as **Eclipse,** **Net Beans,** **Spring Tool Suite (STS)** or even a simple **Text Editor.** 
 I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provide will be a one-to-one translation in terms of the steps taken to create a plugin.
 
@@ -137,6 +131,8 @@ These two means of proxy data manipulation are available to the plugin creater t
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);  
 	```
 **8)** Implementing custom packet and command handlers for proxy events. Since we have introduced the means by which you can intercept packets and create command based functionality with **JRelay**, we will not cover how to implement these methods into useful plugins for manipulating the game.
+
+**9)** Deployment. To incorporate your plugin into **JRelay** simply place its .class or .java file in the **JRelay** `plugins` folder.
 
 
 # JRelay Usage

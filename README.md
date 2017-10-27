@@ -119,7 +119,7 @@ These two means of proxy data manipulation are available to the plugin creater t
 - **For Packets**
 	```Java	
 	@param(type) //enum value of type PacketType.
-	@param(location) //Your plugin's Class **MyPlugin.class**
+	@param(location) //Your plugin's Class (MyPlugin.class)
 	@param(callback) //The method to invoke when PacketType is captured by JRelay. 
 			 //This method will receive an instance of the packet captured.
 	hookPacket(PacketType type, Class<? extends JPlugin> location, String callback);	  

@@ -118,14 +118,33 @@ These two means of proxy data manipulation are available to the plugin creater t
 **7)** To make use of **JRelay's** ability to hook packets and commands simply:
 - **For Packets**
 	```Java	
-	@param(type) //enum value of type PacketType.
+	@param(type)     //enum value of type PacketType.
 	@param(location) //Your plugin's Class (MyPlugin.class)
 	@param(callback) //The method to invoke when PacketType is captured by JRelay. 
 			 //This method will receive an instance of the packet captured.
 	hookPacket(PacketType type, Class<? extends JPlugin> location, String callback);	  
 	```
+	
 - **For Commands**
 	```Java
-	hookCommand(String command, Class<? extends JPlugin> location, String callback);
-		  
+	@param(command)  //User command to trigger your plugin
+	@param(location) //Your plugin's Class (MyPlugin.class)
+	@param(callback) //The method to invoke when your command is invoked. 
+			 //This method will receive a copy of the command.
+			 //As well as any arguments passed by the user	
+	hookCommand(String command, Class<? extends JPlugin> location, String callback);  
 	```
+**8)** Implementing custom packet and command handlers for proxy events. Since we have introduced the means by which you can intercept packets and create command based functionality with JRelay, we will not cover how to implement these methods into useful plugins for manipulating the game.
+
+- **Example Packet Hook**
+Here is an example of hooking a plugin to the game's UpdatePacket:
+> Example from JRelay.Glow plugin included with release.
+```Java
+@Override
+public void attach() {
+	user.hookPacket(PacketType.UPDATE, Glow.class, "onUpdatePacket");		
+}
+```
+As you see we have hooked PacketType.UPDATE to trigger the method `onUpdatePacket()` within our plugin titled **Glow** as seen by referencing `Glow.class` as the second argument for the `hookPacket` method. It is **__VERY__** important to ensure your class location matches the name of the compilation unit for your plugin otherwise JRelay will not be able to detect your packet and command hooks.
+
+

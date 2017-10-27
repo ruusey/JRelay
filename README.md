@@ -35,7 +35,7 @@ I highly recommend Spring Tool Suite and Eclipse as the tutorial I provide will 
 
 ![alt text]((https://i.imgur.com/Mw7MG5T.png))
 
-2. Create a `Java Class` file that will represent your plugin by right clikiking on your projects `src` folder and selecting `New > Class` You can name it whatever you like however, it's best to use proper naming conventions.
+**2)** Create a `Java Class` file that will represent your plugin by right clikiking on your projects `src` folder and selecting `New > Class` You can name it whatever you like however, it's best to use proper naming conventions.
 
 ![alt text](https://i.imgur.com/ArdGJy4.png)
 

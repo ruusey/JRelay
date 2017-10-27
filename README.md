@@ -2,10 +2,9 @@
 # **JRelay**  1.0.0 - RotMG 17.0.0
 
 A modular Java man in the middle proxy for the flash game Realm of the Mad God
+![alt text](https://i.imgur.com/8CJnRVb.png)
 
-
-
-## Overview
+# Overview
 **JRelay** is a man in the middle proxy for the popular flash browser game Realm of Mad God. **JRelay's** intended use is to allow users to create plugins that intercept and modify the games data which is transmitted in objects called Packets. JRelay is written in Java meaning it is platform independent so long as you have a compatible JRE installed on your Operating System. **JRelay requires Java 1.8+ to run.** 
 
 There will be a guide for creating your own plugins as well as how to use the information made available to you through JRelay.
@@ -29,7 +28,8 @@ After confirming you have **Java 1.8+** installed on your machine you should hav
 ## JRelay Plugins
 As mentioned, **JRelay** supports the implementation of User created plugins. The support for users to create thier own plugins will be made avaialable through acessing the distributed `JRelayLib.jar` library. `JRelayLib` contains all essential data and methods neccesarry to create your very own **JRelay** plugins.
 
-## Plugin Creation
+
+# Plugin Creation
 Plugin creation has been made a streamlined and easy as possible even for novice developers. JRelay plugins can be writtin in any IDE such as **Eclipse,** **Net Beans,** **Spring Tool Suite (STS)** or even a simple **Text Editor.** 
 I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provide will be a one-to-one translation in terms of the steps taken to create a plugin.
 
@@ -205,14 +205,16 @@ public void onHiCommand(String command, String[] args){
 ## Packet Manipulation Explained
 Once you have set up your very own plugin to run with **JRelay** it is important to know some of the important ins and outs of the packet capture and manipulation process.
 
-#### Capturing Packets
-Packets are containers for data exchanged between your RotMG client and Deca's servers. Some types of packets are only sent from the client to the server while some are only sent from the server and received by the client. The respective packets and their transmission source can be viewed under the `Packets` of the JRelayGUI. If you chose to capture packets and modify their data or stop their transmission there are a few important things to note:
-1. Because packet hook callbacks receive a generic untyped packet, The generic packet must be cast to the desired packet type. If you chose to capture **AND MODIFY** a packet through the means mentioned above you **MUST** explicitly send the modified packet to your required destination using the included `sendToClient(Packet packet)` and `sendToServer(Packet packet)` superclass methods of `JPlugin`
-2. If you wish to capture a specific packet and prevent its transmission simply change the Packet's `boolean send;` field to `false`
-3. Any packet can be created at any time using  `Packet.create(byte id)` or `Packet.create(PacketType type)`
+## Capturing Packets
+Packets are containers for data exchanged between your RotMG client and Deca's servers. Some packets are only sent from the client to the server while some are only sent from the server to the client. The respective packets and their transmission source can be viewed under the `Packets` tab of the JRelayGUI. If you chose to capture packets and modify their data or stop their transmission there are a few important things to note:
+1. Because packet hook callbacks are passed a generic untyped packet, The generic packet must be cast to the desired packet type. 
+2. If you chose to capture **AND MODIFY** a packet you **MUST** explicitly send the modified packet to its required destination using  `sendToClient(Packet packet)` and `sendToServer(Packet packet)` which are superclass methods of `JPlugin`.
+3. If you wish to capture a specific packet and **STOP** its transmission change the Packet's `boolean send;` field to `false`
+4. Any packet can be created at any time using  `Packet.create(byte id)` or `Packet.create(PacketType type)` or by simply constructing a new packet object.
 > `HelloPacket helloPacket = (HelloPacket) Packet.create(PacketType.HELLO);`
-4. Sending the wrong packet to the wrong place will disconnect you.
-5. Spamming packets will get you **BANNED BY DECA***
+> `HelloPacket helloPacket = (HelloPacket) Packet.create(30);`
+5. Sending the wrong packet to the wrong place or with unexpected data will disconnect you.
+6. Spamming packets will get you **BANNED BY DECA***
 
 # Useful Data and Fields
 There are a number of extremely useful data collections in **JRelay** to help you write plugins. This section will detail the data you can access and the means by which to do so.
@@ -240,7 +242,6 @@ Example:
 int sand = GameData.nameToTile.get("Light Sand").id;
 int sand2 = GameData.nameToTile.get("Dark Sand").id;
 ```
-
 
 ## Packet Type
 `PacketType` is an enumeration of RotMG's server and client packets referenced by packet ID.
@@ -514,4 +515,59 @@ Egg(0x508),
 White(0x050C),
 White2(0x050E),
 White3(0x50F);
+```
+
+## PlayerData
+An instance of `PlayerData` is created when you connect to **JRelay.** `PlayerData` keeps track of all player related stats. All information in `PlayerData` is automatically kept up to date.
+```Java
+public int ownerObjectId;
+public String mapName;
+public boolean teleportAllowed;
+public int mapWidth;
+public int mapHeight;
+public int maxHealth;
+public int health;
+public int maxMana;
+public int mana;
+public int xpGoal;
+public int xp;
+public int level = 1;
+public int[] slot = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+public int[] backPack = { -1, -1, -1, -1, -1, -1, -1, -1 };
+public int attack;
+public int defense;
+public int speed;
+public int vitality;
+public int wisdom;
+public int dexterity;
+public int effects;
+public int stars;
+public String name;
+public int realmGold;
+public int price;
+public boolean canEnterPortal;
+public String accountId;
+public int accountFame;
+public int healthBonus;
+public int manaBonus;
+public int attackBonus;
+public int defenseBonus;
+public int speedBonus;
+public int vitalityBonus;
+public int wisdomBonus;
+public int dexterityBonus;
+public int nameChangeRankRequired;
+public boolean nameChosen;
+public int characterFame;
+public int characterFameGoal;
+public boolean glowingEffect;
+public String guildName;
+public int guildRank;
+public int breath;
+public int healthPotionCount;
+public int magicPotionCount;
+public boolean hasBackpack;
+public int skin;
+public Location pos = new Location();
+public CharacterClass cls;
 ```

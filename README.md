@@ -209,4 +209,29 @@ Once you have set up your very own plugin to run with **JRelay** it is important
 Packets are containers for data exchanged between your RotMG client and Deca's servers. Some types of packets are only sent from the client to the server while some are only sent from the server and received by the client. The respective packets and their transmission source can be viewed under the `Packets` of the JRelayGUI. If you chose to capture packets and modify their data or stop their transmission there are a few important things to note:
 1. Because packet hook callbacks receive a generic untyped packet, The generic packet must be cast to the desired packet type. If you chose to capture **AND MODIFY** a packet through the means mentioned above you **MUST** explicitly send the modified packet to your required destination using the included `sendToClient(Packet packet)` and `sendToServer(Packet packet)` superclass methods of `JPlugin`
 2. If you wish to capture a specific packet and prevent its transmission simply change the Packet's `boolean send;` field to `false`
-3. Any packet can be created using  `Packet.create(byte id)` or `Packet.create(PacketType type)`
+3. Any packet can be created at any time using  `Packet.create(byte id)` or `Packet.create(PacketType type)`
+> `HelloPacket helloPacket = (HelloPacket) Packet.create(PacketType.HELLO);`
+4. Sending the wrong packet to the wrong place will disconnect you.
+5. Spamming packets will get you **BANNED BY DECA***
+
+# Useful Data and Fields
+There are a number of extremely useful data collections in **JRelay** to help you write plugins. This section will detail the data you can access and the means by which to do so.
+
+## GameData
+The `GameData` class contains useful mappings of all of RotMG's out of the box xml data. These data sets are stored in Java `HashMap` objects. A `HashMap` is a one-to-one map of keys to values. When **JRelay** runs it will create object models of all entities within the game's XML. The XML of the entitity will be serialized into raw data and constructed into a model representing the entity. A map of the entity's ID(byte/int) **AND** name(String) to the Java model will be created. Once you have started **JRelay** and loaded all game assets, you can access any of this data statically within your plugins.
+```Java
+public static HashMap<Integer, Item> items = new HashMap<Integer,Item>();
+public static HashMap<String, Item> nameToItem = new HashMap<String,Item>();
+public static HashMap<Integer, Tile> tiles = new HashMap<Integer,Tile>();
+public static HashMap<String, Tile> nameToTile = new HashMap<String,Tile>();
+public static HashMap<Integer, Object> objects = new HashMap<Integer, Object>();
+public static HashMap<String, Object> nameToObject = new HashMap<String, Object>();
+public static HashMap<Byte, PacketModel> packets = new HashMap<Byte,PacketModel>();
+public static HashMap<String, Server> abbrToServer = new HashMap<String,Server>();
+public static HashMap<String, Server> ipToServer = new HashMap<String,Server>();
+public static HashMap<Integer, PacketModel> packetIdToName = new HashMap<Integer,PacketModel>();
+public static HashMap<String, Integer> packetNameToId = new HashMap<String,Integer>();
+```
+There are maps for `id -> model` and `name -> model` meaning that you can search for entities using their ID or often more simply name
+Example:
+

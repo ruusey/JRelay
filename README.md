@@ -1,6 +1,5 @@
-# JRelay 1.0.0 
-# For Realm of The Mad God version 17.0.0
-### A modular Java man in the middle proxy for the flash game Realm of the Mad God
+# JRelay 1.0.0 - RotMG 17.0.0
+A modular Java man in the middle proxy for the flash game Realm of the Mad God
 
 
 ## Overview

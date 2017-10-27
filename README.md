@@ -29,26 +29,26 @@ As mentioned, **JRelay** supports the implementation of User created plugins. Th
 
 ## Plugin Creation
 Plugin creation has been made a streamlined and easy as possible even for novice developers. JRelay plugins can be writtin in any IDE such as **Eclipse,** **Net Beans,** **Spring Tool Suite (STS)** or even a simple **Text Editor.** 
-I highly recommend Spring Tool Suite and Eclipse as the tutorial I provide will be a one-to-one translation in terms of the steps taken to create a plugin.
+I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provide will be a one-to-one translation in terms of the steps taken to create a plugin.
 
 ### Steps
-**1)** Create a Java Project by navigating to `New > Project` within Eclipse or STS and selecting the Java Project creation wizard.
+**1)** Create a new Java Project by navigating to `New > Project` in Eclipse or STS and selecting the Java Project creation wizard.
 
 ![alt text](https://i.imgur.com/Mw7MG5T.png)
 
-**2)** Create a `Java Class` file that will represent your plugin by right clikiking on your projects `src` folder and selecting `New > Class` You can name it whatever you like however, it's best to use proper naming conventions.
+**2)** Create a new `Java Class` file that will represent your plugin by right clicking on your projects `src` folder and selecting `New > Class` You can name it whatever you like however, it's best to use proper naming conventions.
 
 ![alt text](https://i.imgur.com/ArdGJy4.png)
 
-**3)** Add a reference to your project that allows you to access the important methods and functions of  `JRelayLib.jar` by right clicking on your plugin project and navigating to `Properties > Java Build Path > Libraries > Add External Jars`
-
+**3)** Add a reference to your project that allows you to access the important methods and functions of  `JRelayLib.jar` by right clicking on your plugin project and navigating to `Properties > Java Build Path > Libraries > Add External Jars` 
 ![alt text](https://i.imgur.com/SSXHzgO.png)
 
-**4)** Locate `JRelayLib.jar` on your file system and add it to your projects referenced external libraries. This will allow you to incorporate methods for intercepting and manipulating game data.
+**4)** Locate `JRelayLib.jar` on your file system and add it to your projects referenced external libraries. This will allow you to incorporate methods for intercepting and manipulating game data. You should now see `JRelayLib.jar` under the list of libraries included in your project.
 
 ![alt text](https://i.imgur.com/xwmSGa6.png)
 
-**5)** Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto generate them for you if you wish. However, if you dont plan on using an IDE for developing **JRelay** plugins please observe the following **__required__** structure:
+**5)** Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto include them for you if you wish. However, if you don't plan on using an IDE for developing **JRelay** plugins please observe the following **__required__** structure:
+> Please note that **ALL** overidden methods must return a **NON-NULL** value. It can be empty but not null.
 
 ```Java
 import com.relay.User;
@@ -136,7 +136,10 @@ These two means of proxy data manipulation are available to the plugin creater t
 	```
 **8)** Implementing custom packet and command handlers for proxy events. Since we have introduced the means by which you can intercept packets and create command based functionality with JRelay, we will not cover how to implement these methods into useful plugins for manipulating the game.
 
-- **Example Packet Hook**
+
+# JRelay Usage
+
+## **Example Packet Hook**
 Here is an example of hooking a plugin to the game's UpdatePacket:
 > Example from JRelay.Glow plugin included with release.
 ```Java
@@ -146,5 +149,26 @@ public void attach() {
 }
 ```
 As you see we have hooked PacketType.UPDATE to trigger the method `onUpdatePacket()` within our plugin titled **Glow** as seen by referencing `Glow.class` as the second argument for the `hookPacket` method. It is **__VERY__** important to ensure your class location matches the name of the compilation unit for your plugin otherwise JRelay will not be able to detect your packet and command hooks.
+
+After we have hooked our packet to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a public void method that shares the same name as the callback you specified in your hook. For packet hooks, the only parameter passed into the callback function is the packet that was captured. Continuing the example above, it would look like so:
+
+```Java
+public void onUpdatePacket(Packet p){
+	UpdatePacket update = (UpdatePacket)p;
+
+         for (int i = 0; i < update.newObjs.length; i++)
+         {
+             if (update.newObjs[i].status.objectId == user.playerData.ownerObjectId)
+             {
+                 for (int j = 0; j < update.newObjs[i].status.data.length; j++)
+                 {
+                     if (update.newObjs[i].status.data[j].id == 59)
+                         update.newObjs[i].status.data[j].intValue = 100;
+                 }
+             }
+         }
+}
+```
+
 
 

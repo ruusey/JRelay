@@ -567,3 +567,29 @@ public int skin;
 public Location pos = new Location();
 public CharacterClass cls;
 ```
+
+# Create Custom Tile & Object Maps
+JRelay allows the user to define custom tile and object mappings allowing users to give the game their own personal look. JRelay object maps are written in XML and employ a custom syntax for managing mapping of multiple object to multiple other objects. All JRelay object maps are defined in `xml/maps.xml`.
+
+Example Map:
+```XML
+<Map id="myMap">
+	<TileMap/>
+	<Entry start="Light Sand:Dark Sand" end="Castle Stone Floor Tile#Wood Panel Floor"/>
+</Map>
+```
+>This map replaces all tiles that are Light & Dark Sand with Castle Stone Floor OR Wood Panel Floor.
+
+## Creating Your Own Object Map Definition
+1. To define your own map, within the `<Maps></Maps>`tag found in `xml/maps.xml`, create an entry of type `<Map></Map>`. If you wish to name your map specify its `id` using `<Map id="myCustomMap"></Map>`.
+2. Choose weather your map will be an `ObjectMap` or a `TileMap`. Tile Maps are used to replace game tiles with other tiles while Object Maps are used to replace game object with other objects. Ex. You cant change Sand to be Medusas, the game wont like you very much. Add your corresponding map type entry to your `<Map>` as `<TileMap/>` or `<ObjectMap/>`.
+3. Underneath your map type declaration add a tag type `<Entry/>`. The entry tag has two attributes: `start` and `end`. Both tags are required and should be filled with corresponding tiles and object mapping syntax. You can have as many entries per map as you like.
+
+## Object Map Syntax
+`JRelay` object maps use a custom syntax to make your life easier. There are three main parts to object map syntax. 
+- The `:` operator denotes an "AND" operation. Restricted to `start` tag of your entry. Replace multiple objects at once.
+- The `#` operator denotes an "OR" operation. Restricted to `end` tag or your entry. Define multiple replacing objects. Each object separated has `1/n` chance of replacing the object defined in `start` where `n = # of objects`.
+- The `*` operator denotes a "Wildcard" operator. Meaning you can replace ALL tiles or ALL objects with specified object(s),
+
+
+

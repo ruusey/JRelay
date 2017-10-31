@@ -383,17 +383,15 @@ RisingFury(19);
 ## PetAbility
 `PetAbility` is an enumeration of all avaiable pet abilities.
 ```Java
-Normal(0x500),
-Purple(0x503),
-Pink(0x506),
-Cyan(0x509),
-Red(0x510),
-Blue(0x050B),
-Purple2(0x507),
-Egg(0x508),
-White(0x050C),
-White2(0x050E),
-White3(0x50F);
+AttackClose(402),
+AttackMid(404),
+AttackFar(405),
+Electric(406),
+Heal(407),
+MagicHeal(408),
+Savage(409),
+Decoy(410),
+RisingFury(411);
 ```
 
 ## StatsType

@@ -24,7 +24,7 @@ After confirming you have **Java 1.8+** installed on your machine you should hav
 # Plugin Creation
 As mentioned, **JRelay** supports the implementation of User created plugins. The support for users to create thier own plugins will be made avaialable through acessing the distributed `JRelayLib.jar` library. `JRelayLib` contains all essential data and methods neccesarry to create your very own **JRelay** plugins.
 
-Plugin creation has been made a streamlined and easy as possible even for novice developers. JRelay plugins can be writtin in any IDE such as **Eclipse,** **Net Beans,** **Spring Tool Suite (STS)** or even a simple **Text Editor.** 
+Plugin creation has been made a streamlined and easy as possible even for novice developers. **JRelay** plugins can be writtin in any IDE such as **Eclipse,** **Net Beans,** **Spring Tool Suite (STS)** or even a simple **Text Editor.** 
 I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provide will be a one-to-one translation in terms of the steps taken to create a plugin.
 
 ### Steps
@@ -146,7 +146,7 @@ public void attach() {
 	user.hookPacket(PacketType.UPDATE, Glow.class, "onUpdatePacket");		
 }
 ```
-As you see we have hooked `PacketType.UPDATE` to trigger the method `onUpdatePacket()` within our plugin titled **Glow** as seen by referencing `Glow.class` as the second argument for the `hookPacket` method. It is **__VERY__** important to ensure your class location matches the name of the compilation unit for your plugin otherwise JRelay will not be able to detect your packet and command hooks.
+As you see we have hooked `PacketType.UPDATE` to trigger the method `onUpdatePacket()` within our plugin titled **Glow** as seen by referencing `Glow.class` as the second argument for the `hookPacket` method. It is **__VERY__** important to ensure your class location matches the name of the compilation unit for your plugin otherwise **JRelay** will not be able to detect your packet and command hooks.
 
 After we have hooked our packet to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a `public void` method that shares the same name ("onUpdatePacket") as the callback you specified in your hook. Your callback must take an argument for type `com.models.Packet` which the only parameter passed into the callback function is the packet that was captured. Continuing the example above, it would look like so:
 
@@ -202,7 +202,7 @@ public void onHiCommand(String command, String[] args){
 Once you have set up your very own plugin to run with **JRelay** it is important to know some of the important ins and outs of the packet capture and manipulation process.
 
 ## Capturing Packets
-Packets are containers for data exchanged between your RotMG client and Deca's servers. Some packets are only sent from the client to the server while some are only sent from the server to the client. The respective packets and their transmission source can be viewed under the `Packets` tab of the JRelayGUI. If you chose to capture packets and modify their data or stop their transmission there are a few important things to note:
+Packets are containers for data exchanged between your RotMG client and Deca's servers. Some packets are only sent from the client to the server while some are only sent from the server to the client. The respective packets and their transmission source can be viewed under the `Packets` tab of the **JRelayGUI**. If you chose to capture packets and modify their data or stop their transmission there are a few important things to note:
 1. Because packet hook callbacks are passed a generic untyped packet, The generic packet must be cast to the desired packet type. 
 2. If you chose to capture **AND MODIFY** a packet you **MUST** explicitly send the modified packet to its required destination using  `sendToClient(Packet packet)` and `sendToServer(Packet packet)` which are superclass methods of `JPlugin`.
 3. If you wish to capture a specific packet and **STOP** its transmission change the Packet's `boolean send;` field to `false`
@@ -565,9 +565,29 @@ public int skin;
 public Location pos = new Location();
 public CharacterClass cls;
 ```
+# Event Utils
+**JRelay** comes with a few helper methods for creating player text and notifications. These are `static` methods contained within the `EventUtils` class. Use event utils to make it easier to send chat and notifications to the client.
+
+```Java
+/* 
+*@param objectId - game object ID to display the notification on. Commonly user.playerData.ownerObjectId
+*@param message - notification text
+*/
+public static NotificationPacket createNotification(int objectId, String message) {}
+/* 
+*@param sender - the sender of the message to be displayed in chat.
+*@param text - chat text
+*/
+public static TextPacket createText(String sender, String text) {}
+
+//EXAMPLES
+sendToClient(EventUtils.createNotification(user.playerData.ownerObjectId, "Example Notification"));
+
+sendToClient(EventUtils.createText("sender", "Example Chat Message"));		
+```
 
 # Create Custom Tile & Object Maps
-JRelay allows the user to define custom tile and object mappings allowing users to give the game their own personal look. JRelay object maps are written in XML and employ a custom syntax for managing mapping of multiple object to multiple other objects. All JRelay object maps are defined in `xml/maps.xml`.
+**JRelay** allows the user to define custom tile and object mappings allowing users to give the game their own personal look. **JRelay** object maps are written in XML and employ a custom syntax for managing mapping of multiple object to multiple other objects. All **JRelay** object maps are defined in `xml/maps.xml`.
 
 Example Map:
 ```XML

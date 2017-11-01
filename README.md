@@ -571,12 +571,16 @@ JRelay allows the user to define custom tile and object mappings allowing users 
 
 Example Map:
 ```XML
-<Map id="myMap">
-	<TileMap/>
-	<Entry start="Light Sand:Dark Sand" end="Castle Stone Floor Tile#Wood Panel Floor"/>
-</Map>
+<Maps>
+  <Map id="tileMap">
+    <TileMap />
+    <Entry start="Light Sand:Dark Sand" end="OceanFloor" />
+  </Map>
+</Maps>
 ```
->This map replaces all tiles that are Light & Dark Sand with Castle Stone Floor OR Wood Panel Floor.
+>This map replaces all tiles that are Light & Dark Sand with OceanFloor tile from OT.
+>Result:
+![alt text](https://i.imgur.com/UXaIwtZ.png)
 
 ## Creating Your Own Object Map Definition
 1. To define your own map, within the `<Maps></Maps>`tag found in `xml/maps.xml`, create an entry of type `<Map></Map>`. If you wish to name your map specify its `id` using `<Map id="myCustomMap"></Map>`.

@@ -1,4 +1,3 @@
-![alt text](https://i.imgur.com/K7EkJkY.png)
 # **JRelay**  1.0.0 - RotMG X18.0.0
 
 #### A modular Java man in the middle proxy for the browser flash game **Realm of the Mad God**

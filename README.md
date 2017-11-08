@@ -1,26 +1,45 @@
 ![alt text](https://i.imgur.com/K7EkJkY.png)
 # **JRelay**  1.0.0 - RotMG X18.0.0
 
-A modular Java man in the middle proxy for the flash game **Realm of the Mad God**
+#### A modular Java man in the middle proxy for the browser flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/8CJnRVb.png)
 
+# Table of Contents
+1. [Overview](https://github.com/ruusey/JRelay/blob/master/README.md#jrelay--100---rotmg-x1800)
+2. [Plugin Creation](https://github.com/ruusey/JRelay/blob/master/README.md#plugin-creation)
+3. [How To Use JRelay](https://github.com/ruusey/JRelay/blob/master/README.md#jrelay-usage)
+4. [Useful Data and Fields](https://github.com/ruusey/JRelay/blob/master/README.md#useful-data-and-fields)
+5. [Event Utils](https://github.com/ruusey/JRelay/blob/master/README.md#event-utils)
+6. [Creating Custom Tile & Object Maps](https://github.com/ruusey/JRelay/blob/master/README.md#create-custom-tile--object-maps)
+
+---
 # Overview
 **JRelay** is a man in the middle proxy for the popular flash browser game Realm of Mad God. **JRelay's** intended use is for users to create plugins that intercept and modify the games data which is transmitted in objects called Packets. JRelay is written in Java meaning it is platform independent so long as you have a compatible JRE installed on your Operating System. **JRelay requires Java 1.8+ to run.** 
 
-## Project Structure
-**JRelay** is built using basic `Java Socket IO` to bridge the gap between your game client and Deca's servers. **JRelay** incorporates aspects of existing RotMG proxies bundled with the platform independence of Java. **JRelay** makes use of a modular plugin system to allow third parties to write their own programs to capture and manipulate the game's data. 
+### Project Structure
+**JRelay** is built using basic `Java Socket IO` to bridge the gap between your game client and Deca's servers. **JRelay** incorporates aspects of existing RotMG proxies bundled with the platform independence of Java. **JRelay** makes use of a modular plugin system to allow third parties to write their own programs to capture and manipulate the game's data.
 
-## Windows Users:
+**JRelay** consist of two components: the **JRelay** proxy itself as well as the **JRelayGUI** which allows you to interface and operate the proxy. 
+
+**JRelay** is built using `Maven` for `Spring Tool Suite` and makes use of the following dependencies:
+- `Dom4J 1.6.1`
+- `Genson 1.4`
+- `Jaxen 1.6`
+---
+# Deploying JRelay
+How to get **JRelay** up and running on your system.
+
+### Windows Users:
 Please feel free to use the following pre-written batch script as well as add your own custom JVM arguments:
 ```
 java -jar /path/to/JRelay.jar
 pause 
 ```
-For Windows Users the batch script can be executed from any location so long as the location of `JRelay.jar` is correct in terms of its absolute or relative path.
+Otherwise you can simply double click `JRelay.jar` to start **JRelay**
 
-## Mac/Solaris/UNIX/Linux Users:
-After confirming you have **Java 1.8+** installed on your machine you should have no issues simply executing `JRelay.jar`, you may however create shorcuts or other execution scripts for you specific environment depending on your needs.
-
+### Mac/Linux Users:
+Asuming **Java 1.8+** is installed on your machine, you can simply execute `JRelay.jar` from the download directory. 
+---
 # Plugin Creation
 As mentioned, **JRelay** supports the implementation of User created plugins. The support for users to create thier own plugins will be made avaialable through acessing the distributed `JRelayLib.jar` library. `JRelayLib` contains all essential data and methods neccesarry to create your very own **JRelay** plugins.
 

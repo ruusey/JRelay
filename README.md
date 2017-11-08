@@ -253,6 +253,7 @@ Each Packet's data fields and transmission source can be viewed under the `Packe
 3. If you wish to capture a specific packet and **STOP** its transmission, change the Packet's `boolean send;` field to `false`.
 4. Any packet can be created at any time using  `Packet.create(byte id)` or `Packet.create(PacketType type)` or by simply constructing a new packet object.
 > `HelloPacket helloPacket = (HelloPacket) Packet.create(PacketType.HELLO);`
+
 > `HelloPacket helloPacket = (HelloPacket) Packet.create(30);`
 5. Sending the wrong packet to the wrong place or with unexpected data will disconnect you.
 6. Spamming packets will get you **BANNED BY DECA***

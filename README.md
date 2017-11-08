@@ -5,7 +5,7 @@
 ![alt text](https://i.imgur.com/8CJnRVb.png)
 
 # Table of Contents
-1. [Overview](https://github.com/ruusey/JRelay/blob/master/README.md#jrelay--100---rotmg-x1800)
+1. [Overview](https://github.com/ruusey/JRelay/blob/master/README.md#overview)
 2. [Plugin Creation](https://github.com/ruusey/JRelay/blob/master/README.md#plugin-creation)
 3. [How To Use JRelay](https://github.com/ruusey/JRelay/blob/master/README.md#jrelay-usage)
 4. [Useful Data and Fields](https://github.com/ruusey/JRelay/blob/master/README.md#useful-data-and-fields)

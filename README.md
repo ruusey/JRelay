@@ -16,9 +16,11 @@
 **JRelay** is a man in the middle proxy for the popular flash browser game Realm of Mad God. **JRelay's** intended use is for users to create plugins that intercept and modify the games data which is transmitted in objects called Packets. JRelay is written in Java meaning it is platform independent so long as you have a compatible JRE installed on your Operating System. **JRelay requires Java 1.8+ to run.** 
 
 ### Project Structure
-**JRelay** is built using basic `Java Socket IO` to bridge the gap between your game client and Deca's servers. **JRelay** incorporates aspects of existing RotMG proxies bundled with the platform independence of Java. **JRelay** makes use of a modular plugin system to allow third parties to write their own programs to capture and manipulate the game's data.
+Functionality of **JRelay** is built using `Java Socket IO` to communicate with your RotMG client and Deca's game servers. **JRelay** incorporates aspects of pre-existing RotMG proxies with the added benefit of platofm independence. 
 
-**JRelay** consist of two components: the **JRelay** proxy itself as well as the **JRelayGUI** which allows you to interface and operate the proxy. 
+**JRelay** incorporates a modular plugin implementation system allowing third parties to write their own plugins to manipulate the game's data.
+
+**JRelay** distribution consist of two components: the **JRelay** proxy itself as well as **JRelayLib** which is the library meant to be referenced for 3rd party plugin development.
 
 **JRelay** is built using `Maven` for `Spring Tool Suite` and makes use of the following dependencies:
 - `Dom4J 1.6.1`
@@ -61,8 +63,11 @@ I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provi
 
 ![alt text](https://i.imgur.com/xwmSGa6.png)
 
-**5)** Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto include them for you if you wish. However, if you don't plan on using an IDE for developing **JRelay** plugins please observe the following **__required__** structure:
-> Please note that **ALL** overidden methods must return a **NON-NULL** value. It can be empty but not null.
+**5)** Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto include them for you if you wish. 
+
+If you don't plan on using an IDE for developing **JRelay** plugins please follow the **__proper__** plugin structure defined below:
+
+> Please note that **ALL** overidden methods must return a **NON-NULL** value.
 
 ```Java
 import com.relay.User;
@@ -105,8 +110,8 @@ public class MyPlugin extends JPlugin{
 }
 ```
 
-Notes:
-A plugin built using the superclass `JPlugin` requires the following methods as determined by its class heiarchy:
+**Note**
+>A plugin built using the superclass `JPlugin` requires the following methods as determined by its class heiarchy:
 
 ```Java
 public interface PluginData {
@@ -120,8 +125,10 @@ public interface PluginData {
 ```
 
 **6)** Hooking packets, commands and adding your own code to your **JRelay** plugin.
+
 All plugin related hooking into packets and user commands handled by **JRelay** is done within your plugin's `attach()` method.
-Within the attach method you have the option to bind user commands or have the ingestion of a specified `PacketType` trigger events.
+
+Within the `attach()` method you have the option to bind user commands or set up Packets to trigger events.
 These two means of proxy data manipulation are available to the plugin creater through the methods
 
 ```Java
@@ -129,7 +136,7 @@ These two means of proxy data manipulation are available to the plugin creater t
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);
 ```
 
-**7)** To make use of **JRelay's** ability to hook packets and commands simply:
+**7)** Methods for hooking commands and packets and their parameters.
 - **For Packets**
 	```Java	
 	@param(type)     //enum value of type PacketType.
@@ -148,14 +155,18 @@ These two means of proxy data manipulation are available to the plugin creater t
 			 //As well as any arguments passed by the user	
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);  
 	```
-**8)** Implementing custom packet and command handlers for proxy events. Since we have introduced the means by which you can intercept packets and create command based functionality with **JRelay**, we will not cover how to implement these methods into useful plugins for manipulating the game.
+**8)** Implement your own custom packet and command handlers for your new plugin. Continue reading to learn more about the powerful tools within **JRelay** and how to make use of them to manipulate the game's data.
 
-**9)** Deployment. To incorporate your plugin into **JRelay** simply place its .class or .java file in the **JRelay** `plugins` folder.
+**9)** Including your plugin in **JRelay**. 
+To add your plugin into **JRelay** simply place its .class or .java file in the **JRelay** `plugins` folder.
+This can be accomplished by simply copy-pasting the .java source file from your IDE or comiling your project as a jar and extracting the individual .class for your plugin
 
+---
 
-# JRelay Usage
+# Using JRelay 
+#### This section will show you how to make use of and implement JRelays command and packet hooking features.
 
-## **Example Packet Hook**
+### **Example Packet Hook**
 We will now take a look at an example how you can hook a callback function to the game's `UpdatePacket`:
 > Example from `JRelay.Glow` plugin included with release.
 ```Java
@@ -164,9 +175,13 @@ public void attach() {
 	user.hookPacket(PacketType.UPDATE, Glow.class, "onUpdatePacket");		
 }
 ```
-As you see we have hooked `PacketType.UPDATE` to trigger the method `onUpdatePacket()` within our plugin titled **Glow** as seen by referencing `Glow.class` as the second argument for the `hookPacket` method. It is **__VERY__** important to ensure your class location matches the name of the compilation unit for your plugin otherwise **JRelay** will not be able to detect your packet and command hooks.
+We have hooked `PacketType.UPDATE` to trigger the method `onUpdatePacket()` within our plugin titled **Glow** as seen by referencing `Glow.class` as the second argument for the `hookPacket` method. 
+It is **__VERY__** important to ensure your class location matches the name of the compilation unit for your plugin otherwise **JRelay** will not be able to detect your packet and command hooks.
 
-After we have hooked our packet to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a `public void` method that shares the same name ("onUpdatePacket") as the callback you specified in your hook. Your callback must take an argument for type `com.models.Packet` which the only parameter passed into the callback function is the packet that was captured. Continuing the example above, it would look like so:
+After we have hooked our packet to its callback method we must then include the method itself within our plugin. 
+This is accomplished by simply including a `public void` method that shares the same name ("onUpdatePacket") as the callback you specified in your hook. 
+
+Your callback must take an argument for type `com.models.Packet` which the only parameter passed into the callback function is the packet that was captured. Continuing the example above, it would look like so:
 
 ```Java
 public void onUpdatePacket(Packet p){
@@ -185,11 +200,14 @@ public void onUpdatePacket(Packet p){
          }
 }
 ```
-While Packet is a generic `superclass` of all packets sent and received by the server, Since your packet hook specified the `PacketType` to be triggered on, you may freely cast the received packet parameter to the type expected as seen on line 2.
-`UpdatePacket update = (UpdatePacket)p;` This is the case with all packet hook routines.
+While `Packet` is a generic `superclass` of all Packets sent and received by the server you may freely cast the received packet parameter to the type expected as seen on line 2 of the above example.
 
-## **Example Command Hook**
-We will now take a look at an example how you can hook a user inputted command to a callback method:
+`UpdatePacket update = (UpdatePacket)p;` 
+
+This is the case with most all packet hoooking routines.
+
+### **Example Command Hook**
+We will now look at an example how you can hook a command to a callback method:
 > Example from `JRelay.Core` plugin included with release.
 ```Java
 @Override
@@ -197,11 +215,13 @@ public void attach() {
 	user.hookCommand("hi", Core.class, "onHiCommand");		
 }
 ```
-In this case, we have hooked the command `"hi"` to the callback function `onHiCommand()` within our plugin class `Core`. This means that when the user types `/hi` in chat in-game, the code within your plugin will be executed. Again it is important to ensure your class location matches the name of the compilation unit for your plugin. 
+We have hooked the text command `"hi"` to the callback function `onHiCommand()` within our plugin class `Core`. This means that when the user types `/hi` in chat in-game, the code within your plugin will be executed. Again it is important to ensure your class location matches the name of the compilation unit for your plugin. 
 
-Like packet hooks, after we have hooked our command to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a `public void` method that shares the same name ("onHiCommand") as the callback you specified in your hook. Unlike packet hook callbacks, command hook callbacks will be passed two parameters: A `String` containing the command invoked and a `String[]` containing the command and all arguments included with the command. It looks as follows:
+Like packet hooks, after we have hooked our command to its callback method we must then include the method itself within our plugin. This is accomplished by simply including a `public void` method that shares the same name ("onHiCommand") as the callback you specified in your hook. 
+
+Unlike packet hook callbacks, command hook callbacks will be passed two parameters: A `String` containing the command invoked and a `String[]` containing the command and all arguments included with the command. It looks as follows:
 > Example from `JRelay.Glow` plugin included with release.
->**Arguments are space delimited**
+>**Command arguments are space delimited**
 ```Java
 public void onHiCommand(String command, String[] args){
 	if(args.length<2){
@@ -216,14 +236,21 @@ public void onHiCommand(String command, String[] args){
 	}
 }
 ```
-## Packet Manipulation Explained
-Once you have set up your very own plugin to run with **JRelay** it is important to know some of the important ins and outs of the packet capture and manipulation process.
+### Understanding Packet Manipulation
+Once you have set up your own plugin to run with **JRelay**, it is important to know a little about the process of packet capture and manipulation in order to create effective plugins.
+> Assuming no NIO/Networking knowledge. Skip this if you are experienced.
 
-## Capturing Packets
-Packets are containers for data exchanged between your RotMG client and Deca's servers. Some packets are only sent from the client to the server while some are only sent from the server to the client. The respective packets and their transmission source can be viewed under the `Packets` tab of the **JRelayGUI**. If you chose to capture packets and modify their data or stop their transmission there are a few important things to note:
+### Capturing Packets
+Packets are simple containers for data exchanged between the RotMG client and Deca's servers. Some packets are only sent from the client to the server while some are only sent from the server to the client. 
+
+Each Packet's data fields and transmission source can be viewed under the `Packets` tab of the **JRelayGUI**. When capturing packets and manipulating their data there are a few important things to note:
+
 1. Because packet hook callbacks are passed a generic untyped packet, The generic packet must be cast to the desired packet type. 
-2. If you chose to capture **AND MODIFY** a packet you **MUST** explicitly send the modified packet to its required destination using  `sendToClient(Packet packet)` and `sendToServer(Packet packet)` which are superclass methods of `JPlugin`.
-3. If you wish to capture a specific packet and **STOP** its transmission change the Packet's `boolean send;` field to `false`
+2. If you chose to capture **AND MODIFY** a packet you **MUST** explicitly send the modified packet to its required destination using  `sendToClient(Packet packet)` 
+	or
+ `sendToServer(Packet packet)` 
+
+3. If you wish to capture a specific packet and **STOP** its transmission, change the Packet's `boolean send;` field to `false`.
 4. Any packet can be created at any time using  `Packet.create(byte id)` or `Packet.create(PacketType type)` or by simply constructing a new packet object.
 > `HelloPacket helloPacket = (HelloPacket) Packet.create(PacketType.HELLO);`
 > `HelloPacket helloPacket = (HelloPacket) Packet.create(30);`
@@ -234,8 +261,12 @@ Packets are containers for data exchanged between your RotMG client and Deca's s
 There are a number of extremely useful data collections in **JRelay** to help you write plugins. This section will detail the data you can access and the means by which to do so.
 >All enumerations also contain a static hashmap of their values if you prefer to access the data that way
 
-## GameData
-The `GameData` class contains useful mappings of all of RotMG's out of the box xml data. These data sets are stored in Java `HashMap` objects. A `HashMap` is a one-to-one map of keys to values. When **JRelay** runs it will create object models of all entities within the game's XML. The XML of the entitity will be serialized into raw data and constructed into a model representing the entity. A map of the entity's ID(byte/int) **AND** name(String) to the Java model will be created. Once you have started **JRelay** and loaded all game assets, you can access any of this data statically within your plugins.
+### GameData
+The `GameData` class contains useful mappings of all of RotMG's out of the box xml data. 
+
+These data sets are stored in Java `HashMap` objects. A `HashMap` is a one-to-one map of keys to values. When **JRelay** runs it will create object models of all entities within the game's XML. The XML of the entitity will be serialized into raw data and constructed into a model representing the entity. A map of the entity's ID(byte/int) **AND** name(String) to the Java model will be created. Once you have started **JRelay** and loaded all game assets, you can access any of this data statically within your plugins.
+
+Be wary however, since you have full access to these maps, it is up to the user to handle cases where finding items by name or id return a null result.
 ```Java
 public static HashMap<Integer, Item> items = new HashMap<Integer,Item>();
 public static HashMap<String, Item> nameToItem = new HashMap<String,Item>();
@@ -257,7 +288,7 @@ int sand = GameData.nameToTile.get("Light Sand").id;
 int sand2 = GameData.nameToTile.get("Dark Sand").id;
 ```
 
-## Packet Type
+### Packet Type
 `PacketType` is an enumeration of RotMG's server and client packets referenced by packet ID.
 ```Java
 FAILURE(0),
@@ -359,7 +390,11 @@ QUESTROOMMSG(58);
 ```
 
 ## ConditionEffects & ConditionEffectIndex
-`ConditionEffect` and `ConditionEffectIndex` are enumerations containing RotMG's status effects. They are both very similar but should be used in different cases. `ConditionEffect` values should be used in conjunction with `PlayerData`s `hasConditionEffect(ConditionEffect condition)` method. `ConditionEffectIndex` should be used to compare any packets `effect` field.
+`ConditionEffect` and `ConditionEffectIndex` are enumerations containing RotMG's status effects. 
+
+They are both very similar but should be used in different cases. `ConditionEffect` values should be used in conjunction with `PlayerData`s `hasConditionEffect(ConditionEffect condition)` method. 
+
+`ConditionEffectIndex` should be used to compare any packets `effect` field.
 For instance:
 ```Java
 //Check if the player's armor is broken
@@ -373,7 +408,7 @@ if (aeo.effect == ConditionEffectIndex.ArmorBroken.index) {
 }
 ```
 
-## EffectTypes
+### EffectTypes
 `EffectType` is an enumeration containing visual effects for RotMG. I've personally never played around with these but I beleive they are used in the server `ShowEffectPacket`s `effect` field.
 ```Java
 Unknown(0), 
@@ -398,7 +433,7 @@ ElectricFlashing(18),
 RisingFury(19);
 ```
 
-## PetAbility
+### PetAbility
 `PetAbility` is an enumeration of all avaiable pet abilities.
 ```Java
 AttackClose(402),
@@ -412,7 +447,7 @@ Decoy(410),
 RisingFury(411);
 ```
 
-## StatsType
+### StatsType
 `StatsType` is an type containing all possible fields that might be updated in an `UPDATE` packet. It also contains useful methods for comparing and checking Stats.
 ```Java
 public static StatsType MaximumHP = new StatsType(0);
@@ -511,9 +546,10 @@ public static StatsType PetAbilityType2 = new StatsType(95);
 public static StatsType Effects2 = new StatsType(96); // Other Effects
 public static StatsType FortuneTokens = new StatsType(97);
 ```
-This is very useful for keeping track of certain aspects of the player anytime a packet containing a `Status` field is intercepted (UpdatePacket, NewTickPacket). The `Status` type contains a `StatData[]`. The `id` field of `StatData` can be compared with `StatsType` to cherry-pick the data you are looking for.
+This is very useful for keeping track of certain aspects of the player anytime a packet containing a `Status` field is intercepted (UpdatePacket, NewTickPacket). 
+The `Status` type contains a `StatData[]`. The `id` field of `StatData` can be compared with `StatsType` to cherry-pick the data you are looking for.
 
-## BagType
+### BagType
 `BagType` is an enumeration containing the different types of loot bags in RotMG.
 ```Java
 Normal(0x500),
@@ -529,7 +565,7 @@ White2(0x050E),
 White3(0x50F);
 ```
 
-## PlayerData
+### PlayerData
 An instance of `PlayerData` is created when you connect to **JRelay.** `PlayerData` keeps track of all player related stats. All information in `PlayerData` is automatically kept up to date.
 ```Java
 public int ownerObjectId;
@@ -620,13 +656,16 @@ Example Map:
 >Result:
 ![alt text](https://i.imgur.com/UXaIwtZ.png)
 
-## Creating Your Own Object Map Definition
+### Creating Your Own Object Map Definition
 1. To define your own map, within the `<Maps></Maps>`tag found in `xml/maps.xml`, create an entry of type `<Map></Map>`. If you wish to name your map specify its `id` using `<Map id="myCustomMap"></Map>`.
+
 2. Choose weather your map will be an `ObjectMap` or a `TileMap`. Tile Maps are used to replace game tiles with other tiles while Object Maps are used to replace game object with other objects. Ex. You cant change Sand to be Medusas, the game wont like you very much. Add your corresponding map type entry to your `<Map>` as `<TileMap/>` or `<ObjectMap/>`.
+
 3. Underneath your map type declaration add a tag type `<Entry/>`. The entry tag has two attributes: `start` and `end`. Both tags are required and should be filled with corresponding tiles and object mapping syntax. You can have as many entries per map as you like.
 
-## Object Map Syntax
-`JRelay` object maps use a custom syntax to make your life easier. There are three main parts to object map syntax. 
+### Object Map Syntax
+`JRelay` object maps use a custom syntax to make your life easier. There are three main parts to object map syntax.
+
 - The `:` operator denotes an "AND" operation. Restricted to `start` tag of your entry. Replace multiple objects at once.
 - The `#` operator denotes an "OR" operation. Restricted to `end` tag or your entry. Define multiple replacing objects. Each object separated has `1/n` chance of replacing the object defined in `start` where `n = # of objects`.
 - The `*` operator denotes a "Wildcard" operator. Meaning you can replace ALL tiles or ALL objects with specified object(s),

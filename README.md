@@ -3,7 +3,7 @@
 #### A modular Java man in the middle proxy for the browser flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/8ICFOLc.png)
 
-#### Up to date virus scans.
+#### Up to date virus scans (for _those_ people).
 > [Jotti](https://virusscan.jotti.org/en-US/filescanjob/n06xbckynx)
 
 > [VirusTotal](https://www.virustotal.com/#/file/265d0440446b6e8b6cd5c48200088c18b9f657d70f95b9ec57401e0cf0791624/detection)

@@ -40,7 +40,9 @@ Otherwise you can simply double click `JRelay.jar` to start **JRelay**
 
 ### Mac/Linux Users:
 Asuming **Java 1.8+** is installed on your machine, you can simply execute `JRelay.jar` from the download directory. 
+
 ---
+
 # Plugin Creation
 As mentioned, **JRelay** supports the implementation of User created plugins. The support for users to create thier own plugins will be made avaialable through acessing the distributed `JRelayLib.jar` library. `JRelayLib` contains all essential data and methods neccesarry to create your very own **JRelay** plugins.
 

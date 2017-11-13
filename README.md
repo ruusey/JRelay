@@ -6,7 +6,7 @@
 # Table of Contents
 1. [Overview](https://github.com/ruusey/JRelay/blob/master/README.md#overview)
 2. [Plugin Creation](https://github.com/ruusey/JRelay/blob/master/README.md#plugin-creation)
-3. [How To Use JRelay](https://github.com/ruusey/JRelay/blob/master/README.md#jrelay-usage)
+3. [How To Use JRelay](https://github.com/ruusey/JRelay/blob/master/README.md#using-jrelay)
 4. [Useful Data and Fields](https://github.com/ruusey/JRelay/blob/master/README.md#useful-data-and-fields)
 5. [Event Utils](https://github.com/ruusey/JRelay/blob/master/README.md#event-utils)
 6. [Creating Custom Tile & Object Maps](https://github.com/ruusey/JRelay/blob/master/README.md#create-custom-tile--object-maps)

@@ -1,4 +1,4 @@
-# **JRelay** Alpha 1.0.1 - RotMG X18.0.0
+# **JRelay** Alpha 1.0.1 - RotMG X19.0.0
 
 #### A modular Java man in the middle proxy for the browser flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/8ICFOLc.png)
@@ -165,8 +165,7 @@ These two means of proxy data manipulation are available to the plugin creater t
 **8)** Implement your own custom packet and command handlers for your new plugin. Continue reading to learn more about the powerful tools within **JRelay** and how to make use of them to manipulate the game's data.
 
 **9)** Including your plugin in **JRelay**. 
-To add your plugin into **JRelay** simply place its .class or .java file in the **JRelay** `plugins` folder.
-This can be accomplished by simply copy-pasting the .java source file from your IDE or comiling your project as a jar and extracting the individual .class for your plugin
+To add your plugin into **JRelay** you need to compile your plugin and ensure its package is defined as `package plugins;` Place your compiled plugin class inside the **JRelay** `plugins` folder. Please look up how to compile Java source code into Class files if this is confusing.
 
 ---
 

@@ -4,9 +4,9 @@
 ![alt text](https://i.imgur.com/1ikr3Nh.png)
 
 #### Up to date virus scans (for _those_ people).
-> [Jotti](https://virusscan.jotti.org/en-US/filescanjob/n06xbckynx)
+> [Jotti](https://virusscan.jotti.org/en-US/filescanjob/olhdkgmg2p)
 
-> [VirusTotal](https://www.virustotal.com/#/file/265d0440446b6e8b6cd5c48200088c18b9f657d70f95b9ec57401e0cf0791624/detection)
+> [VirusTotal](https://www.virustotal.com/#/file/ae140bcc738a07c6e60fcbd35a2af35c5298fc2c1910b21c72c469fefa33ad84/detection)
 
 # Table of Contents
 1. [Overview](https://github.com/ruusey/JRelay/blob/master/README.md#overview)

@@ -1,0 +1,13 @@
+
+.root{
+     -fx-font-size: 1em;
+     -fx-fill: #818181;
+}
+#start-button{
+	-fx-fill:white;
+	-fx-padding:5px;
+	-fx-background-color: grey;
+}
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: white;
+}

@@ -1,0 +1,5 @@
+@CHARSET "ISO-8859-1";
+.root {
+     -fx-font-size: 2em;
+     -fx-fill: #818181;
+}

@@ -1,4 +1,4 @@
-# **JRelay** Alpha 1.0.1 - RotMG X19.0.0
+# **JRelay** Alpha 1.0.1 - RotMG X19.0.1
 
 #### A modular Java man in the middle proxy for the browser flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/1ikr3Nh.png)

@@ -30,7 +30,7 @@ public class ReconnectHandler extends JPlugin {
 				"onReconnect");
 		user.hookRequiredPacket(PacketType.HELLO, ReconnectHandler.class,
 				"onHello");
-		user.hookCommand("con", ReconnectHandler.class, "onConnectCommand");
+		user.hookCommand("con1", ReconnectHandler.class, "onConnectCommand");
 		user.hookCommand("connect", ReconnectHandler.class, "onConnectCommand");
 		user.hookCommand("server", ReconnectHandler.class, "onConnectCommand");
 		user.hookCommand("recon", ReconnectHandler.class, "onReconCommand");
@@ -157,8 +157,8 @@ public class ReconnectHandler extends JPlugin {
 				sendReconnect(user, reconnect);
 			} else {
 				try {
-					user.sendClientPacket(EventUtils.createText("K Relay",
-							"Unknown server!"));
+					user.sendClientPacket(EventUtils.createText("JRelay",
+							"Unknown server specified!"));
 				} catch (Exception e) {
 
 				}

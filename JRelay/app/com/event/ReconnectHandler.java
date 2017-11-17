@@ -142,7 +142,7 @@ public class ReconnectHandler extends JPlugin {
 				ReconnectPacket reconnect = null;
 				try {
 					reconnect = (ReconnectPacket) Packet
-							.create((byte) PacketType.RECONNECT.id);
+							.create(PacketType.RECONNECT);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -170,7 +170,7 @@ public class ReconnectHandler extends JPlugin {
 		if (user.state.lastRealm != null)
 			sendReconnect(user, user.state.lastRealm);
 		else {
-			sendToClient(EventUtils.createText("K Relay",
+			sendToClient(EventUtils.createText("JRelay",
 					"Last realm is unknown!"));
 		}
 	}
@@ -179,7 +179,7 @@ public class ReconnectHandler extends JPlugin {
 		if (user.state.lastDungeon != null)
 			sendReconnect(user, user.state.lastDungeon);
 		else {
-			sendToClient(EventUtils.createText("K Relay",
+			sendToClient(EventUtils.createText("JRelay",
 					"Last dungeon is unknown!"));
 		}
 	}

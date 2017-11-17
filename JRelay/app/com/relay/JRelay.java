@@ -42,7 +42,7 @@ import com.owlike.genson.Genson;
 import javafx.scene.control.TextField;
 
 public final class JRelay implements Runnable {
-	public static final String GAME_VERSION = "X19.0.0";
+	public static final String GAME_VERSION = "X19.0.1";
 	public static final String JRELAY_VERSION = "1.0.1";
 	public static final boolean PROD = true;
 	//

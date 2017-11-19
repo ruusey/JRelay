@@ -132,7 +132,7 @@ public class ReconnectHandler extends JPlugin {
 		
         packet.host = "localhost";
         packet.port = 2050;
-        user.saveState();
+       // user.saveState();
 
 	}
 

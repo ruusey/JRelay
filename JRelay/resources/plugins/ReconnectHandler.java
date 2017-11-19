@@ -1,4 +1,4 @@
-package com.event;
+package plugins;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
@@ -24,17 +24,17 @@ public class ReconnectHandler extends JPlugin {
 	}
 
 	public void attach() {
-		user.hookRequiredPacket(PacketType.CREATESUCCESS,
+		user.hookPacket(PacketType.CREATESUCCESS,
 				ReconnectHandler.class, "onCreateSuccess");
-		user.hookRequiredPacket(PacketType.RECONNECT, ReconnectHandler.class,
+		user.hookPacket(PacketType.RECONNECT, ReconnectHandler.class,
 				"onReconnect");
-		user.hookRequiredPacket(PacketType.HELLO, ReconnectHandler.class,
+		user.hookPacket(PacketType.HELLO, ReconnectHandler.class,
 				"onHello");
-		user.hookCommand("con1", ReconnectHandler.class, "onConnectCommand");
-		user.hookCommand("connect", ReconnectHandler.class, "onConnectCommand");
-		user.hookCommand("server", ReconnectHandler.class, "onConnectCommand");
-		user.hookCommand("recon", ReconnectHandler.class, "onReconCommand");
-		user.hookCommand("drecon", ReconnectHandler.class, "onDreconCommand");
+		user.hookCommand("jcon", ReconnectHandler.class, "onConnectCommand");
+		user.hookCommand("jconnect", ReconnectHandler.class, "onConnectCommand");
+		user.hookCommand("jserver", ReconnectHandler.class, "onConnectCommand");
+		user.hookCommand("jrecon", ReconnectHandler.class, "onReconCommand");
+		user.hookCommand("jdrecon", ReconnectHandler.class, "onDreconCommand");
 	}
 
 	public void onHello(Packet pack) {
@@ -99,6 +99,7 @@ public class ReconnectHandler extends JPlugin {
 			recon.keyTime = packet.keyTime;
 			recon.name = packet.name;
 			user.state.lastRealm = recon;
+			
 		} else if (packet.name != "" && !packet.name.contains("vault")
 				&& packet.gameId != -2) {
 			ReconnectPacket drecon = new ReconnectPacket();
@@ -137,8 +138,10 @@ public class ReconnectHandler extends JPlugin {
 	}
 
 	public void onConnectCommand(String command, String[] args) {
-		if (args.length == 1) {
-			if (GameData.abbrToServer.containsKey(args[0].toUpperCase())) {
+		
+		if (args.length == 2) {
+			JRelay.info("Connecting client to " +args[1].toUpperCase());
+			if (GameData.abbrToServer.containsKey(args[1].toUpperCase())) {
 				ReconnectPacket reconnect = null;
 				try {
 					reconnect = (ReconnectPacket) Packet
@@ -146,7 +149,9 @@ public class ReconnectHandler extends JPlugin {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				reconnect.host = GameData.abbrToServer.get(args[0]
+				Server s = GameData.abbrToServer.get(args[1]);
+				JRelay.info(JRelay.gen.serialize(s));
+				reconnect.host = GameData.abbrToServer.get(args[1]
 						.toUpperCase()).address;
 				reconnect.port = 2050;
 				reconnect.gameId = -2;
@@ -185,6 +190,7 @@ public class ReconnectHandler extends JPlugin {
 	}
 
 	public static void sendReconnect(User user, ReconnectPacket reconnect) {
+		JRelay.info("Connecting client "+user.GUID+" to "+reconnect.host+" "+reconnect.name);
 		String host = reconnect.host;
 		int port = reconnect.port;
 		byte[] key = reconnect.key;
@@ -207,9 +213,8 @@ public class ReconnectHandler extends JPlugin {
 		reconnect.host = "localhost";
 		reconnect.port = 2050;
 		
-		user.saveState();
 		try {
-			user.handleServerPacket(reconnect);
+			user.sendToClient(reconnect);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -222,31 +227,33 @@ public class ReconnectHandler extends JPlugin {
 	@Override
 	public String getAuthor() {
 		// TODO Auto-generated method stub
-		return null;
+		return "System";
 	}
 
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "JRelay.ReconectHandler";
 	}
 
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Handles reconnection and proxy tunneling";
 	}
 
 	@Override
 	public String[] getCommands() {
 		// TODO Auto-generated method stub
-		return null;
+		return new String[] { "/jcon || {jconnect,jserver} [Server Abbreviation] - connect to the specified server",
+				"/jrecon  - reconnect to last realm",
+				"/jdrecon  - reconnect to last dungeon"};
 	}
 
 	@Override
 	public String[] getPackets() {
 		// TODO Auto-generated method stub
-		return null;
+		return new String[] {};
 	}
 
 }

@@ -149,8 +149,6 @@ public class ReconnectHandler extends JPlugin {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Server s = GameData.abbrToServer.get(args[1]);
-				JRelay.info(JRelay.gen.serialize(s));
 				reconnect.host = GameData.abbrToServer.get(args[1]
 						.toUpperCase()).address;
 				reconnect.port = 2050;
@@ -190,7 +188,6 @@ public class ReconnectHandler extends JPlugin {
 	}
 
 	public static void sendReconnect(User user, ReconnectPacket reconnect) {
-		JRelay.info("Connecting client "+user.GUID+" to "+reconnect.host+" "+reconnect.name);
 		String host = reconnect.host;
 		int port = reconnect.port;
 		byte[] key = reconnect.key;

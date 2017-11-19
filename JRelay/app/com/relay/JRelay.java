@@ -30,16 +30,16 @@ import com.app.JRelayGUI;
 import com.data.GameData;
 import com.data.PacketType;
 import com.data.State;
-import com.event.ClientUpdater;
 import com.event.JPlugin;
 import com.event.PluginMetaData;
-import com.event.ReconnectHandler;
 import com.models.ObjectMapper;
 import com.models.Packet;
 import com.net.ListenSocket;
 import com.owlike.genson.Genson;
 
 import javafx.scene.control.TextField;
+import plugins.ClientUpdater;
+import plugins.ReconnectHandler;
 
 public final class JRelay implements Runnable {
 	public static final String GAME_VERSION = "X19.0.1";

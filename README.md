@@ -70,6 +70,14 @@ I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provi
 
 ![alt text](https://i.imgur.com/xwmSGa6.png)
 
+**5)** Your project setup should now look as follows.
+
+![alt text](https://i.imgur.com/xwmSGa6.png)
+
+**6)** You will now need to create a package within the source folder to contain your plugin class. The reason for this is that **JRelay** loads plugins from the `plugins` directory. With how Java class files are compiled this is a **necessary** step to ensure that **JRelay's** plugin loading system detects your plugin.
+
+![alt text](https://i.imgur.com/tulZrrI.png)
+
 **5)** Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto include them for you if you wish. 
 
 If you don't plan on using an IDE for developing **JRelay** plugins please follow the **__proper__** plugin structure defined below:

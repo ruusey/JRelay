@@ -64,6 +64,7 @@ I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provi
 ![alt text](https://i.imgur.com/ArdGJy4.png)
 
 **3)** Add a reference to your project that allows you to access the important methods and functions of  `JRelayLib.jar` by right clicking on your plugin project and navigating to `Properties > Java Build Path > Libraries > Add External Jars` 
+
 ![alt text](https://i.imgur.com/SSXHzgO.png)
 
 **4)** Locate `JRelayLib.jar` on your file system and add it to your projects referenced external libraries. This will allow you to incorporate methods for intercepting and manipulating game data. You should now see `JRelayLib.jar` under the list of libraries included in your project.
@@ -72,17 +73,22 @@ I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provi
 
 **5)** Your project setup should now look as follows.
 
-![alt text](https://i.imgur.com/xwmSGa6.png)
+![alt text](https://i.imgur.com/tulZrrI.png)
 
 **6)** You will now need to create a package within the source folder to contain your plugin class. The reason for this is that **JRelay** loads plugins from the `plugins` directory. With how Java class files are compiled this is a **necessary** step to ensure that **JRelay's** plugin loading system detects your plugin.
 
-![alt text](https://i.imgur.com/tulZrrI.png)
+Right-Click on the `src` folder of your Java project and navigate to New > Package. It is essential to name this package `plugins`.
 
-**5)** Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto include them for you if you wish. 
+![alt text](https://i.imgur.com/vDNrQhw.png)
+
+**7)** Create a new Java Class within the `plugins` package. This class will extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the structure shown below in order to work with **JRelay's** plugin system. 
+
+If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto include them for you if you wish. 
 
 If you don't plan on using an IDE for developing **JRelay** plugins please follow the **__proper__** plugin structure defined below:
 
 > Please note that **ALL** overidden methods must return a **NON-NULL** value.
+> In the example below we have created a plugin class called `MyPlugin`.
 
 ```Java
 import com.relay.User;
@@ -139,7 +145,7 @@ public interface PluginData {
 }
 ```
 
-**6)** Hooking packets, commands and adding your own code to your **JRelay** plugin.
+**8)** Hooking packets, commands and adding your own code to your **JRelay** plugin.
 
 All plugin related hooking into packets and user commands handled by **JRelay** is done within your plugin's `attach()` method.
 
@@ -151,7 +157,7 @@ These two means of proxy data manipulation are available to the plugin creater t
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);
 ```
 
-**7)** Methods for hooking commands and packets and their parameters.
+**9)** Methods for hooking commands and packets and their parameters.
 - **For Packets**
 	```Java	
 	@param(type)     //enum value of type PacketType.
@@ -170,10 +176,14 @@ These two means of proxy data manipulation are available to the plugin creater t
 			 //As well as any arguments passed by the user	
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);  
 	```
-**8)** Implement your own custom packet and command handlers for your new plugin. Continue reading to learn more about the powerful tools within **JRelay** and how to make use of them to manipulate the game's data.
+**10)** Implement your own custom packet and command handlers for your new plugin. Continue reading to learn more about the powerful tools within **JRelay** and how to make use of them to manipulate the game's data.
 
-**9)** Including your plugin in **JRelay**. 
-To add your plugin into **JRelay** you need to compile your plugin and ensure its package is defined as `package plugins;` Place your compiled plugin class inside the **JRelay** `plugins` folder. Please look up how to compile Java source code into Class files if this is confusing.
+**11)** Including your plugin in **JRelay**. 
+To add your plugin into **JRelay** you need to compile your plugin class and add it to the `plugins` directory of **JRelay**.
+
+If you used an IDE, export your plugin as a jar and extract the individual class file from it.
+
+Please look up how to compile Java source code into Class files if this is confusing.
 
 ---
 

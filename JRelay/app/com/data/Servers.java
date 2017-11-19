@@ -6,6 +6,7 @@ public class Servers {
 	public static final HashMap<String, String> serverNames = new HashMap<String, String>();
 	
 	static {
+		serverNames.put("USSouth", "USS");
 		serverNames.put("USWest", "USW");
 		serverNames.put("USMidWest", "USMW");
 		serverNames.put("EUWest", "EUW");

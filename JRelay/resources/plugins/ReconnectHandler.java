@@ -242,9 +242,9 @@ public class ReconnectHandler extends JPlugin {
 	@Override
 	public String[] getCommands() {
 		// TODO Auto-generated method stub
-		return new String[] { "/jcon || {jconnect,jserver} [Server Abbreviation] - connect to the specified server",
-				"/jrecon  - reconnect to last realm",
-				"/jdrecon  - reconnect to last dungeon"};
+		return new String[] { "/jcon || {jconnect,jserver} [server abbreviation] - connect to the specified server",
+				"/jrecon  - soon to be implemented",
+				"/jdrecon  - soon to be implemented"};
 	}
 
 	@Override

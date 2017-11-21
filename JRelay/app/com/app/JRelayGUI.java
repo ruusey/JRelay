@@ -13,9 +13,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+
+import com.data.GameData;
 import com.event.PluginMetaData;
 import com.models.Packet;
 import com.models.PacketMeta;
+import com.models.Server;
 import com.relay.JRelay;
 
 import javafx.application.Application;
@@ -406,7 +409,7 @@ public class JRelayGUI extends Application {
 		return tabPane;
 
 	}
-
+	
 	public HBox buildPacketsBox() {
 		HBox root = new HBox();
 

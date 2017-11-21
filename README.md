@@ -1,12 +1,12 @@
-# **JRelay** Alpha 1.0.1 - RotMG X19.0.1
+# **JRelay** Alpha 1.0.2 - RotMG X19.0.1
 
 #### A modular Java man in the middle proxy for the browser flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/1ikr3Nh.png)
 
 #### Up to date virus scans (for _those_ people).
-> [Jotti](https://virusscan.jotti.org/en-US/filescanjob/olhdkgmg2p)
+> [Jotti](https://virusscan.jotti.org/en-US/filescanjob/yu2al57oow)
 
-> [VirusTotal](https://www.virustotal.com/#/file/ae140bcc738a07c6e60fcbd35a2af35c5298fc2c1910b21c72c469fefa33ad84/detection)
+> [VirusTotal](https://www.virustotal.com/#/file/46f92781bf39032b10aa0d922cf20092ca1a84c70e5bc1f4871ab7afdb1cd47f/detection)
 
 # Table of Contents
 1. [Overview](https://github.com/ruusey/JRelay/blob/master/README.md#overview)
@@ -64,17 +64,31 @@ I highly recommend **Spring Tool Suite** and **Eclipse** as the tutorial I provi
 ![alt text](https://i.imgur.com/ArdGJy4.png)
 
 **3)** Add a reference to your project that allows you to access the important methods and functions of  `JRelayLib.jar` by right clicking on your plugin project and navigating to `Properties > Java Build Path > Libraries > Add External Jars` 
+
 ![alt text](https://i.imgur.com/SSXHzgO.png)
 
 **4)** Locate `JRelayLib.jar` on your file system and add it to your projects referenced external libraries. This will allow you to incorporate methods for intercepting and manipulating game data. You should now see `JRelayLib.jar` under the list of libraries included in your project.
 
 ![alt text](https://i.imgur.com/xwmSGa6.png)
 
-**5)** Set up your plugin class to extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the folowwing structure in order to work with **JRelay's** plugin system. If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto include them for you if you wish. 
+**5)** Your project setup should now look as follows.
+
+![alt text](https://i.imgur.com/tulZrrI.png)
+
+**6)** You will now need to create a package within the source folder to contain your plugin class. The reason for this is that **JRelay** loads plugins from the `plugins` directory. With how Java class files are compiled this is a **necessary** step to ensure that **JRelay's** plugin loading system detects your plugin.
+
+Right-Click on the `src` folder of your Java project and navigate to New > Package. It is essential to name this package `plugins`.
+
+![alt text](https://i.imgur.com/vDNrQhw.png)
+
+**7)** Create a new Java Class within the `plugins` package. This class will extend the functionality of **JRelay's** included `JPlugin` type. A type extending `JPlugin` requires the structure shown below in order to work with **JRelay's** plugin system. 
+
+If you are using an IDE, the compiler will complain that you have unimplemented methods and unimported libraries but will auto include them for you if you wish. 
 
 If you don't plan on using an IDE for developing **JRelay** plugins please follow the **__proper__** plugin structure defined below:
 
 > Please note that **ALL** overidden methods must return a **NON-NULL** value.
+> In the example below we have created a plugin class called `MyPlugin`.
 
 ```Java
 import com.relay.User;
@@ -131,7 +145,7 @@ public interface PluginData {
 }
 ```
 
-**6)** Hooking packets, commands and adding your own code to your **JRelay** plugin.
+**8)** Hooking packets, commands and adding your own code to your **JRelay** plugin.
 
 All plugin related hooking into packets and user commands handled by **JRelay** is done within your plugin's `attach()` method.
 
@@ -143,7 +157,7 @@ These two means of proxy data manipulation are available to the plugin creater t
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);
 ```
 
-**7)** Methods for hooking commands and packets and their parameters.
+**9)** Methods for hooking commands and packets and their parameters.
 - **For Packets**
 	```Java	
 	@param(type)     //enum value of type PacketType.
@@ -162,10 +176,14 @@ These two means of proxy data manipulation are available to the plugin creater t
 			 //As well as any arguments passed by the user	
 	hookCommand(String command, Class<? extends JPlugin> location, String callback);  
 	```
-**8)** Implement your own custom packet and command handlers for your new plugin. Continue reading to learn more about the powerful tools within **JRelay** and how to make use of them to manipulate the game's data.
+**10)** Implement your own custom packet and command handlers for your new plugin. Continue reading to learn more about the powerful tools within **JRelay** and how to make use of them to manipulate the game's data.
 
-**9)** Including your plugin in **JRelay**. 
-To add your plugin into **JRelay** you need to compile your plugin and ensure its package is defined as `package plugins;` Place your compiled plugin class inside the **JRelay** `plugins` folder. Please look up how to compile Java source code into Class files if this is confusing.
+**11)** Including your plugin in **JRelay**. 
+To add your plugin into **JRelay** you need to compile your plugin class and add it to the `plugins` directory of **JRelay**.
+
+If you used an IDE, export your plugin as a jar and extract the individual class file from it.
+
+Please look up how to compile Java source code into Class files if this is confusing.
 
 ---
 
@@ -299,101 +317,101 @@ int sand2 = GameData.nameToTile.get("Dark Sand").id;
 `PacketType` is an enumeration of RotMG's server and client packets referenced by packet ID.
 ```Java
 FAILURE(0),
-CREATESUCCESS(87),
-CREATE(7),
-PLAYERSHOOT(82),
-MOVE(51),
-PLAYERTEXT(84),
-TEXT(23),
-SERVERPLAYERSHOOT(39),
-DAMAGE(36),
-UPDATE(79),
-UPDATEACK(80),
-NOTIFICATION(26),
-NEWTICK(85),
-INVSWAP(59),
-USEITEM(49),
-SHOWEFFECT(21),
-HELLO(30),
-GOTO(78),
-INVDROP(102),
-INVRESULT(9),
-RECONNECT(1),
-PING(97),
-PONG(103),
-MAPINFO(83),
-LOAD(3),
-PIC(64),
-SETCONDITION(5),
-TELEPORT(31),
-USEPORTAL(48),
-DEATH(91),
-BUY(56),
-BUYRESULT(67),
-AOE(40),
-GROUNDDAMAGE(98),
-PLAYERHIT(35),
-ENEMYHIT(76),
-AOEACK(8),
-SHOOTACK(27),
-OTHERHIT(89),
-SQUAREHIT(66),
-GOTOACK(99),
-EDITACCOUNTLIST(100),
-ACCOUNTLIST(93),
-QUESTOBJID(44),
-CHOOSENAME(10),
-NAMERESULT(88),
-CREATEGUILD(57),
-GUILDRESULT(13),
-GUILDREMOVE(77),
-GUILDINVITE(33),
-ALLYSHOOT(41),
-ENEMYSHOOT(75),
-REQUESTTRADE(60),
-TRADEREQUESTED(63),
-TRADESTART(46),
-CHANGETRADE(47),
-TRADECHANGED(68),
-ACCEPTTRADE(20),
-CANCELTRADE(25),
-TRADEDONE(17),
-TRADEACCEPTED(94),
-CLIENTSTAT(6),
-CHECKCREDITS(62),
-ESCAPE(37),
-FILE(96),
-INVITEDTOGUILD(101),
-JOINGUILD(61),
-CHANGEGUILDRANK(53),
-PLAYSOUND(19),
-GLOBALNOTIFICATION(22),
-RESKIN(69),
-PETUPGRADEREQUEST(55),
-ACTIVEPETUPDATEREQUEST(4),
-ACTIVEPETUPDATE(38),
-NEWABILITY(12),
-PETYARDUPDATE(24),
-EVOLVEPET(50),
-DELETEPET(15),
-HATCHPET(14),
-ENTERARENA(86),
-IMMINENTARENAWAVE(92),
-ARENADEATH(74),
-ACCEPTARENADEATH(18),
-VERIFYEMAIL(34),
-RESKINUNLOCK(95),
+CREATESUCCESS(85),
+CREATE(89),
+PLAYERSHOOT(38),
+MOVE(1),
+PLAYERTEXT(86),
+TEXT(4),
+SERVERPLAYERSHOOT(75),
+DAMAGE(9),
+UPDATE(13),
+UPDATEACK(15),
+NOTIFICATION(52),
+NEWTICK(101),
+INVSWAP(16),
+USEITEM(68),
+SHOWEFFECT(74),
+HELLO(92),
+GOTO(51),
+INVDROP(57),
+INVRESULT(17),
+RECONNECT(35),
+PING(95),
+PONG(65),
+MAPINFO(98),
+LOAD(69),
+PIC(90),
+SETCONDITION(39),
+TELEPORT(60),
+USEPORTAL(87),
+DEATH(31),
+BUY(25),
+BUYRESULT(76),
+AOE(28),
+GROUNDDAMAGE(88),
+PLAYERHIT(46),
+ENEMYHIT(12),
+AOEACK(63),
+SHOOTACK(77),
+OTHERHIT(62),
+SQUAREHIT(26),
+GOTOACK(96),
+EDITACCOUNTLIST(37),
+ACCOUNTLIST(20),
+QUESTOBJID(93),
+CHOOSENAME(41),
+NAMERESULT(103),
+CREATEGUILD(8),
+GUILDRESULT(56),
+GUILDREMOVE(45),
+GUILDINVITE(84),
+ALLYSHOOT(19),
+ENEMYSHOOT(64),
+REQUESTTRADE(3),
+TRADEREQUESTED(55),
+TRADESTART(10),
+CHANGETRADE(33),
+TRADECHANGED(66),
+ACCEPTTRADE(24),
+CANCELTRADE(97),
+TRADEDONE(78),
+TRADEACCEPTED(58),
+CLIENTSTAT(100),
+CHECKCREDITS(83),
+ESCAPE(104),
+FILE(59),
+INVITEDTOGUILD(91),
+JOINGUILD(7),
+CHANGEGUILDRANK(22),
+PLAYSOUND(27),
+GLOBALNOTIFICATION(6),
+RESKIN(67),
+PETUPGRADEREQUEST(21),
+ACTIVEPETUPDATEREQUEST(18),
+ACTIVEPETUPDATE(80),
+NEWABILITY(94),
+PETYARDUPDATE(50),
+EVOLVEPET(11),
+DELETEPET(30),
+HATCHPET(53),
+ENTERARENA(102),
+IMMINENTARENAWAVE(61),
+ARENADEATH(34),
+ACCEPTARENADEATH(5),
+VERIFYEMAIL(36),
+RESKINUNLOCK(40),
 PASSWORDPROMPT(81),
-QUESTFETCHASK(104),
-QUESTREDEEM(52),
-QUESTFETCHRESPONSE(28),
-QUESTREDEEMRESPONSE(65),
-PETCHANGEFORMMSG(16),
-KEYINFOREQUEST(90),
-KEYINFORESPONSE(11),
-CLAIMLOGINREWARDMSG(45),
+QUESTFETCHASK(49),
+QUESTREDEEM(44),
+QUESTFETCHRESPONSE(48),
+QUESTREDEEMRESPONSE(14),
+PETCHANGEFORMMSG(99),
+KEYINFOREQUEST(79),
+KEYINFORESPONSE(82),
+CLAIMLOGINREWARDMSG(47),
 LOGINREWARDMSG(42),
-QUESTROOMMSG(58);
+QUESTROOMMSG(23);
 ```
 
 ## ConditionEffects & ConditionEffectIndex

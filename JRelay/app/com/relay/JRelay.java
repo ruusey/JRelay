@@ -42,7 +42,7 @@ import plugins.ClientUpdater;
 import plugins.ReconnectHandler;
 
 public final class JRelay implements Runnable {
-	public static final String GAME_VERSION = "X19.0.2";
+	public static final String GAME_VERSION = "X19.1.0";
 	public static final String JRELAY_VERSION = "1.0.2";
 	public static final boolean PROD = true;
 	//
@@ -309,6 +309,7 @@ public final class JRelay implements Runnable {
 			}
 			Iterator<User> i = JRelay.instance.users.iterator();
 			while (i.hasNext()) {
+				
 				User user = i.next();
 				user.kick();
 			}

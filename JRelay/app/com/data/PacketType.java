@@ -99,7 +99,6 @@ public enum PacketType {
 	QUESTROOMMSG(88);
 
 
-
 	public int id;
 	PacketType(int id){
 		this.id=id;

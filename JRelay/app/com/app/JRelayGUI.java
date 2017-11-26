@@ -16,6 +16,7 @@ import java.util.Properties;
 
 import com.data.GameData;
 import com.event.PluginMetaData;
+import com.models.ObjectMapper;
 import com.models.Packet;
 import com.models.PacketMeta;
 import com.models.Server;
@@ -69,8 +70,14 @@ public class JRelayGUI extends Application {
 	public static boolean savedLog = false;
 
 	public static void main(String[] args) {
+		if (!GameData.loadData()) {
+			JRelay.info("GameData unable to load. Exiting...");
+			System.exit(0);
+		}
+		
 
 		launch(args);
+		
 	}
 
 	@Override
@@ -229,8 +236,19 @@ public class JRelayGUI extends Application {
 
 		return l;
 	}
-	public VBox buildServerBox() {
-		return null;
+	public ScrollPane buildServerBox() {
+		ScrollPane sp1 = new ScrollPane();
+
+	
+		VBox root = new VBox();
+		for(Server s: GameData.servers.values()) {
+			Button sButton = createButton(s.name, 12);
+			root.getChildren().add(sButton);
+		}
+		sp1.setMaxHeight(JRelayGUI.APP_HEIGHT - 140);
+		sp1.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		sp1.setContent(root);
+		return sp1;
 	}
 
 	public ScrollPane buildSettingsBox() {
@@ -386,6 +404,11 @@ public class JRelayGUI extends Application {
 		pluginsTab.setGraphic(createLabel("Plugins", 16));
 		pluginsTab.setContent(buildPluginsTable());
 		tabPane.getTabs().add(pluginsTab);
+		
+		Tab serversTab = new Tab();
+		serversTab.setGraphic(createLabel("Servers", 16));
+		serversTab.setContent(buildServerBox());
+		tabPane.getTabs().add(serversTab);
 
 		Tab settingsTab = new Tab();
 		settingsTab.setGraphic(createLabel("Settings", 16));

@@ -479,8 +479,8 @@
       <Animate dx=".2" dy=".2">Flow</Animate>
       <Sinking/>
       <BlendPriority>3</BlendPriority>
-      <MinDamage>50</MinDamage>
-      <MaxDamage>70</MaxDamage>
+      <MinDamage>60</MinDamage>
+      <MaxDamage>60</MaxDamage>
       <DisplayId>Killer Honey</DisplayId>
    </Ground>
    <Ground type="0x1a9d" id="EH UnderPartialFloor Venom">
@@ -512,8 +512,8 @@
       <Animate dx=".2" dy=".2">Flow</Animate>
       <BlendPriority>9</BlendPriority>
       <Sink/>
-      <MinDamage>50</MinDamage>
-      <MaxDamage>70</MaxDamage>
+      <MinDamage>60</MinDamage>
+      <MaxDamage>60</MaxDamage>
       <DisplayId>Killer Honey</DisplayId>
    </Ground>
    <Ground type="0x10ce" id="EH Unwalkable Venom">
@@ -523,9 +523,9 @@
       </Texture>
       <BlendPriority>4</BlendPriority>
       <NoWalk/>
-      <MinDamage>80</MinDamage>
-      <MaxDamage>120</MaxDamage>
-      <DisplayId>Killer Honey</DisplayId>
+      <MinDamage>100</MinDamage>
+      <MaxDamage>100</MaxDamage>
+      <DisplayId>Deep Killer Honey</DisplayId>
    </Ground>
    <Ground type="0x1aa1" id="EH Secret Floor">
       <Texture>
@@ -745,6 +745,41 @@
       </Texture>
       <BlendPriority>6</BlendPriority>
       <NoWalk/>
+   </Ground>
+<Ground type="0x3cdc" id="SW Dark Wood Floor Bottom">
+      <Texture>
+         <File>santaWorkshopObjects8x8</File>
+         <Index>0x03</Index>
+      </Texture>
+      <BlendPriority>6</BlendPriority>
+   </Ground>
+   <Ground type="0x3ce0" id="SW Light Wood Floor Bottom">
+      <Texture>
+         <File>santaWorkshopObjects8x8</File>
+         <Index>0x04</Index>
+      </Texture>
+      <BlendPriority>6</BlendPriority>
+   </Ground>
+   <Ground type="0x3d24" id="SW Light Wood Red">
+      <Texture>
+         <File>santaWorkshopObjects8x8</File>
+         <Index>0x06</Index>
+      </Texture>
+      <BlendPriority>6</BlendPriority>
+   </Ground>
+   <Ground type="0x3d25" id="SW Light Wood Green">
+      <Texture>
+         <File>santaWorkshopObjects8x8</File>
+         <Index>0x07</Index>
+      </Texture>
+      <BlendPriority>6</BlendPriority>
+   </Ground>
+   <Ground type="0x3cd9" id="SW Light Wood Golden">
+      <Texture>
+         <File>santaWorkshopObjects8x8</File>
+         <Index>0x05</Index>
+      </Texture>
+      <BlendPriority>6</BlendPriority>
    </Ground>
 <Ground type="0x00" id="Black Water">
       <Texture>
@@ -1617,8 +1652,8 @@
          <File>lofiEnvironment</File>
          <Index>0x70</Index>
       </Texture>
-      <MinDamage>30</MinDamage>
-      <MaxDamage>60</MaxDamage>
+      <MinDamage>45</MinDamage>
+      <MaxDamage>45</MaxDamage>
       <Animate dx=".33" dy=".33">Flow</Animate>
       <Sink/>
       <Speed>.666</Speed>
@@ -2052,8 +2087,8 @@
          <File>lofiEnvironment</File>
          <Index>0x70</Index>
       </Texture>
-      <MinDamage>30</MinDamage>
-      <MaxDamage>60</MaxDamage>
+      <MinDamage>45</MinDamage>
+      <MaxDamage>45</MaxDamage>
       <Animate dx=".33" dy=".33">Flow</Animate>
       <Sink/>
       <Speed>.666</Speed>
@@ -2588,8 +2623,8 @@
          <File>lofiEnvironment</File>
          <Index>0x71</Index>
       </Texture>
-      <MinDamage>25</MinDamage>
-      <MaxDamage>40</MaxDamage>
+      <MinDamage>32</MinDamage>
+      <MaxDamage>32</MaxDamage>
       <Animate dx=".33" dy=".33">Flow</Animate>
       <Sink/>
       <Speed>.666</Speed>
@@ -3836,8 +3871,8 @@
          <File>lofiEnvironment2</File>
          <Index>0x09</Index>
       </Texture>
-      <MinDamage>50</MinDamage>
-      <MaxDamage>60</MaxDamage>
+      <MinDamage>55</MinDamage>
+      <MaxDamage>55</MaxDamage>
       <Animate dx=".33" dy=".33">Flow</Animate>
       <Sink/>
       <Speed>.666</Speed>
@@ -3854,8 +3889,8 @@
          <File>lofiObj3</File>
          <Index>0x3fa</Index>
       </Texture>
-      <MinDamage>50</MinDamage>
-      <MaxDamage>60</MaxDamage>
+      <MinDamage>55</MinDamage>
+      <MaxDamage>55</MaxDamage>
       <BlendPriority>-3</BlendPriority>
       <Speed>1.2</Speed>
    </Ground>
@@ -4044,8 +4079,8 @@
          <File>lofiObj3</File>
          <Index>0x483</Index>
       </Texture>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
       <Animate dx=".33" dy=".33">Flow</Animate>
       <Sink/>
       <Speed>.777</Speed>
@@ -4055,8 +4090,8 @@
          <File>lofiObj3</File>
          <Index>0x447</Index>
       </Texture>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
       <Animate dx=".35">Flow</Animate>
       <Sink/>
       <RandomOffset/>
@@ -4371,8 +4406,8 @@
             <Index>0x364</Index>
          </Texture>
       </RandomTexture>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
    </Ground>
    <Ground type="0x2596" id="lod Purple Tile">
       <DisplayId>Magma</DisplayId>
@@ -4398,8 +4433,8 @@
             <Index>0x361</Index>
          </Texture>
       </RandomTexture>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
    </Ground>
    <Ground type="0x2597" id="lod Blue Tile">
       <DisplayId>Magma</DisplayId>
@@ -4425,8 +4460,8 @@
             <Index>0x36f</Index>
          </Texture>
       </RandomTexture>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
    </Ground>
    <Ground type="0x2598" id="lod Green Tile">
       <DisplayId>Magma</DisplayId>
@@ -4452,8 +4487,8 @@
             <Index>0x36c</Index>
          </Texture>
       </RandomTexture>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
    </Ground>
    <Ground type="0x2599" id="lod Cream Tile">
       <DisplayId>Magma</DisplayId>
@@ -4461,8 +4496,8 @@
          <File>lofiObj3</File>
          <Index>0x371</Index>
       </Texture>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
    </Ground>
    <Ground type="0x259a" id="DS Floor Tile">
       <Texture>
@@ -4800,8 +4835,8 @@
          <Index>0x447</Index>
       </Texture>
       <DisplayId>Pure Evil</DisplayId>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
       <Animate dx=".35">Flow</Animate>
       <Sink/>
       <RandomOffset/>
@@ -4814,8 +4849,8 @@
          <Index>0x447</Index>
       </Texture>
       <DisplayId>Pure Evil</DisplayId>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
       <Animate dx=".35">Flow</Animate>
       <Sink/>
       <RandomOffset/>
@@ -4828,8 +4863,8 @@
          <Index>0x447</Index>
       </Texture>
       <DisplayId>Pure Evil</DisplayId>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
       <Animate dx=".35">Flow</Animate>
       <Sink/>
       <RandomOffset/>
@@ -4842,8 +4877,8 @@
          <Index>0x447</Index>
       </Texture>
       <DisplayId>Pure Evil</DisplayId>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
       <Animate dx=".35">Flow</Animate>
       <Sink/>
       <RandomOffset/>
@@ -4856,8 +4891,8 @@
          <Index>0x447</Index>
       </Texture>
       <DisplayId>Pure Evil</DisplayId>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
       <Animate dx=".35">Flow</Animate>
       <Sink/>
       <RandomOffset/>
@@ -4870,8 +4905,8 @@
          <Index>0x447</Index>
       </Texture>
       <DisplayId>Pure Evil</DisplayId>
-      <MinDamage>70</MinDamage>
-      <MaxDamage>80</MaxDamage>
+      <MinDamage>75</MinDamage>
+      <MaxDamage>75</MaxDamage>
       <Animate dx=".35">Flow</Animate>
       <Sink/>
       <RandomOffset/>
@@ -5061,17 +5096,37 @@
       <NoWalk/>
       <Speed>0</Speed>
    </Ground>
-<Ground type="0x202c" id="Ohorde Poison">
+<Ground type="0x6401" id="VD Red no walk">
+      <Texture>
+         <File>autumnNexusObjects8x8</File>
+         <Index>0x0</Index>
+      </Texture>
+      <BlendPriority>8</BlendPriority>
+      <NoWalk/>
+   </Ground>
+   <Ground type="0x202c" id="Ohorde Poison">
       <DisplayId>Oryx Poison</DisplayId>
       <Texture>
          <File>oryxHordeObjects8x8</File>
          <Index>0x1a</Index>
       </Texture>
-      <MinDamage>30</MinDamage>
-      <MaxDamage>60</MaxDamage>
+      <MinDamage>45</MinDamage>
+      <MaxDamage>45</MaxDamage>
       <Animate dx=".33" dy=".33">Flow</Animate>
       <Sink/>
       <Speed>.666</Speed>
+   </Ground>
+   <Ground type="0x280d" id="XMAS Dragon Tile Cream">
+      <Texture>
+         <File>oryxHordeObjects8x8</File>
+         <Index>0x2e</Index>
+      </Texture>
+   </Ground>
+   <Ground type="0x280e" id="XMAS Dragon Tile Cream 2">
+      <Texture>
+         <File>oryxHordeObjects8x8</File>
+         <Index>0x3e</Index>
+      </Texture>
    </Ground>
 <Ground type="0x0fd0" id="Sakura Petals Pile">
       <RandomTexture>

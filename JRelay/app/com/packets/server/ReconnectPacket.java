@@ -11,6 +11,7 @@ public class ReconnectPacket extends Packet {
 	
 	public String name;
 	public String host;
+	public String stats;
 	public int port;
 	public int gameId;
 	public int keyTime;
@@ -21,6 +22,7 @@ public class ReconnectPacket extends Packet {
 	public void parseFromInput(DataInput in) throws IOException {
 		this.name = in.readUTF();
 		this.host = in.readUTF();
+		this.stats = in.readUTF();
 		this.port = in.readInt();
 		this.gameId = in.readInt();
 		this.keyTime = in.readInt();
@@ -33,6 +35,7 @@ public class ReconnectPacket extends Packet {
 	public void writeToOutput(DataOutput out) throws IOException {
 		out.writeUTF(this.name);
 		out.writeUTF(this.host);
+		out.writeUTF(this.stats);
 		out.writeInt(this.port);
 		out.writeInt(this.gameId);
 		out.writeInt(this.keyTime);

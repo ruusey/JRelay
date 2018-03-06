@@ -1,7 +1,10 @@
 package com.util;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 import org.dom4j.Document;
 import org.dom4j.Node;
@@ -20,7 +23,11 @@ public class Formatter {
 		}
 		createPacketTypes();
 		
+		
+		
+		
 	}
+	
 	//USED TO BUILD PACKETTYPE ENUM ON GAME UPDATES
 	public static void createPacketTypes() {
 		try {

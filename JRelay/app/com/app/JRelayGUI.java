@@ -70,13 +70,14 @@ public class JRelayGUI extends Application {
 	public static boolean savedLog = false;
 
 	public static void main(String[] args) {
+		launch(args);
 		if (!GameData.loadData()) {
 			JRelay.info("GameData unable to load. Exiting...");
 			System.exit(0);
 		}
 		
 
-		launch(args);
+		
 		
 	}
 
@@ -589,7 +590,7 @@ public class JRelayGUI extends Application {
 		box.setAlignment(Pos.TOP_CENTER);
 		box.setSpacing(10);
 		box.setPadding(new Insets(10, 0, 0, 10));
-		Label l = createLabel("JRelay v1.0.0", 24);
+		Label l = createLabel("JRelay v"+JRelay.JRELAY_VERSION, 24);
 		Label l1 = createLabel("For RotMG " + JRelay.GAME_VERSION, 12);
 		Label l2 = createLabel("Author - Ruusey", 12);
 		Label l3 = createLabel("Credits", 24);

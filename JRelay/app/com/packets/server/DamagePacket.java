@@ -13,6 +13,7 @@ public class DamagePacket extends Packet {
 	public int[] effects = new int[0];
 	public int damageAmount;
 	public boolean kill;
+	public boolean piercesArmor;
 	public int bulletId;
 	public int objectId;
 
@@ -25,6 +26,7 @@ public class DamagePacket extends Packet {
 		}
 		this.damageAmount = in.readUnsignedShort();
 		this.kill = in.readBoolean();
+		this.piercesArmor=in.readBoolean();
 		this.bulletId = in.readUnsignedByte();
 		this.objectId = in.readInt();
 	}
@@ -38,6 +40,7 @@ public class DamagePacket extends Packet {
 		}
 		out.writeShort(this.damageAmount);
 		out.writeBoolean(this.kill);
+		out.writeBoolean(this.piercesArmor);
 		out.writeByte(this.bulletId);
 		out.writeInt(this.objectId);
 	}

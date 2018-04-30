@@ -83,13 +83,14 @@ public class ClientUpdater extends JPlugin {
         State resolvedState = null;
 
         for (State cstate : JRelay.instance.userStates.values()){
-        	if (cstate.accId == user.playerData.accountId){
+        	if(cstate.accId==null) continue;
+        	if (cstate.accId.equals(user.playerData.accountId)){
         		resolvedState = cstate;
         	}
                 
         }
         if (resolvedState == null){
-        	
+        	user.state.accId = user.playerData.accountId;
         }else{
             for (Entry<String,Object> pair : user.state.states.entrySet())
                 resolvedState.setState(pair.getKey(), pair.getValue());

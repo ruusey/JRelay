@@ -42,8 +42,8 @@ import plugins.ClientUpdater;
 import plugins.ReconnectHandler;
 
 public final class JRelay implements Runnable {
-	public static final String GAME_VERSION = "X24.0.0";
-	public static final String JRELAY_VERSION = "1.1.3";
+	public static final String GAME_VERSION = "X25.0.0";
+	public static final String JRELAY_VERSION = "1.1.4";
 	public static final boolean PROD = true;
 	//
 	public static String APP_LOC = "";
@@ -399,7 +399,7 @@ public final class JRelay implements Runnable {
 		}
 		String guid = key.length == 0 ? "n/a" : keyString;
 
-		State newState = new State(client, UUID.randomUUID().toString());
+		State newState = new State(client, UUID.randomUUID().toString().replace("-", ""));
 		userStates.put(newState.GUID, newState);
 		if (!guid.equals("n/a")) {
 			State lastState = userStates.get(guid);

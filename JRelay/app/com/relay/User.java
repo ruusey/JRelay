@@ -391,7 +391,7 @@ public class User implements Runnable {
 						if (!(e instanceof SocketException)) {
 							JRelay.error(e.getMessage() + " End of remote stream.");
 
-							// e.printStackTrace();
+							 e.printStackTrace();
 						} else {
 							JRelay.error(e.getMessage() + " End of remote stream.");
 						}

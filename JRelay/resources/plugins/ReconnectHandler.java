@@ -15,7 +15,8 @@ import com.packets.client.HelloPacket;
 import com.packets.server.ReconnectPacket;
 import com.relay.JRelay;
 import com.relay.User;
-
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 public class ReconnectHandler extends JPlugin {
 
 	public ReconnectHandler(User user) {
@@ -76,16 +77,18 @@ public class ReconnectHandler extends JPlugin {
 
 	public void onReconnect(Packet pack) {
 		ReconnectPacket packet = (ReconnectPacket) pack;
-		user.state.locationName="/"+user.state.locationName+"/"+packet.name;
 		if (packet.host.contains(".com")) {
+			java.net.InetAddress addr = null;
 			try {
-				InetAddress addr = InetAddress.getByName(packet.host);
-				String host = addr.getHostName();
-				packet.host = host;
-			} catch (Exception e) {
+				addr = InetAddress.getByName(packet.host);
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			  String host = addr.getHostName();
+			  packet.host=host;
 		}
+			
 
 		if (packet.name.toLowerCase().contains("nexusportal")) {
 			ReconnectPacket recon = new ReconnectPacket();
@@ -100,7 +103,7 @@ public class ReconnectHandler extends JPlugin {
 			recon.name = packet.name;
 			user.state.lastRealm = recon;
 			
-		} else if (packet.name != "" && !packet.name.contains("vault")
+		} else if (!packet.name.equals("") && !packet.name.contains("vault")
 				&& packet.gameId != -2) {
 			ReconnectPacket drecon = new ReconnectPacket();
 
@@ -111,6 +114,7 @@ public class ReconnectHandler extends JPlugin {
 			drecon.port = packet.port == -1 ? user.state.conTargetPort
 					: packet.port;
 			drecon.key = packet.key;
+			drecon.stats=packet.stats;
 			drecon.keyTime = packet.keyTime;
 			drecon.name = packet.name;
 			user.state.lastDungeon = drecon;
@@ -157,6 +161,7 @@ public class ReconnectHandler extends JPlugin {
 				reconnect.isFromArena = false;
 				reconnect.key = new byte[0];
 				reconnect.keyTime = 0;
+				reconnect.stats = "";
 				sendReconnect(user, reconnect);
 			} else {
 				try {

@@ -97,6 +97,8 @@ public enum PacketType {
 	CLAIMLOGINREWARDMSG(45),
 	LOGINREWARDMSG(42),
 	QUESTROOMMSG(58);
+
+
 	public int id;
 	PacketType(int id){
 		this.id=id;

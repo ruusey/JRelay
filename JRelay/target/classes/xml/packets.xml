@@ -383,4 +383,12 @@
 		<PacketName>QUEST_ROOM_MSG</PacketName>
 		<PacketID>58</PacketID>
 	</Packet>
+	<Packet>
+		<PacketName>SET_SPEED</PacketName>
+		<PacketID>70</PacketID>
+	</Packet>
+	<Packet>
+		<PacketName>THUNDER_MOVE</PacketName>
+		<PacketID>110</PacketID>
+	</Packet>
 </Packets>

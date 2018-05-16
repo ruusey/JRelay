@@ -193,4 +193,3 @@ public static const FAILURE:int = 0;
       public static const SET_SPEED:int = 70;
       
       public static const THUNDER_MOVE:int = 110;
-      

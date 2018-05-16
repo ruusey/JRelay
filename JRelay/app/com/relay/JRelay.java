@@ -42,7 +42,7 @@ import plugins.ClientUpdater;
 import plugins.ReconnectHandler;
 
 public final class JRelay implements Runnable {
-	public static final String GAME_VERSION = "X25.0.0";
+	public static final String GAME_VERSION = "X25.1.1";
 	public static final String JRELAY_VERSION = "1.1.4";
 	public static final boolean PROD = true;
 	//

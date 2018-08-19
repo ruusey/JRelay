@@ -18,7 +18,7 @@ import com.relay.JRelay;
 import com.relay.User;
 
 public class Core extends JPlugin {
-
+	UpdatePacket lastUpdate = null;
 	public Core(User user) {
 		super(user);
 
@@ -28,6 +28,7 @@ public class Core extends JPlugin {
 	public void attach() {
 		user.hookCommand("hi", Core.class, "onHiCommand");
 		user.hookCommand("jr", Core.class, "onJr");
+		user.hookCommand("tiles", Core.class, "onTiles");
 		user.hookPacket(PacketType.UPDATE, Core.class, "onUpdatePacket");
 
 	}
@@ -45,7 +46,15 @@ public class Core extends JPlugin {
 			sendToClient(packet);
 		}
 	}
-
+	public void onTiles(String command, String[] args) {
+		for (Tile t : lastUpdate.tiles) {
+			if(distTo(t.x,t.y,user.playerData.pos.x,user.playerData.pos.y)<2.0) {
+				sendToClient(EventUtils.createNotification(
+						t.type, "HI"));
+			}
+			
+		}
+	}
 	public void onJr(String command, String[] args) {
 
 		TextPacket packet = EventUtils.createText("JRelay", "JRelay Alpha Build "+JRelay.JRELAY_VERSION+" for RotMG"+JRelay.GAME_VERSION+". Created by Ruusey");
@@ -70,6 +79,7 @@ public class Core extends JPlugin {
 				} else {
 					int id = GameData.nameToTile.get(from).id;
 					for (Tile t : pack.tiles) {
+						
 						if (t.type == id) {
 							if (entry.getValue().size() == 1) {
 								t.type = GameData.nameToTile.get(entry.getValue().get(0)).id;
@@ -114,8 +124,12 @@ public class Core extends JPlugin {
 				}
 			}
 		}
+		lastUpdate=pack;
 		sendToClient(pack);
 		p.send = false;
+	}
+	public double distTo(int x0,int y0,float x,float y) {
+		return Math.sqrt((x0-x)*(x0-x)+(y0-y)*(y0-y));
 	}
 
 	@Override

@@ -114,7 +114,8 @@ public abstract class Packet implements IData {
 		String simpleName = this.getClass().getSimpleName();
 		int end = simpleName.indexOf("Packet");
 		if (end < 0) {
-			System.out.println();
+		    System.out.println(simpleName);
+			return "";
 		}
 		simpleName = simpleName.substring(0, end);
 		return simpleName.toUpperCase();

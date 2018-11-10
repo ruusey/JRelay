@@ -375,7 +375,7 @@ public class User implements Runnable {
 									this.remoteBufferIndex -= packetLength;
 									this.remoteRecvRC4.cipher(packetBytes);
 									Packet packet = Packet.create(packetId, packetBytes);
-									// System.out.println(JRelay.gen.serialize(packet));
+									System.out.println(JRelay.gen.serialize(packet));
 									invokeOnPacketRequired(packet);
 									invokeOnPacket(packet);
 									handleServerPacket(packet);
@@ -428,7 +428,7 @@ public class User implements Runnable {
 							}catch(Exception e) {
 								JRelay.error("Unable to read HELLO packet. Are your RC4 keys up to date?");
 							}
-							// System.out.println(JRelay.gen.serialize(packet));
+							System.out.println(JRelay.gen.serialize(packet));
 							if (packet instanceof PlayerTextPacket) {
 								// ATTEMPT TO INVOKE COMMAND IF PLAYER TEXT
 								invokeOnCommand(packet);

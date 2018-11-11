@@ -239,7 +239,6 @@ public class RSA
         try
         {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            String textLine = null;
             //RSA encryption data size limitations are slightly less than the key modulus size,
             //depending on the actual padding scheme used (e.g. with 1024 bit (128 byte) RSA key,
             //the size limit is 117 bytes for PKCS#1 v 1.5 padding. (http://www.jensign.com/JavaScience/dotnet/RSAEncrypt/)

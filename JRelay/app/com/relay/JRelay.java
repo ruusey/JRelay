@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -42,7 +41,7 @@ import plugins.ClientUpdater;
 import plugins.ReconnectHandler;
 
 public final class JRelay implements Runnable {
-	public static final String GAME_VERSION = "X31.1.0";
+	public static final String GAME_VERSION = "X31.0.4";
 	public static final String JRELAY_VERSION = "1.2.0";
 	public static final boolean PROD = true;
 	//

@@ -3,8 +3,6 @@ package com.packets.client;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.nio.charset.Charset;
-
 import com.models.Packet;
 
 

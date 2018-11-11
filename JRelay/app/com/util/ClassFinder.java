@@ -1,6 +1,5 @@
 package com.util;
 
-import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.jar.JarFile;
 
 import com.app.JRelayGUI;
 import com.models.Packet;
-import com.relay.JRelay;
 
 public class ClassFinder {
 
@@ -19,15 +17,15 @@ public class ClassFinder {
 
     private static final char DIR_SEPARATOR = '/';
 
-    private static final String CLASS_FILE_SUFFIX = ".class";
-
-    private static final String BAD_PACKAGE_ERROR = "Unable to get resources from path '%s'. Are you sure the package '%s' exists?";
+//    private static final String CLASS_FILE_SUFFIX = ".class";
+//
+//    private static final String BAD_PACKAGE_ERROR = "Unable to get resources from path '%s'. Are you sure the package '%s' exists?";
     public static void main(String[] args) {
     	
     }
     public static List<Class<? extends Packet>> find(String scannedPackage) {
         String scannedPath = scannedPackage.replace(PKG_SEPARATOR, DIR_SEPARATOR);
-        URL scannedUrl = Thread.currentThread().getContextClassLoader().getResource(scannedPath);
+        //URL scannedUrl = Thread.currentThread().getContextClassLoader().getResource(scannedPath);
         
         String workingDir = null;
         List<Class<? extends Packet>> classes = new ArrayList<Class<? extends Packet>>();
@@ -47,13 +45,15 @@ public class ClassFinder {
             		   String className = je.getName().substring(0,je.getName().length()-6);
             		   className = className.replace('/', '.');
             		  
-            		   Class<? extends Packet> c = (Class<? extends Packet>) cl.loadClass(className);
+            		   @SuppressWarnings("unchecked")
+			Class<? extends Packet> c = (Class<? extends Packet>) cl.loadClass(className);
             		   if(!classes.contains(c)) {
             			   classes.add(c);
             		   }
             		  
             	   }
             	}
+             jarFile.close();
         }catch(Exception e) {
         	e.printStackTrace();
         }

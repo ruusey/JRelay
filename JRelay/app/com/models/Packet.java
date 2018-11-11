@@ -46,8 +46,14 @@ public abstract class Packet implements IData {
 					JRelay.error(e.getLocalizedMessage());
 				}
 				
-				int id = GameData.packetNameToId.get(name);
+				int id = 0;
+				try{
+				    id = GameData.packetNameToId.get(name);
+				}catch(Exception e) {
+				    System.out.println("Packet("+packetClass.getName()+") did  not match "+name);
+				}
 				if (id == -1) {
+				    System.out.print("Packet("+id+") did  not match "+packetClass.getName());
 					packetIdtoClassMap.set(-99, packetClass);
 				} else {
 					packetIdtoClassMap.set(id, packetClass);
@@ -114,7 +120,7 @@ public abstract class Packet implements IData {
 		String simpleName = this.getClass().getSimpleName();
 		int end = simpleName.indexOf("Packet");
 		if (end < 0) {
-		    System.out.println(simpleName);
+		    //System.out.println(simpleName);
 			return "";
 		}
 		simpleName = simpleName.substring(0, end);

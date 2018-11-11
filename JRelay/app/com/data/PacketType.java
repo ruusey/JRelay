@@ -96,8 +96,7 @@ public enum PacketType {
     KEYINFORESPONSE(33),
     CLAIMLOGINREWARDMSG(103),
     LOGINREWARDMSG(37),
-    QUESTROOMMSG(88),
-    PETCHANGESKINMSG(105);
+    QUESTROOMMSG(88);
 
 	public int id;
 	PacketType(int id){

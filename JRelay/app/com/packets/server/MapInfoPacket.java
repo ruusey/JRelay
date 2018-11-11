@@ -33,16 +33,12 @@ public class MapInfoPacket extends Packet {
 		this.allowPlayerTeleport = in.readBoolean();
 		this.showDisplays = in.readBoolean();
 		this.clientXML = new String[in.readShort()];
-		for (int i = 0; i < this.clientXML.length; i++) {
-			byte[] utf = new byte[in.readInt()];
-			in.readFully(utf);
-			this.clientXML[i] = new String(utf, "UTF-8");
-		}
+		 for (int i = 0; i < this.clientXML.length; i++) {
+		      this.clientXML[i] = in.readUTF();
+		    }
 		this.extraXML = new String[in.readShort()];
 		for (int i = 0; i < this.extraXML.length; i++) {
-			byte[] utf = new byte[in.readInt()];
-			in.readFully(utf);
-			this.extraXML[i] = new String(utf, "UTF-8");
+		    this.extraXML[i] = in.readUTF();
 		}
 	}
 
@@ -59,15 +55,11 @@ public class MapInfoPacket extends Packet {
 		out.writeBoolean(this.showDisplays);
 		out.writeShort(this.clientXML.length);
 		for (String xml: this.clientXML) {
-			byte[] utf = xml.getBytes("UTF-8");
-			out.writeInt(utf.length);
-			out.write(utf);
+			out.writeUTF(xml);
 		}
 		out.writeShort(this.extraXML.length);
 		for (String xml: this.extraXML) {
-			byte[] utf = xml.getBytes("UTF-8");
-			out.writeInt(utf.length);
-			out.write(utf);
+		    out.writeUTF(xml);
 		}
 	}
 

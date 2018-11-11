@@ -383,8 +383,4 @@
 		<PacketName>QUESTROOMMSG</PacketName>
 		<PacketID>88</PacketID>
 	</Packet>
-	<Packet>
-		<PacketName>PETCHANGESKINMSG</PacketName>
-		<PacketID>105</PacketID>
-	</Packet>
 </Packets>

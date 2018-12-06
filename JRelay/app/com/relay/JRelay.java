@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.app.JRelayGUI;
+import com.crypto.RSA;
 import com.data.GameData;
 import com.data.PacketType;
 import com.data.State;
@@ -41,8 +42,13 @@ import plugins.ClientUpdater;
 import plugins.ReconnectHandler;
 
 public final class JRelay implements Runnable {
-	public static final String GAME_VERSION = "X31.0.4";
-	public static final String JRELAY_VERSION = "1.2.0";
+	public static final String RSA_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDCKFctVrhfF3m2Kes0FBL/JFeOcmNg9eJz8k/hQy1kadD+XFUpluRqa//Uxp2s9W2qE0EoUCu59ugcf/p7lGuL99UoSGmQEynkBvZct+/M40L0E0rZ4BVgzLOJmIbXMp0J4PnPcb6VLZvxazGcmSfjauC7F3yWYqUbZd/HCBtawwIDAQAB\n";
+	public static int TUTORIAL_GAMEID = -1;
+	public static int NEXUS_GAMEID = -2;
+	public static int RANDOM_REALM_GAMEID = -3;
+	public static int MAPTEST_GAMEID = -6;
+	public static final String GAME_VERSION = "X31.1.2";
+	public static final String JRELAY_VERSION = "1.4.0";
 	public static final boolean PROD = true;
 	//
 	public static String APP_LOC = "";
@@ -57,7 +63,7 @@ public final class JRelay implements Runnable {
 	// ************************************
 	// USE A VPS PROXY INSTEAD OF LOCALHOST
 	// ************************************
-
+	
 	public boolean useExternalProxy = false;
 	public String externalProxyHost = "";
 	public int externalProxyPort = -1;
@@ -90,7 +96,7 @@ public final class JRelay implements Runnable {
 	public ReconnectHandler reconHandler = null;
 
 	public ArrayList<Thread> connections = new ArrayList<Thread>();
-
+	public static RSA rsa = new RSA();
 	public JRelay() {
 		if(!JRelay.PROD) {
 			JRelay.APP_LOC="app\\";
@@ -306,12 +312,12 @@ public final class JRelay implements Runnable {
 					JRelay.info("Client recieved...");
 				}
 			}
-			Iterator<User> i = JRelay.instance.users.iterator();
-			while (i.hasNext()) {
-				
-				User user = i.next();
-				user.kick();
-			}
+//			Iterator<User> i = JRelay.instance.users.iterator();
+//			while (i.hasNext()) {
+//				
+//				User user = i.next();
+//				user.kick();
+//			}
 		} else {
 			JRelay.info(
 					"Failure starting the local listener. Make sure there is not an instance of JRelay running already.");

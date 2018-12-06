@@ -12,6 +12,7 @@ import com.event.EventUtils;
 import com.event.JPlugin;
 import com.models.ObjectMapper;
 import com.models.Packet;
+import com.packets.client.PlayerTextPacket;
 import com.packets.server.TextPacket;
 import com.packets.server.UpdatePacket;
 import com.relay.JRelay;
@@ -30,6 +31,7 @@ public class Core extends JPlugin {
 		user.hookCommand("jr", Core.class, "onJr");
 		user.hookCommand("tiles", Core.class, "onTiles");
 		user.hookPacket(PacketType.UPDATE, Core.class, "onUpdatePacket");
+		user.hookPacket(PacketType.TEXT, Core.class, "filterShops");
 
 	}
 
@@ -48,7 +50,7 @@ public class Core extends JPlugin {
 	}
 	public void onTiles(String command, String[] args) {
 		for (Tile t : lastUpdate.tiles) {
-			if(distTo(t.x,t.y,user.playerData.pos.x,user.playerData.pos.y)<2.0) {
+			if(distTo(t.x,t.y,user.playerData.pos.x,user.playerData.pos.y)<4.0) {
 				sendToClient(EventUtils.createNotification(
 						t.type, "HI"));
 			}
@@ -61,7 +63,11 @@ public class Core extends JPlugin {
 		sendToClient(packet);
 
 	}
-
+	public void filterShops(Packet p) {
+		TextPacket pack = (TextPacket) p;
+		if(pack.numStars<20)pack.send=false;
+		
+	}
 	public void onUpdatePacket(Packet p) {
 		UpdatePacket pack = (UpdatePacket) p;
 		for (Entry<ArrayList<String>, ArrayList<String>> entry : ObjectMapper.tiles.entrySet()) {

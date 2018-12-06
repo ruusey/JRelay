@@ -53,7 +53,7 @@ public class User implements Runnable {
 		this.localSendRC4 = new RC4(JRelay.instance.key1);
 		this.remoteRecvRC4 = new RC4(JRelay.instance.key1);
 		this.remoteSendRC4 = new RC4(JRelay.instance.key0);
-
+		System.out.println(localSocket);
 	}
 
 	public void disconnect() {
@@ -327,6 +327,7 @@ public class User implements Runnable {
 
 	public void connect(HelloPacket state) {
 		try {
+			//System.out.println(this.state.conTargetAddress+" "+this.state.conTargetPort);
 			this.remoteSocket = new Socket(this.state.conTargetAddress, this.state.conTargetPort);
 			this.remoteSocket.setTcpNoDelay(true);
 			this.sendServerPacket(state);
@@ -344,9 +345,7 @@ public class User implements Runnable {
 	public void run() {
 		while (!shutdown) {
 			try {
-				if (!this.localSocket.isConnected()) {
-					System.out.println();
-				}
+				
 				if (this.remoteSocket != null) {
 					try {
 						InputStream in = this.remoteSocket.getInputStream();
@@ -390,12 +389,13 @@ public class User implements Runnable {
 						e.printStackTrace();
 						if (!(e instanceof SocketException)) {
 							JRelay.error(e.getMessage() + " End of remote stream.");
-
+								this.disconnect();
 							 e.printStackTrace();
 						} else {
 							JRelay.error(e.getMessage() + " End of remote stream.");
+							this.disconnect();
 						}
-						this.disconnect();
+						
 					}
 				}
 				InputStream in = this.localSocket.getInputStream();
@@ -453,7 +453,7 @@ public class User implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 				if (!shutdown) {
-					this.kick();
+					//this.kick();
 				}
 			}
 		}

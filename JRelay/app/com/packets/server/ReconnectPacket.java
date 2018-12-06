@@ -45,7 +45,7 @@ public class ReconnectPacket extends Packet {
 	}
 	
 	public void printPacket(){
-		System.out.println("47:RECONNECT: " + "Name : " + name + " GameID: " + gameId + " keyTime: " + keyTime +  " Key Length: " + key.length + " key: " + key + "isFromArena: " + isFromArena);
+		System.out.println("RECONNECT: " + "Name : " + name + " GameID: " + gameId + " keyTime: " + keyTime +  " Key Length: " + key.length + " key: " + key + "isFromArena: " + isFromArena);
 	}
 
 }

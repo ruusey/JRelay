@@ -77,6 +77,7 @@ public class ReconnectHandler extends JPlugin {
 
 	public void onReconnect(Packet pack) {
 		ReconnectPacket packet = (ReconnectPacket) pack;
+		JRelay.info(pack.toString());
 		if (packet.host.contains(".com")) {
 			java.net.InetAddress addr = null;
 			try {
@@ -106,7 +107,7 @@ public class ReconnectHandler extends JPlugin {
 		} else if (!packet.name.equals("") && !packet.name.contains("vault")
 				&& packet.gameId != -2) {
 			ReconnectPacket drecon = new ReconnectPacket();
-
+			
 			drecon.isFromArena = false;
 			drecon.gameId = packet.gameId;
 			drecon.host = packet.host == "" ? user.state.conTargetAddress
@@ -114,7 +115,6 @@ public class ReconnectHandler extends JPlugin {
 			drecon.port = packet.port == -1 ? user.state.conTargetPort
 					: packet.port;
 			drecon.key = packet.key;
-			drecon.stats=packet.stats;
 			drecon.keyTime = packet.keyTime;
 			drecon.name = packet.name;
 			user.state.lastDungeon = drecon;
@@ -157,11 +157,11 @@ public class ReconnectHandler extends JPlugin {
 						.toUpperCase()).address;
 				reconnect.port = 2050;
 				reconnect.gameId = -2;
+				reconnect.stats="";
 				reconnect.name = "Nexus";
 				reconnect.isFromArena = false;
 				reconnect.key = new byte[0];
 				reconnect.keyTime = 0;
-				reconnect.stats = "";
 				sendReconnect(user, reconnect);
 			} else {
 				try {

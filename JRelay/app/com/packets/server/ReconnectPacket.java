@@ -3,6 +3,7 @@ package com.packets.server;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Arrays;
 
 import com.models.Packet;
 
@@ -43,9 +44,14 @@ public class ReconnectPacket extends Packet {
 		out.writeShort(this.key.length);
 		out.write(this.key);
 	}
-	
-	public void printPacket(){
-		System.out.println("RECONNECT: " + "Name : " + name + " GameID: " + gameId + " keyTime: " + keyTime +  " Key Length: " + key.length + " key: " + key + "isFromArena: " + isFromArena);
+
+	@Override
+	public String toString() {
+		return "ReconnectPacket [name=" + name + ", host=" + host + ", stats=" + stats + ", port=" + port + ", gameId="
+				+ gameId + ", keyTime=" + keyTime + ", isFromArena=" + isFromArena + ", key=" + Arrays.toString(key)
+				+ "]";
 	}
+	
+	
 
 }

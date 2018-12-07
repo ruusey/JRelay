@@ -388,6 +388,7 @@ public class JRelayGUI extends Application {
 	tabPane.setStyle("-fx-background-color:white;");
 	tabPane.setPadding(new Insets(10, 10, -10, 10));
 	Tab informationTab = new Tab();
+	
 	informationTab.setGraphic(createLabel("Information", 16));
 	HBox information = new HBox();
 	information.getChildren().add(new Label("Information Tab"));
@@ -400,10 +401,10 @@ public class JRelayGUI extends Application {
 	pluginsTab.setContent(buildPluginsTable());
 	tabPane.getTabs().add(pluginsTab);
 
-	Tab serversTab = new Tab();
-	serversTab.setGraphic(createLabel("Servers", 16));
-	serversTab.setContent(buildServerBox());
-	tabPane.getTabs().add(serversTab);
+//	Tab serversTab = new Tab();
+//	serversTab.setGraphic(createLabel("Servers", 16));
+//	serversTab.setContent(buildServerBox());
+//	tabPane.getTabs().add(serversTab);
 
 	Tab settingsTab = new Tab();
 	settingsTab.setGraphic(createLabel("Settings", 16));

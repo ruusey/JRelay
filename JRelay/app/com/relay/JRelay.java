@@ -289,11 +289,11 @@ public final class JRelay implements Runnable {
 	@Override
 	public void run() {
 		try {
-			JRelayGUI.updateStatus("Loading assets...", "orange");
-			if (!GameData.loadData()) {
-				JRelay.info("GameData unable to load. Exiting...");
-				System.exit(0);
-			}
+//			JRelayGUI.updateStatus("Loading assets...", "orange");
+//			if (!GameData.loadData()) {
+//				JRelay.info("GameData unable to load. Exiting...");
+//				System.exit(0);
+//			}
 			ObjectMapper.buildMap();
 			Packet.init();
 			loadUserPlugins();

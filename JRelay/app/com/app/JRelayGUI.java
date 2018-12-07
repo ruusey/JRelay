@@ -54,6 +54,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import plugins.ReconnectHandler;
 
 public class JRelayGUI extends Application {
     public static final int APP_WIDTH = 550;
@@ -70,10 +71,7 @@ public class JRelayGUI extends Application {
 
     public static void main(String[] args) {
 	launch(args);
-	if (!GameData.loadData()) {
-	    JRelay.info("GameData unable to load. Exiting...");
-	    System.exit(0);
-	}
+	
 
     }
 
@@ -107,7 +105,13 @@ public class JRelayGUI extends Application {
 
 	TabPane tabs = buildTabs();
 	tabs.getTabs().get(0).setContent(buildConsole());
-
+	if (!GameData.loadData()) {
+	    JRelay.info("GameData unable to load. Exiting...");
+	    System.exit(0);
+	}
+	
+	tabs.getTabs().get(2).setGraphic(createLabel("Servers", 16));
+	tabs.getTabs().get(2).setContent(buildServerBox());
 	componentLayout.setTop(hb);
 	componentLayout.setCenter(tabs);
 	startPluginUpdate();
@@ -121,6 +125,7 @@ public class JRelayGUI extends Application {
 	    public void handle(WindowEvent event) {
 		JRelay.instance.shutdown();
 		Platform.exit();
+		
 	    }
 	});
 	log("JRelay for RotMG " + JRelay.GAME_VERSION);
@@ -238,6 +243,7 @@ public class JRelayGUI extends Application {
 	VBox root = new VBox();
 	for (Server s : GameData.servers.values()) {
 	    Button sButton = createButton(s.name, 12);
+	    hookServerChange(sButton);
 	    root.getChildren().add(sButton);
 	}
 	sp1.setMaxHeight(JRelayGUI.APP_HEIGHT - 140);
@@ -323,7 +329,20 @@ public class JRelayGUI extends Application {
 	return null;
 
     }
-
+    public void hookServerChange(Button b) {
+    	b.setOnAction(new EventHandler<ActionEvent>() {
+    	    @Override
+    	    public void handle(ActionEvent e) {
+    	    	 Platform.runLater(new Runnable() {
+    	 			public void run() {
+    	 			   
+    	 				ReconnectHandler.connect(GameData.servers.get(b.getText()).abbreviation);
+    	 			}
+    	 		    });	
+    		
+    	    }
+    	});
+        }
     public void hookRefreshSettings(Button b) {
 	b.setOnAction(new EventHandler<ActionEvent>() {
 	    @Override
@@ -401,10 +420,7 @@ public class JRelayGUI extends Application {
 	pluginsTab.setContent(buildPluginsTable());
 	tabPane.getTabs().add(pluginsTab);
 
-//	Tab serversTab = new Tab();
-//	serversTab.setGraphic(createLabel("Servers", 16));
-//	serversTab.setContent(buildServerBox());
-//	tabPane.getTabs().add(serversTab);
+
 
 	Tab settingsTab = new Tab();
 	settingsTab.setGraphic(createLabel("Settings", 16));

@@ -140,7 +140,25 @@ public class ReconnectHandler extends JPlugin {
        // user.saveState();
 
 	}
-
+	public static void connect(String server) {
+		ReconnectPacket reconnect = null;
+		try {
+			reconnect = (ReconnectPacket) Packet
+					.create(PacketType.RECONNECT);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		reconnect.host = GameData.abbrToServer.get(server
+				.toUpperCase()).address;
+		reconnect.port = 2050;
+		reconnect.gameId = -2;
+		reconnect.stats="";
+		reconnect.name = "Nexus";
+		reconnect.isFromArena = false;
+		reconnect.key = new byte[0];
+		reconnect.keyTime = 0;
+		sendReconnect(JRelay.instance.users.get(0), reconnect);
+	}
 	public void onConnectCommand(String command, String[] args) {
 		
 		if (args.length == 2) {

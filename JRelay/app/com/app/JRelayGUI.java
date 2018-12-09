@@ -20,6 +20,7 @@ import com.models.Packet;
 import com.models.PacketMeta;
 import com.models.Server;
 import com.relay.JRelay;
+import com.relay.User;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -335,8 +336,21 @@ public class JRelayGUI extends Application {
     	    public void handle(ActionEvent e) {
     	    	 Platform.runLater(new Runnable() {
     	 			public void run() {
-    	 			   
-    	 				ReconnectHandler.connect(GameData.servers.get(b.getText()).abbreviation);
+    	 			   Server toConnect = GameData.nameToServer.get(b.getText());
+    	 				if(toConnect==null) {
+    	 					 System.out.println("server not found");
+    	 					 return;
+    	 				}else {
+    	 					System.out.println(toConnect.name);
+    	 					ReconnectHandler recon = JRelay.instance.reconHandler;
+    	 					if(recon==null) {
+    	 						 System.out.println("Handler was null!");
+    	 						 return;
+    	 					}
+    	 					recon.onConnectCommand("/jcon "+toConnect.abbreviation, new String[] {"/jcon",toConnect.abbreviation});
+    	 				}
+    	 			  
+    	 				
     	 			}
     	 		    });	
     		

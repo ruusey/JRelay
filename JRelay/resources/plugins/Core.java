@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import com.data.GameData;
 import com.data.PacketType;
 import com.data.shared.Entity;
+import com.data.shared.Location;
 import com.data.shared.Tile;
 import com.event.EventUtils;
 import com.event.JPlugin;
@@ -19,7 +20,7 @@ import com.relay.JRelay;
 import com.relay.User;
 
 public class Core extends JPlugin {
-	UpdatePacket lastUpdate = null;
+	public boolean onTiles = false;
 	public Core(User user) {
 		super(user);
 
@@ -29,7 +30,7 @@ public class Core extends JPlugin {
 	public void attach() {
 		user.hookCommand("hi", Core.class, "onHiCommand");
 		user.hookCommand("jr", Core.class, "onJr");
-		user.hookCommand("tiles", Core.class, "onTiles");
+		
 		user.hookPacket(PacketType.UPDATE, Core.class, "onUpdatePacket");
 		user.hookPacket(PacketType.TEXT, Core.class, "filterShops");
 
@@ -48,28 +49,23 @@ public class Core extends JPlugin {
 			sendToClient(packet);
 		}
 	}
-	public void onTiles(String command, String[] args) {
-		for (Tile t : lastUpdate.tiles) {
-			if(distTo(t.x,t.y,user.playerData.pos.x,user.playerData.pos.y)<4.0) {
-				sendToClient(EventUtils.createNotification(
-						t.type, "HI"));
-			}
-			
-		}
-	}
 	public void onJr(String command, String[] args) {
 
 		TextPacket packet = EventUtils.createText("JRelay", "JRelay Alpha Build "+JRelay.JRELAY_VERSION+" for RotMG"+JRelay.GAME_VERSION+". Created by Ruusey");
 		sendToClient(packet);
 
 	}
+	
+	
 	public void filterShops(Packet p) {
 		TextPacket pack = (TextPacket) p;
 		if(pack.numStars<20)pack.send=false;
 		
 	}
 	public void onUpdatePacket(Packet p) {
+		
 		UpdatePacket pack = (UpdatePacket) p;
+		
 		for (Entry<ArrayList<String>, ArrayList<String>> entry : ObjectMapper.tiles.entrySet()) {
 			for (String from : entry.getKey()) {
 				if (from.equals(ObjectMapper.ALL_SELECTOR)) {
@@ -130,7 +126,7 @@ public class Core extends JPlugin {
 				}
 			}
 		}
-		lastUpdate=pack;
+		
 		sendToClient(pack);
 		p.send = false;
 	}

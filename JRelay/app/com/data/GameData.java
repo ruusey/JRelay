@@ -34,6 +34,7 @@ public class GameData {
 	public static HashMap<Byte, PacketModel> packets = new HashMap<Byte, PacketModel>();
 	public static HashMap<String, Server> abbrToServer = new HashMap<String, Server>();
 	public static HashMap<String, Server> servers = new HashMap<String, Server>();
+	public static HashMap<String, Server> nameToServer = new HashMap<String, Server>();
 	public static HashMap<Integer, PacketModel> packetIdToName = new HashMap<Integer, PacketModel>();
 	public static HashMap<String, Integer> packetNameToId = new HashMap<String, Integer>();
 	// **********************
@@ -233,6 +234,7 @@ public class GameData {
 			}
 			Server s = new Server(abbr, name, abbr, addr);
 			abbrToServer.put(abbr, s);
+			nameToServer.put(name, s);
 			servers.put(addr, s);
 
 		}

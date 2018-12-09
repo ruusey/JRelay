@@ -2,10 +2,13 @@ package plugins;
 
 import java.util.Map.Entry;
 
+import com.data.GameData;
 import com.data.PacketType;
 import com.data.State;
 import com.data.shared.Location;
 import com.data.shared.PlayerData;
+import com.data.shared.Tile;
+import com.event.EventUtils;
 import com.event.JPlugin;
 import com.models.Packet;
 import com.packets.client.MovePacket;
@@ -18,7 +21,7 @@ import com.relay.JRelay;
 import com.relay.User;
 
 public class ClientUpdater extends JPlugin {
-
+	public boolean onTiles=false;
 	public ClientUpdater(User user) {
 		super(user);
 
@@ -26,6 +29,7 @@ public class ClientUpdater extends JPlugin {
 
 	@Override
 	public void attach() {
+		user.hookCommand("tile", ClientUpdater.class, "onTiles");
 		user.hookPacket(PacketType.CREATESUCCESS, ClientUpdater.class,
 				"onCreateSuccess");
 		user.hookPacket(PacketType.MAPINFO, ClientUpdater.class,
@@ -37,7 +41,10 @@ public class ClientUpdater extends JPlugin {
 				"onPlayerShoot");
 		user.hookPacket(PacketType.MOVE, ClientUpdater.class, "onMove");
 	}
-
+	public void onTiles(String command, String[] args) {
+		onTiles=true;
+		
+	}
 	public void onMove(Packet pack) {
 		MovePacket packet = (MovePacket)pack;
 		user.previousTime = packet.time;
@@ -77,6 +84,22 @@ public class ClientUpdater extends JPlugin {
 	public void onUpdate(Packet pack)
     {
 		UpdatePacket packet = (UpdatePacket)pack;
+		if(onTiles) {
+			for (Tile t : packet.tiles) {
+				System.out.print(t.type+", ");
+				Location l = new Location();
+				l.x=t.x;
+				l.y=t.y;
+				float dist = user.playerData.pos.distanceTo(l);
+				System.out.println(dist);
+				if(dist<=1.0) {
+					sendToClient(EventUtils.createNotification(
+							user.playerData.ownerObjectId, "On tile id: "+t.type+", name: "+GameData.tiles.get(t.type).name));
+				}
+				
+			}
+		}
+		onTiles=false;
     	user.playerData.parse(packet);
         if (user.state.accId != null) return;
 

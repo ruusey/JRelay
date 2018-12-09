@@ -148,8 +148,7 @@ public class ReconnectHandler extends JPlugin {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		reconnect.host = GameData.abbrToServer.get(server
-				.toUpperCase()).address;
+		reconnect.host = GameData.nameToServer.get(server).address;
 		reconnect.port = 2050;
 		reconnect.gameId = -2;
 		reconnect.stats="";

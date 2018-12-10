@@ -325,7 +325,7 @@ public class User implements Runnable {
 		}
 	}
 
-	public void aaa(HelloPacket state) {
+	public void connect(HelloPacket state) {
 		try {
 			//System.out.println(this.state.conTargetAddress+" "+this.state.conTargetPort);
 			this.remoteSocket = new Socket(this.state.conTargetAddress, this.state.conTargetPort);

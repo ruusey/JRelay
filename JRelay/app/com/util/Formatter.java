@@ -28,7 +28,7 @@ public class Formatter {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		createPacketTypes();
+		enumerate();
 		//test();
 		
 		
@@ -77,6 +77,22 @@ public class Formatter {
 			System.out.println("\t<PacketID>"+id+"</PacketID>");
 			System.out.println("</Packet>");
 			//System.out.println(pack+"("+id+"),");
+		}
+	}
+	public static void enumerate() {
+		Scanner s = null;
+		try {
+			s = new Scanner(new File("resources\\xml\\enum.txt"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while(s.hasNextLine()) {
+			String line = s.nextLine();
+			String[] splits = line.split(" ");
+			
+			System.out.println(splits[0]+"("+splits[2].replace(",", "")+"),");
+			
 		}
 	}
 	

@@ -18,7 +18,8 @@ public enum CharacterClass
 	Mystic(0x0323),
 	Trickster(0x0324),
 	Sorcerer(0x0325),
-	Ninja(0x0326);
+	Ninja(0x0326),
+	Samurai(0x0311);
 	private static Map<Integer, CharacterClass> map = new HashMap<Integer, CharacterClass>();
 	static {
         for (CharacterClass cc : CharacterClass.values()) {

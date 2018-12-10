@@ -4,8 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum PetAbility {
-	AttackClose(402), AttackMid(404), AttackFar(405), Electric(406), Heal(407), MagicHeal(408), Savage(409), Decoy(
-			410), RisingFury(411);
+	AttackClose(402),
+	AttackMid(404),
+	AttackFar(405),
+	Electric(406),
+	Heal(407),
+	MagicHeal(408),
+	Savage(409),
+	Decoy(410),
+	RisingFury(411);
 
 	public static Map<Integer, PetAbility> map = new HashMap<Integer, PetAbility>();
 	static {

@@ -1,5 +1,7 @@
 package com.event;
 
+import com.data.PacketType;
+import com.models.Packet;
 import com.packets.server.NotificationPacket;
 import com.packets.server.TextPacket;
 
@@ -27,5 +29,23 @@ public class EventUtils {
 		alert.color = color;
 		return alert;
 	}
+	 public static TextPacket CreateOryxNotification(String sender, String message)
+     {
+         TextPacket tpacket = null;
+		try {
+			tpacket = (TextPacket)Packet.create(PacketType.TEXT);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         tpacket.bubbleTime = 0;
+         tpacket.cleanText = message;
+         tpacket.name = "";
+         tpacket.numStars = -1;
+         tpacket.objectId = -1;
+         tpacket.recipient = "";
+         tpacket.text = "<JRelay> " + message;
+         return tpacket;
+     }
 
 }

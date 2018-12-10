@@ -21,6 +21,7 @@ import com.relay.User;
 
 public class Core extends JPlugin {
 	public boolean onTiles = false;
+	public int starFilter = 10;
 	public Core(User user) {
 		super(user);
 
@@ -28,30 +29,37 @@ public class Core extends JPlugin {
 
 	@Override
 	public void attach() {
-		user.hookCommand("hi", Core.class, "onHiCommand");
+		//user.hookCommand("hi", Core.class, "onHiCommand");
 		user.hookCommand("jr", Core.class, "onJr");
+		user.hookCommand("filter", Core.class, "setStarFiler");
 		
 		user.hookPacket(PacketType.UPDATE, Core.class, "onUpdatePacket");
 		user.hookPacket(PacketType.TEXT, Core.class, "filterShops");
 
 	}
 
-	public void onHiCommand(String command, String[] args) {
+	public void setStarFiler(String command, String[] args) {
 		if (args.length < 2) {
-			TextPacket packet = EventUtils.createText("hi", "Too few argumenets /hi [on/off]");
+			TextPacket packet = EventUtils.createText("ChatFilter", "Too few argumenets /filter [#stars]");
 			sendToClient(packet);
-		} else if (args[1].equals("on")) {
-			TextPacket packet = EventUtils.createText("hi", "Hello! heres some player data: name="
-					+ user.playerData.name + " fame=" + user.playerData.characterFame);
-			sendToClient(packet);
-		} else if (args[1].equals("off")) {
-			TextPacket packet = EventUtils.createText("hi", "Hello! no player data requested");
+		} else  {
+			try {
+				starFilter=Integer.parseInt(args[1]);
+			}catch(Exception e) {
+				EventUtils.createText("ChatFilter",args[1]+" must be an integer 0-75");
+				return;
+			}
+			
+			TextPacket packet = EventUtils.createText("ChatFilter", "Set minimum chat star requirement to "+starFilter);
 			sendToClient(packet);
 		}
 	}
+	
 	public void onJr(String command, String[] args) {
-
+		
 		TextPacket packet = EventUtils.createText("JRelay", "JRelay Alpha Build "+JRelay.JRELAY_VERSION+" for RotMG"+JRelay.GAME_VERSION+". Created by Ruusey");
+		sendToClient(EventUtils.createNotification(
+				user.playerData.ownerObjectId, "JRelay Alpha Build "+JRelay.JRELAY_VERSION));
 		sendToClient(packet);
 
 	}
@@ -59,7 +67,7 @@ public class Core extends JPlugin {
 	
 	public void filterShops(Packet p) {
 		TextPacket pack = (TextPacket) p;
-		if(pack.numStars<20)pack.send=false;
+		if(pack.numStars<starFilter)pack.send=false;
 		
 	}
 	public void onUpdatePacket(Packet p) {

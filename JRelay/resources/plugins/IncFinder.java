@@ -31,7 +31,7 @@ public class IncFinder extends JPlugin {
 
 	}
 
-	public void onUpdatePrcket(Packet p) {
+	public void onUpdatePacket(Packet p) {
 		UpdatePacket update = (UpdatePacket) p;
 
 		// New Objects

@@ -35,8 +35,19 @@ public class QuestData implements IData{
 
 	@Override
 	public void writeToOutput(DataOutput out) throws IOException {
-		// TODO Auto-generated method stub
-		
+		out.writeUTF(this.id);
+		out.writeUTF(this.name);
+		out.writeUTF(this.description);
+		out.writeInt(this.category);
+		out.writeShort(this.requirements.length);
+		for (int i = 0; i < requirements.length; i++)
+        	out.write(requirements[i]);
+		out.writeShort(this.rewards.length);
+		for (int i = 0; i < rewards.length; i++)
+			out.write(rewards[i]);
+		out.writeBoolean(this.completed);
+		out.writeBoolean(this.itemOfChoice);
+		out.writeBoolean(this.repeatable);
 	}
 
 }

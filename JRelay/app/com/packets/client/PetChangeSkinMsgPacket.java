@@ -8,24 +8,24 @@ import com.data.shared.SlotObject;
 import com.models.Packet;
 
 
-public class ReskinPetPacket extends Packet {
+public class PetChangeSkinMsgPacket extends Packet {
 
 	public int petId;
 	public int skinType;
-	 public SlotObject item;
+	 public int currency;
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {
 		this.petId = in.readInt();
 		this.skinType = in.readInt();
-		this.item.parseFromInput(in);
+		this.currency=in.readInt();
 	}
 
 	@Override
 	public void writeToOutput(DataOutput out) throws IOException {
 		out.writeInt(this.petId);
 		out.writeInt(this.skinType);
-		item.writeToOutput(out);
+		out.writeInt(this.currency);
 	}
 
 }

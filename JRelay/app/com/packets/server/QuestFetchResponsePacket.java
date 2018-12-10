@@ -4,27 +4,22 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import com.data.shared.QuestData;
 import com.models.Packet;
 
 public class QuestFetchResponsePacket extends Packet{
-	public int tier;
-	public String goal;
-	public String description;
-	public String image;
+	 public QuestData[] Quests = new QuestData[0];
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {
-		this.tier=in.readInt();
-		this.goal=in.readUTF();
-		this.description=in.readUTF();
-		this.image=in.readUTF();
-		
+		Quests = new QuestData[in.readShort()];
+		for (int i = 0; i < Quests.length; i++)
+            Quests[i].parseFromInput(in);
 	}
 	@Override
 	public void writeToOutput(DataOutput out) throws IOException {
-		out.writeInt(this.tier);
-		out.writeUTF(this.goal);
-		out.writeUTF(this.description);
-		out.writeUTF(this.image);
+		out.writeShort(this.Quests.length);
+		for (int i = 0; i < Quests.length; i++)
+            Quests[i].writeToOutput(out);
 		
 	}
 	

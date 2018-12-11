@@ -47,6 +47,8 @@ public class ReconnectHandler extends JPlugin {
 			packet.key = user.state.conRealKey;
 			user.state.conRealKey = new byte[0];
 		}
+		AutoNexus.Bullet.destroyData();
+		AutoNexus.st.destroyData();
 		user.connect(packet);
 		pack.send=false;
 	}
@@ -156,6 +158,8 @@ public class ReconnectHandler extends JPlugin {
 		reconnect.isFromArena = false;
 		reconnect.key = new byte[0];
 		reconnect.keyTime = 0;
+		AutoNexus.Bullet.destroyData();
+		AutoNexus.st.destroyData();
 		sendReconnect(JRelay.instance.users.get(0), reconnect);
 	}
 	public void onConnectCommand(String command, String[] args) {
@@ -179,6 +183,8 @@ public class ReconnectHandler extends JPlugin {
 				reconnect.isFromArena = false;
 				reconnect.key = new byte[0];
 				reconnect.keyTime = 0;
+				AutoNexus.Bullet.destroyData();
+				AutoNexus.st.destroyData();
 				sendReconnect(user, reconnect);
 			} else {
 				try {

@@ -1,11 +1,24 @@
 package com.event;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.app.JRelayGUI;
 import com.data.PacketType;
 import com.models.Packet;
 import com.packets.server.NotificationPacket;
 import com.packets.server.TextPacket;
 
 public class EventUtils {
+	public static void error(String message, Logger log) {
+		JRelayGUI.error(message);
+		log.log(Level.SEVERE, message);
+	}
+
+	public static void info(String message,Logger log) {
+		JRelayGUI.log(message);
+		log.log(Level.INFO, message);
+	}
 	public static TextPacket createText(String sender, String text) {
 		TextPacket alert = new TextPacket();
 		alert.bubbleTime = -1;
@@ -47,5 +60,6 @@ public class EventUtils {
          tpacket.text = "<JRelay> " + message;
          return tpacket;
      }
+	 
 
 }

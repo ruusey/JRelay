@@ -1,5 +1,6 @@
 package com.relay;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,25 +16,26 @@ import com.data.State;
 import com.data.shared.PlayerData;
 import com.event.JPlugin;
 import com.models.Packet;
+import com.net.PacketBuffer;
+import com.net.ProxyImpl;
 import com.packets.client.HelloPacket;
 import com.packets.client.PlayerTextPacket;
 import java.lang.reflect.Method;
 
-public class User implements Runnable {
+public class Client implements Runnable {
 	public String GUID = null;
-	public boolean connected = true;
-	private static final int bufferLength = 65536 * 10;
+	public boolean closed = false;
+	
 
-	public byte[] localBuffer = new byte[bufferLength];
-	public int localBufferIndex = 0;
-	public RC4 localRecvRC4;
-	public RC4 localSendRC4;
-	public byte[] remoteBuffer = new byte[bufferLength];
-	public int remoteBufferIndex = 0;
-	public RC4 remoteRecvRC4;
-	public RC4 remoteSendRC4;
+	public PacketBuffer localBuffer = new PacketBuffer();
+	public PacketBuffer remoteBuffer = new PacketBuffer();
+	
+	public RC4 localRecvRC4= new RC4(JRelay.instance.key0);;
+	public RC4 localSendRC4= new RC4(JRelay.instance.key1);
+	public RC4 remoteRecvRC4 = new RC4(JRelay.instance.key1);
+	public RC4 remoteSendRC4= new RC4(JRelay.instance.key0);
 	public Socket localSocket;
-	public Socket remoteSocket = null;
+	public Socket remoteSocket;
 	public PlayerData playerData = new PlayerData(-1);
 	public State state;
 	public long lastUpdate = 0;
@@ -41,19 +43,25 @@ public class User implements Runnable {
 	public long localNoDataTime = System.currentTimeMillis();
 	public long remoteNoDataTime = System.currentTimeMillis();
 	public boolean shutdown = false;
+	public JRelay jrelay;
 	public ArrayList<String> userPluginInstances = new ArrayList<String>();
-
-	public User(Socket localSocket) throws Exception {
+	
+	public long getTime() {
+		return  (previousTime+(System.currentTimeMillis()-lastUpdate));
+	}
+	public int objectId() {
+		return playerData.ownerObjectId;
+	}
+	
+	public Client(ProxyImpl proxy,Socket localSocket) throws Exception {
 		if (localSocket == null) {
 			throw new NullPointerException();
 		}
 
 		this.localSocket = localSocket;
-		this.localRecvRC4 = new RC4(JRelay.instance.key0);
-		this.localSendRC4 = new RC4(JRelay.instance.key1);
-		this.remoteRecvRC4 = new RC4(JRelay.instance.key1);
-		this.remoteSendRC4 = new RC4(JRelay.instance.key0);
-		System.out.println(localSocket);
+		this.localSocket.setTcpNoDelay(true);
+		
+		System.out.println(this.localSocket);
 	}
 
 	public void disconnect() {

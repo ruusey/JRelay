@@ -47,7 +47,7 @@ public final class JRelay implements Runnable {
 	public static int NEXUS_GAMEID = -2;
 	public static int RANDOM_REALM_GAMEID = -3;
 	public static int MAPTEST_GAMEID = -6;
-	public static final String GAME_VERSION = "X31.1.2";
+	public static final String GAME_VERSION = "X31.2.3";
 	public static final String JRELAY_VERSION = "1.4.0";
 	public static final boolean PROD = true;
 	//

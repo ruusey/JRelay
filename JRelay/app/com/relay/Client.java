@@ -354,121 +354,121 @@ public class Client implements Runnable {
 
 	@Override
 	public void run() {
-		while (!shutdown) {
-			try {
-				
-				if (this.remoteSocket != null) {
-					try {
-						InputStream in = this.remoteSocket.getInputStream();
-						if (in.available() > 0) {
-							int bytesRead = this.remoteSocket.getInputStream().read(this.remoteBuffer,
-									this.remoteBufferIndex, this.remoteBuffer.length - this.remoteBufferIndex);
-							if (bytesRead == -1) {
-								throw new SocketException("end of stream");
-							} else if (bytesRead > 0) {
-								this.remoteBufferIndex += bytesRead;
-
-								while (this.remoteBufferIndex >= 5) {
-									int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(this.remoteBuffer[0])
-											.put(this.remoteBuffer[1]).put(this.remoteBuffer[2])
-											.put(this.remoteBuffer[3]).rewind()).getInt();
-									if (this.remoteBufferIndex < packetLength) {
-										break;
-									}
-									byte packetId = this.remoteBuffer[4];
-									byte[] packetBytes = new byte[packetLength - 5];
-									System.arraycopy(this.remoteBuffer, 5, packetBytes, 0, packetLength - 5);
-									if (this.remoteBufferIndex > packetLength) {
-										System.arraycopy(this.remoteBuffer, packetLength, this.remoteBuffer, 0,
-												this.remoteBufferIndex - packetLength);
-									}
-									this.remoteBufferIndex -= packetLength;
-									this.remoteRecvRC4.cipher(packetBytes);
-									Packet packet = Packet.create(packetId, packetBytes);
-									//System.out.println(JRelay.gen.serialize(packetId+" "+ packet));
-									invokeOnPacketRequired(packet);
-									invokeOnPacket(packet);
-									handleServerPacket(packet);
-
-								}
-							}
-							this.remoteNoDataTime = System.currentTimeMillis();
-						} else if (System.currentTimeMillis() - this.remoteNoDataTime >= 10000) {
-							throw new SocketException("remote data timeout");
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-						if (!(e instanceof SocketException)) {
-							JRelay.error(e.getMessage() + " End of remote stream.");
-								this.disconnect();
-							 e.printStackTrace();
-						} else {
-							JRelay.error(e.getMessage() + " End of remote stream.");
-							this.disconnect();
-						}
-						
-					}
-				}
-				InputStream in = this.localSocket.getInputStream();
-				if (in.available() > 0) {
-					int bytesRead = in.read(this.localBuffer, this.localBufferIndex,
-							this.localBuffer.length - this.localBufferIndex);
-					if (bytesRead == -1) {
-						throw new SocketException("eof");
-					} else if (bytesRead > 0) {
-						this.localBufferIndex += bytesRead;
-						while (this.localBufferIndex >= 5) {
-							int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(this.localBuffer[0])
-									.put(this.localBuffer[1]).put(this.localBuffer[2]).put(this.localBuffer[3])
-									.rewind()).getInt();
-							if (this.localBufferIndex < packetLength) {
-								break;
-							}
-							byte packetId = this.localBuffer[4];
-							byte[] packetBytes = new byte[packetLength - 5];
-							System.arraycopy(this.localBuffer, 5, packetBytes, 0, packetLength - 5);
-							if (this.localBufferIndex > packetLength) {
-								System.arraycopy(this.localBuffer, packetLength, this.localBuffer, 0,
-										this.localBufferIndex - packetLength);
-							}
-							this.localBufferIndex -= packetLength;
-							this.localRecvRC4.cipher(packetBytes);
-							
-							Packet packet = null;
-							try{
-								packet = Packet.create(packetId, packetBytes);
-							}catch(Exception e) {
-								JRelay.error("Unable to read HELLO packet. Are your RC4 keys up to date?");
-							}
-							//System.out.println(JRelay.gen.serialize(packet));
-							if (packet instanceof PlayerTextPacket) {
-								// ATTEMPT TO INVOKE COMMAND IF PLAYER TEXT
-								invokeOnCommand(packet);
-
-							} else {
-								// ATTEMPT TO INVOKE ON PACKET HOOKS THEN SEND TO SERVER
-								invokeOnPacketRequired(packet);
-								invokeOnPacket(packet);
-								handleClientPacket(packet);
-
-							}
-
-						}
-					}
-
-					this.localNoDataTime = System.currentTimeMillis();
-				} else if (System.currentTimeMillis() - this.localNoDataTime >= 10000) {
-
-					throw new SocketException("Local data read timeout");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				if (!shutdown) {
-					//this.kick();
-				}
-			}
-		}
-
+//		while (!shutdown) {
+//			try {
+//				
+//				if (this.remoteSocket != null) {
+//					try {
+//						InputStream in = this.remoteSocket.getInputStream();
+//						if (in.available() > 0) {
+//							int bytesRead = this.remoteSocket.getInputStream().read(this.remoteBuffer,
+//									this.remoteBufferIndex, this.remoteBuffer.length - this.remoteBufferIndex);
+//							if (bytesRead == -1) {
+//								throw new SocketException("end of stream");
+//							} else if (bytesRead > 0) {
+//								this.remoteBufferIndex += bytesRead;
+//
+//								while (this.remoteBufferIndex >= 5) {
+//									int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(this.remoteBuffer[0])
+//											.put(this.remoteBuffer[1]).put(this.remoteBuffer[2])
+//											.put(this.remoteBuffer[3]).rewind()).getInt();
+//									if (this.remoteBufferIndex < packetLength) {
+//										break;
+//									}
+//									byte packetId = this.remoteBuffer[4];
+//									byte[] packetBytes = new byte[packetLength - 5];
+//									System.arraycopy(this.remoteBuffer, 5, packetBytes, 0, packetLength - 5);
+//									if (this.remoteBufferIndex > packetLength) {
+//										System.arraycopy(this.remoteBuffer, packetLength, this.remoteBuffer, 0,
+//												this.remoteBufferIndex - packetLength);
+//									}
+//									this.remoteBufferIndex -= packetLength;
+//									this.remoteRecvRC4.cipher(packetBytes);
+//									Packet packet = Packet.create(packetId, packetBytes);
+//									//System.out.println(JRelay.gen.serialize(packetId+" "+ packet));
+//									invokeOnPacketRequired(packet);
+//									invokeOnPacket(packet);
+//									handleServerPacket(packet);
+//
+//								}
+//							}
+//							this.remoteNoDataTime = System.currentTimeMillis();
+//						} else if (System.currentTimeMillis() - this.remoteNoDataTime >= 10000) {
+//							throw new SocketException("remote data timeout");
+//						}
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//						if (!(e instanceof SocketException)) {
+//							JRelay.error(e.getMessage() + " End of remote stream.");
+//								this.disconnect();
+//							 e.printStackTrace();
+//						} else {
+//							JRelay.error(e.getMessage() + " End of remote stream.");
+//							this.disconnect();
+//						}
+//						
+//					}
+//				}
+//				InputStream in = this.localSocket.getInputStream();
+//				if (in.available() > 0) {
+//					int bytesRead = in.read(this.localBuffer, this.localBufferIndex,
+//							this.localBuffer.length - this.localBufferIndex);
+//					if (bytesRead == -1) {
+//						throw new SocketException("eof");
+//					} else if (bytesRead > 0) {
+//						this.localBufferIndex += bytesRead;
+//						while (this.localBufferIndex >= 5) {
+//							int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(this.localBuffer[0])
+//									.put(this.localBuffer[1]).put(this.localBuffer[2]).put(this.localBuffer[3])
+//									.rewind()).getInt();
+//							if (this.localBufferIndex < packetLength) {
+//								break;
+//							}
+//							byte packetId = this.localBuffer[4];
+//							byte[] packetBytes = new byte[packetLength - 5];
+//							System.arraycopy(this.localBuffer, 5, packetBytes, 0, packetLength - 5);
+//							if (this.localBufferIndex > packetLength) {
+//								System.arraycopy(this.localBuffer, packetLength, this.localBuffer, 0,
+//										this.localBufferIndex - packetLength);
+//							}
+//							this.localBufferIndex -= packetLength;
+//							this.localRecvRC4.cipher(packetBytes);
+//							
+//							Packet packet = null;
+//							try{
+//								packet = Packet.create(packetId, packetBytes);
+//							}catch(Exception e) {
+//								JRelay.error("Unable to read HELLO packet. Are your RC4 keys up to date?");
+//							}
+//							//System.out.println(JRelay.gen.serialize(packet));
+//							if (packet instanceof PlayerTextPacket) {
+//								// ATTEMPT TO INVOKE COMMAND IF PLAYER TEXT
+//								invokeOnCommand(packet);
+//
+//							} else {
+//								// ATTEMPT TO INVOKE ON PACKET HOOKS THEN SEND TO SERVER
+//								invokeOnPacketRequired(packet);
+//								invokeOnPacket(packet);
+//								handleClientPacket(packet);
+//
+//							}
+//
+//						}
+//					}
+//
+//					this.localNoDataTime = System.currentTimeMillis();
+//				} else if (System.currentTimeMillis() - this.localNoDataTime >= 10000) {
+//
+//					throw new SocketException("Local data read timeout");
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				if (!shutdown) {
+//					//this.kick();
+//				}
+//			}
+//		}
+//
 	}
 
 }

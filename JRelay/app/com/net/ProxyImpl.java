@@ -50,7 +50,7 @@ public class ProxyImpl {
 	
 	FootBall footBall;
 	ListenerHandler proxyStarted = (ProxyImpl impl) ->{impl.start();};
-	ListenerHandler proxyClosed;
+	ListenerHandler proxyClosed=(ProxyImpl impl) ->{impl.stop();};
 	ConnectionHandler clientConnected = (Client client)-> { localConnect(client); };
 	ConnectionHandler clientDisconnected;
 	PacketHandler serverPacketRecieved;

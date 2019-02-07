@@ -11,16 +11,16 @@ import org.dom4j.io.SAXReader;
 @SuppressWarnings("unchecked")
 public class Formatter {
 	public static void main(String[] args) {
-//		String s = "6a39570cc9de4ec71d64821894c79332b197f92ba85ed281a023";
-//		
-////		String[] ss =s1.split("\n");
-////		for(String string : ss) {
-////		    System.out.println(string);
-////		}
-//		System.out.println(s.substring(0,26));
-//		System.out.println(s.substring(26,s.length()));
-//		//return;
-//		
+		String s = "6a39570cc9de4ec71d64821894c79332b197f92ba85ed281a023";
+		
+//		String[] ss =s1.split("\n");
+//		for(String string : ss) {
+//		    System.out.println(string);
+//		}
+		System.out.println(s.substring(0,26));
+		System.out.println(s.substring(26,s.length()));
+		//return;
+		
 //		try {
 //			String workingDir = JRelayGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 //			System.out.println(workingDir);
@@ -28,7 +28,7 @@ public class Formatter {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		enumerate();
+		createPacketTypes();
 		//test();
 		
 		

@@ -31,7 +31,7 @@ import com.relay.User;
 
 public class AutoNexus extends JPlugin {
 	boolean enabled = true;
-	float nexusPercent = 0.9f;
+	float nexusPercent = 0.15f;
 	public static ClientState st = null;
 	static int counter = 0;
 	static int delay = 10;
@@ -48,7 +48,7 @@ public class AutoNexus extends JPlugin {
 				Bullet.piercing.put(e.id, new ArrayList<Integer>());
 				Bullet.breaking.put(e.id, new ArrayList<Integer>());
 				
-				System.out.println("Mapping "+e.Projectiles.length+" projectiles");
+				//System.out.println("Mapping "+e.Projectiles.length+" projectiles");
 				for (Projectile proj : e.Projectiles) {
 					if (proj.armorPiercing)
 						Bullet.piercing.get(e.id).add((int) proj.id);

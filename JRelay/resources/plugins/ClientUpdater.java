@@ -88,9 +88,10 @@ public class ClientUpdater extends JPlugin {
 			for (Tile t : packet.tiles) {
 				System.out.print(t.type+", ");
 				Location l = new Location();
+				Location myPos = user.playerData.pos;
 				l.x=t.x;
 				l.y=t.y;
-				float dist = user.playerData.pos.distanceTo(l);
+				float dist = myPos.distanceTo(l);
 				System.out.println(dist);
 				if(dist<=1.0) {
 					sendToClient(EventUtils.createNotification(

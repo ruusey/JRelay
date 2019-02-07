@@ -47,8 +47,8 @@ public final class JRelay implements Runnable {
 	public static int NEXUS_GAMEID = -2;
 	public static int RANDOM_REALM_GAMEID = -3;
 	public static int MAPTEST_GAMEID = -6;
-	public static final String GAME_VERSION = "X31.2.3";
-	public static final String JRELAY_VERSION = "1.4.0";
+	public static final String GAME_VERSION = "X31.3.0";
+	public static final String JRELAY_VERSION = "1.4.1";
 	public static final boolean PROD = true;
 	//
 	public static String APP_LOC = "";
@@ -289,11 +289,7 @@ public final class JRelay implements Runnable {
 	@Override
 	public void run() {
 		try {
-//			JRelayGUI.updateStatus("Loading assets...", "orange");
-//			if (!GameData.loadData()) {
-//				JRelay.info("GameData unable to load. Exiting...");
-//				System.exit(0);
-//			}
+
 			ObjectMapper.buildMap();
 			Packet.init();
 			loadUserPlugins();
@@ -308,7 +304,7 @@ public final class JRelay implements Runnable {
 					User user = JRelay.instance.newUsers.remove(0);
 					Thread userThread = new Thread(user);
 					connections.add(userThread);
-					userThread.start();
+					userThread.run();
 					JRelay.info("Client recieved...");
 				}
 			}

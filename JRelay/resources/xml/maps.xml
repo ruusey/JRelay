@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Maps>
-	<Map id="tileMap">
-		<TileMap />
-		<Entry start="Light Sand:Dark Sand" end="OceanFloor" />
-	</Map>
+  <Map id="tileMap">
+    <TileMap />
+    <Entry start="Light Sand:Dark Sand" end="OceanFloor" />
+  </Map>
 </Maps>

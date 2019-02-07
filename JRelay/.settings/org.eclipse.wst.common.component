@@ -2,6 +2,7 @@
     <wb-module deploy-name="JRelayAPI">
         <wb-resource deploy-path="/" source-path="/app"/>
         <wb-resource deploy-path="/" source-path="/resources"/>
+        <wb-resource deploy-path="/" source-path="/src"/>
         <property name="context-root" value="JRelayAPI"/>
         <property name="java-output-path" value="/JRelayAPI/target/classes"/>
     </wb-module>

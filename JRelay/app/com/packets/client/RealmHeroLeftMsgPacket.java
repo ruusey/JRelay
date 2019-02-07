@@ -8,7 +8,7 @@ import com.models.Packet;
 
 public class RealmHeroLeftMsgPacket extends Packet {
 
-	public int heroesLeft = 0;
+	public int heroesLeft = 1;
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {
@@ -18,7 +18,7 @@ public class RealmHeroLeftMsgPacket extends Packet {
 
 	@Override
 	public void writeToOutput(DataOutput out) throws IOException {
-		out.write(this.heroesLeft);
+		out.writeInt(this.heroesLeft);
 	}
 
 }

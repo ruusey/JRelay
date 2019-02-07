@@ -52,7 +52,7 @@ public class AutoNexus extends JPlugin {
 				for (Projectile proj : e.Projectiles) {
 					if (proj.armorPiercing)
 						Bullet.piercing.get(e.id).add((int) proj.id);
-					if (proj.StatusEffects.containsKey(ConditionEffect.ArmorBroken.toString()))
+					if (proj.StatusEffects.containsKey("Armor Broken"));
 						Bullet.breaking.get(e.id).add((int) proj.id);
 				};
 

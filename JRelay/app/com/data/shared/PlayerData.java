@@ -81,6 +81,7 @@ public class PlayerData // TODO: Add the rest of the stats
         for (Entity newObject : update.newObjs){
         	if (newObject.status.objectId == ownerObjectId){
                 cls = CharacterClass.valueOf(newObject.objectType);
+                this.pos = newObject.status.pos;
                 for (StatData data : newObject.status.data)
                 parse(data.id, data.intValue, data.stringValue);
             }

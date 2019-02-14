@@ -29,7 +29,7 @@ public class Core extends JPlugin {
 
 	@Override
 	public void attach() {
-		//user.hookCommand("hi", Core.class, "onHiCommand");
+		user.hookCommand("hi", Core.class, "onHiCommand");
 		user.hookCommand("jr", Core.class, "onJr");
 		user.hookCommand("filter", Core.class, "setStarFiler");
 		
@@ -37,7 +37,19 @@ public class Core extends JPlugin {
 		user.hookPacket(PacketType.TEXT, Core.class, "filterShops");
 
 	}
-
+	public void onHiCommand(String command, String[] args) {
+		if (args.length < 2) {
+			TextPacket packet = EventUtils.createText("hi", "Too few argumenets /hi [on/off]");
+			sendToClient(packet);
+		} else if (args[1].equals("on")) {
+			TextPacket packet = EventUtils.createText("hi", "Hello! heres some player data: name="
+					+ user.playerData.name + " fame=" + user.playerData.characterFame);
+			sendToClient(packet);
+		} else if (args[1].equals("off")) {
+			TextPacket packet = EventUtils.createText("hi", "Hello! no player data requested");
+			sendToClient(packet);
+		}
+	}
 	public void setStarFiler(String command, String[] args) {
 		if (args.length < 2) {
 			TextPacket packet = EventUtils.createText("ChatFilter", "Too few argumenets /filter [#stars]");

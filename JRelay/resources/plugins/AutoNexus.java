@@ -1,6 +1,7 @@
 package plugins;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
@@ -25,13 +26,14 @@ import com.packets.client.PlayerHitPacket;
 import com.packets.server.AOEPacket;
 import com.packets.server.EnemyShootPacket;
 import com.packets.server.NewTickPacket;
+import com.packets.server.TextPacket;
 import com.packets.server.UpdatePacket;
 import com.relay.JRelay;
 import com.relay.User;
 
 public class AutoNexus extends JPlugin {
 	boolean enabled = true;
-	float nexusPercent = 0.15f;
+	float nexusPercent = 0.50f;
 	public static ClientState st = null;
 	static int counter = 0;
 	static int delay = 10;
@@ -64,13 +66,31 @@ public class AutoNexus extends JPlugin {
 		JRelay.info("Auto Nexus: Found " + Bullet.piercing.values().size() + " Armor Piercing Projectiles, Found "
 				+ Bullet.breaking.values().size() + " Armor Breaking Projectiles.");
 		st = new ClientState(user);
-		// user.hookCommand("autonexus", AutoNexus.class,"OnCommand");
+		user.hookCommand("anx", AutoNexus.class,"onJXCommand");
 		user.hookPacket(PacketType.UPDATE, AutoNexus.class, "UpdateAN");
 		user.hookPacket(PacketType.NEWTICK, AutoNexus.class, "NewTickAN");
 		user.hookPacket(PacketType.ENEMYSHOOT, AutoNexus.class, "EShootAN");
 		user.hookPacket(PacketType.PLAYERHIT, AutoNexus.class, "PHitAN");
 		user.hookPacket(PacketType.AOE, AutoNexus.class, "AoeAN");
 
+	}
+	public void onJXCommand(String command, String[] args) {
+		if (args.length < 2) {
+			this.enabled=false;
+			TextPacket packet = EventUtils.createText("AutoNexus", "Autonexus disabled");
+			sendToClient(packet);
+		} else  {
+			try {
+				int anx=Integer.parseInt(args[1]);
+				this.nexusPercent=((float)anx)/100.0f;
+				TextPacket packet = EventUtils.createText("AutoNexus"," AutoNexus percent now set to "+this.nexusPercent*100);
+				sendToClient(packet);
+			}catch(Exception e) {
+				TextPacket packet = EventUtils.createText("AutoNexus",args[1]+" must be an integer 1-99");
+				sendToClient(packet);
+				
+			}
+		}
 	}
 	public void UpdateAN(Packet p) {
 		st.Update((UpdatePacket) p);
@@ -131,13 +151,13 @@ public class AutoNexus extends JPlugin {
 		/// Map of piercing projectiles
 		/// Object ID -> list of piercing projectile IDs
 		/// </summary>
-		public static Hashtable<Integer, ArrayList<Integer>> piercing = new Hashtable<Integer, ArrayList<Integer>>();
+		public static HashMap<Integer, ArrayList<Integer>> piercing = new HashMap<Integer, ArrayList<Integer>>();
 
 		/// <summary>
 		/// Map of armor break projectiles
 		/// Object ID -> list of armor break projectile IDs
 		/// </summary>
-		public static Hashtable<Integer, ArrayList<Integer>> breaking = new Hashtable<Integer, ArrayList<Integer>>();
+		public static HashMap<Integer, ArrayList<Integer>> breaking = new HashMap<Integer, ArrayList<Integer>>();
 
 		public static boolean IsPiercing(int enemyType, int projectileType) {
 			return piercing.containsKey(enemyType) && piercing.get(enemyType).contains(projectileType);

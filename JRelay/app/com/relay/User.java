@@ -75,9 +75,9 @@ public class User implements Runnable {
 			this.localSocket.close();
 			this.remoteSocket.close();
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}
-		this.localBuffer = null;
+		this.localBuffer=null;
 		this.remoteBuffer = null;
 		this.localRecvRC4 = null;
 		this.localSendRC4 = null;
@@ -89,13 +89,14 @@ public class User implements Runnable {
 
 	public void kick() {
 
-		this.shutdown = true;
+		
 		this.disconnect();
 		try {
 			this.localSocket.close();
 		} catch (Exception e) {
 			// e.printStackTrace();
 		}
+		
 		destroy();
 		JRelay.info("Client disconnected...");
 
@@ -117,6 +118,7 @@ public class User implements Runnable {
 		try {
 			this.sendClientPacket(packet);
 		} catch (Exception e) {
+			e.printStackTrace();
 			this.kick();
 		}
 	}
@@ -125,6 +127,7 @@ public class User implements Runnable {
 		try {
 			this.sendServerPacket(packet);
 		} catch (Exception e) {
+			e.printStackTrace();
 			this.kick();
 		}
 	}
@@ -348,7 +351,6 @@ public class User implements Runnable {
 	public void run() {
 		while (!shutdown) {
 			try {
-				
 				if (this.remoteSocket != null) {
 					try {
 						InputStream in = this.remoteSocket.getInputStream();

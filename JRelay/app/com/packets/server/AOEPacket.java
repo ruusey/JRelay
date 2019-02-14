@@ -18,7 +18,7 @@ public class AOEPacket extends Packet {
 	public float duration;
 	public int origType;
 	public int color;
-
+	public boolean armorPierce;
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {
 		this.pos.parseFromInput(in);
@@ -28,6 +28,7 @@ public class AOEPacket extends Packet {
 		this.duration = in.readFloat();
 		this.origType = in.readUnsignedShort();
 		this.color=in.readInt();
+		this.armorPierce=in.readBoolean();
 	}
 
 	@Override
@@ -39,6 +40,7 @@ public class AOEPacket extends Packet {
 		out.writeFloat(this.duration);
 		out.writeShort(this.origType);
 		out.writeInt(this.color);
+		out.writeBoolean(this.armorPierce);
 	}
 
 }

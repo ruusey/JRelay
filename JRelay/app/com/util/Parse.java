@@ -1,5 +1,12 @@
 package com.util;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
+
 import org.dom4j.Node;
 
 public class Parse {
@@ -38,5 +45,25 @@ public class Parse {
 
 	public static float parseFloat(String input) {
 		return Float.parseFloat(input);
+	}
+	public static String decodeKey(byte[] key) {
+		CharsetDecoder newDecoder = Charset.forName("UTF8").newDecoder();
+		try {
+			return newDecoder.decode(ByteBuffer.wrap(key)).toString();
+		} catch (CharacterCodingException e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public static byte[] encodeKey(String key) {
+		CharsetEncoder newDecoder = Charset.forName("UTF8").newEncoder();
+		try {
+			return newDecoder.encode(CharBuffer.wrap(key.toCharArray())).array();
+		} catch (CharacterCodingException e) {
+			
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

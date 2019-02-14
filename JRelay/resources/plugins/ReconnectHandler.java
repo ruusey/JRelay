@@ -18,7 +18,7 @@ import com.relay.User;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 public class ReconnectHandler extends JPlugin {
-
+	public static final String DEFAULT_SERVER = GameData.abbrToServer.get("USS").address;
 	public ReconnectHandler(User user) {
 		super(user);
 		
@@ -42,6 +42,7 @@ public class ReconnectHandler extends JPlugin {
 		HelloPacket packet = (HelloPacket) pack;
 		State thisState = JRelay.instance.getState(user, packet.key);
 		user.state=thisState;
+		user.state.lastHello=packet;
 		user.state.locationName="n/a";
 		if (user.state.conRealKey.length != 0) {
 			packet.key = user.state.conRealKey;
@@ -140,25 +141,7 @@ public class ReconnectHandler extends JPlugin {
        // user.saveState();
 
 	}
-	public static void connect(String server) {
-		ReconnectPacket reconnect = null;
-		try {
-			reconnect = (ReconnectPacket) Packet
-					.create(PacketType.RECONNECT);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		reconnect.host = GameData.nameToServer.get(server).address;
-		reconnect.port = 2050;
-		reconnect.gameId = -2;
-		reconnect.stats="";
-		reconnect.name = "Nexus";
-		reconnect.isFromArena = false;
-		reconnect.key = new byte[0];
-		reconnect.keyTime = 0;
-		
-		sendReconnect(JRelay.instance.users.get(0), reconnect);
-	}
+	
 	public void onConnectCommand(String command, String[] args) {
 		
 		if (args.length == 2) {
@@ -224,7 +207,7 @@ public class ReconnectHandler extends JPlugin {
 			e.printStackTrace();
 		}
 		if(reconnect.host.length()==0){
-			user.state.conTargetAddress = JRelay.instance.remoteHost;
+			user.state.conTargetAddress = DEFAULT_SERVER;
 			user.state.conTargetPort = 2050;
 			reconnect.key=user.state.conRealKey;
 		}else{

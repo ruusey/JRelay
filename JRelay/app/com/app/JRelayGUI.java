@@ -115,7 +115,7 @@ public class JRelayGUI extends Application {
 	tabs.getTabs().get(2).setContent(buildServerBox());
 	componentLayout.setTop(hb);
 	componentLayout.setCenter(tabs);
-	startPluginUpdate();
+	//startPluginUpdate();
 
 	root.getChildren().add(componentLayout);
 	// Add the Scene to the Stage
@@ -130,6 +130,8 @@ public class JRelayGUI extends Application {
 	    }
 	});
 	log("JRelay for RotMG " + JRelay.GAME_VERSION);
+	
+	
     }
 
     public static void warn(String s) {

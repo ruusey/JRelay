@@ -84,33 +84,53 @@ public class ClientUpdater extends JPlugin {
 	public void onUpdate(Packet pack)
     {
 		UpdatePacket packet = (UpdatePacket)pack;
-		if(onTiles) {
-			for (Tile t : packet.tiles) {
-				System.out.print(t.type+", ");
-				Location l = new Location();
-				Location myPos = user.playerData.pos;
-				l.x=t.x;
-				l.y=t.y;
-				float dist = myPos.distanceTo(l);
-				System.out.println(dist);
-				if(dist<=1.0) {
-					sendToClient(EventUtils.createNotification(
-							user.playerData.ownerObjectId, "On tile id: "+t.type+", name: "+GameData.tiles.get(t.type).name));
-				}
-				
-			}
-		}
-		onTiles=false;
+//		if(onTiles) {
+//			for (Tile t : packet.tiles) {
+//				System.out.print(t.type+", ");
+//				Location l = new Location();
+//				Location myPos = user.playerData.pos;
+//				l.x=t.x;
+//				l.y=t.y;
+//				float dist = myPos.distanceTo(l);
+//				System.out.println(dist);
+//				if(dist<=1.0) {
+//					sendToClient(EventUtils.createText("Tiles", "On tile id: "+t.type+", name: "+GameData.tiles.get(t.type).name));
+//							
+//				}
+//				
+//			}
+//		}
+//		onTiles=false;
     	user.playerData.parse(packet);
         if (user.state.accId != null) return;
-
+        State randomRealmState = null;
         State resolvedState = null;
 
         for (State cstate : JRelay.instance.userStates.values()){
-        	if(cstate.accId==null) continue;
-        	if (cstate.accId.equals(user.playerData.accountId)){
-        		resolvedState = cstate;
+        	try {
+        		if (cstate.accId.equals(user.playerData.accountId)){
+            		resolvedState = cstate;
+            		for(State state : JRelay.instance.userStates.values()) {
+            			if(state.lastHello!=null && state.lastHello.gameId==-3){
+            				randomRealmState = state;
+            			}
+            		}
+            		if (randomRealmState != null)
+                    {
+                        resolvedState.conTargetAddress = randomRealmState.lastRealm.host;
+                        resolvedState.lastRealm = randomRealmState.lastRealm;
+                        JRelay.instance.userStates.remove(randomRealmState.GUID);
+                    }
+                    else if (resolvedState.lastHello.gameId == -2 && ((MapInfoPacket)user.state.getState("MapInfo")).name.equals("Nexus"))
+                    {
+                        resolvedState.conTargetAddress = JRelay.instance.remoteHost;
+                    }
+            		
+            	}
+        	}catch(Exception e) {
+        		
         	}
+        	
                 
         }
         if (resolvedState == null){

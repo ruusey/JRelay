@@ -100,7 +100,7 @@ public class StatsType {
 
     private byte m_type;
     public int type;
-    private StatsType(int type)
+    public StatsType(int type)
     {	
     	this.type=type;
         this.m_type = (byte)type;
@@ -118,6 +118,12 @@ public class StatsType {
     {
         if (type > Byte.MAX_VALUE) throw new Exception("Not a valid StatData number.");
         return new StatsType((byte)type);
+    }
+
+    public StatsType newStatType(byte type) throws Exception
+    {
+        if (type > Byte.MAX_VALUE) throw new Exception("Not a valid StatData number.");
+        return new StatsType((int)type);
     }
 
     public static boolean checkStat(StatsType type, int id) throws Exception

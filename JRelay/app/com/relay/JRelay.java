@@ -26,12 +26,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.app.JRelayGUI;
+import com.app.ResourceMonitor;
 import com.crypto.RSA;
 import com.data.GameData;
 import com.data.PacketType;
 import com.data.State;
 import com.event.JPlugin;
 import com.event.PluginMetaData;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.models.ObjectMapper;
 import com.models.Packet;
 import com.net.ListenSocket;
@@ -50,7 +53,7 @@ public final class JRelay implements Runnable {
 	public static final String GAME_VERSION = "X31.3.0";
 	public static final String JRELAY_VERSION = "1.4.1";
 	public static final boolean PROD = true;
-	//
+	//public static final String DEFAULT_SERVER = GameData.abbrToServer.get("USS").address;
 	public static String APP_LOC = "";
 	public static String RES_LOC = "";
 	public static String APP_PKG = "";
@@ -77,9 +80,9 @@ public final class JRelay implements Runnable {
 	public final ListenSocket listenSocket;
 	public final List<User> users = new ArrayList<User>();
 	public final List<User> newUsers = new Vector<User>();
-	public final Map<Integer, InetSocketAddress> gameIdSocketAddressMap = new Hashtable<Integer, InetSocketAddress>();
-	public static HashMap<User, Thread> userThreads = new HashMap<User, Thread>();
-	public final Map<String, State> userStates = new Hashtable<String, State>();
+	public final HashMap<Integer, InetSocketAddress> gameIdSocketAddressMap = new HashMap<Integer, InetSocketAddress>();
+	public HashMap<User, Thread> userThreads = new HashMap<User, Thread>();
+	public BiMap<String, State> userStates = HashBiMap.create();
 	public static Logger log = Logger.getLogger(GameData.class.getName());
 	public static Genson gen = new Genson();
 
@@ -293,6 +296,7 @@ public final class JRelay implements Runnable {
 			ObjectMapper.buildMap();
 			Packet.init();
 			loadUserPlugins();
+			
 
 		} catch (Exception e) {
 			JRelay.error(e.getMessage());
@@ -401,7 +405,7 @@ public final class JRelay implements Runnable {
 		String guid = key.length == 0 ? "n/a" : keyString;
 
 		State newState = new State(client, UUID.randomUUID().toString().replace("-", ""));
-		userStates.put(newState.GUID, newState);
+		userStates.forcePut(newState.GUID, newState);
 		if (!guid.equals("n/a")) {
 			State lastState = userStates.get(guid);
 

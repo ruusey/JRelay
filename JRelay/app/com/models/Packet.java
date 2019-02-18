@@ -35,7 +35,7 @@ public abstract class Packet implements IData {
 		List<Class<? extends Packet>> list = loadPackets();
 
 		try {
-			JRelay.info("Mapping " + GameData.packets.size() + " packets");
+			//JRelay.info("Mapping " + GameData.packets.size() + " packets");
 			for (Class<? extends Packet> packetClass : list) {
 				Packet packet = packetClass.newInstance();
 				String name = packet.getName();
@@ -43,7 +43,7 @@ public abstract class Packet implements IData {
 				try {
 					GameData.packetNameToId.containsKey(name);
 				} catch (Exception e) {
-					JRelay.error(e.getLocalizedMessage());
+					//JRelay.error(e.getLocalizedMessage());
 				}
 				
 				int id = 0;
@@ -64,7 +64,7 @@ public abstract class Packet implements IData {
 				Class<? extends Packet> p = packetIdtoClassMap.get(id);
 				if (p == null) {
 					PacketModel model = GameData.packetIdToName.get(id);
-					JRelayGUI.warn("No class found for " + JRelay.gen.serialize(model));
+					//JRelayGUI.warn("No class found for " + JRelay.gen.serialize(model));
 				}
 			}
 		} catch (Exception e) {
@@ -99,7 +99,7 @@ public abstract class Packet implements IData {
 		packet.parseFromInput(stream);
 		int byteLength = packet.getBytes().length;
 		if (byteLength != bytes.length) {
-			JRelay.info(packet + " byte length is " + byteLength + " after parsing, but was " + bytes.length
+			System.out.println(packet + " byte length is " + byteLength + " after parsing, but was " + bytes.length
 					+ " before parsing. Try updating packet definitions");
 			UnknownPacket ukp = new UnknownPacket();
 			ukp.setId(id);
@@ -149,13 +149,13 @@ public abstract class Packet implements IData {
 	}
 
 	public static List<Class<? extends Packet>> addClientPackets() {
-		List<Class<? extends Packet>> classes = ClassFinder.find(JRelay.APP_PKG+"com.packets.client");
+		List<Class<? extends Packet>> classes = ClassFinder.getClassOfPackage("com.packets.client");
 		clientPacketClasses=classes;
 		return classes;
 	}
 
 	public static List<Class<? extends Packet>> addServerPackets() {
-		List<Class<? extends Packet>> classes = ClassFinder.find(JRelay.APP_PKG+"com.packets.server");
+		List<Class<? extends Packet>> classes = ClassFinder.getClassOfPackage("com.packets.server");
 		serverPacketClasses=classes;
 		return classes;
 	}

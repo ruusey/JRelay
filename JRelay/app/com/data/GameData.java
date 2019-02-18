@@ -62,10 +62,10 @@ public class GameData {
 
 			if (GameData.tiles.isEmpty() || GameData.objects.isEmpty() || GameData.packets.isEmpty()
 					|| GameData.abbrToServer.isEmpty()) {
-				JRelay.info("Error loading game assets");
+				//JRelay.info("Error loading game assets");
 				return false;
 			} else {
-				JRelay.info("Succesfully loaded all game assets");
+				//JRelay.info("Succesfully loaded all game assets");
 				return true;
 			}
 
@@ -126,7 +126,7 @@ public class GameData {
 			nameToItem.put(name, i);
 
 		}
-		JRelay.info("Loaded " + items.keySet().size() + " Items...");
+		//JRelay.info("Loaded " + items.keySet().size() + " Items...");
 	}
 
 	public static void parseTiles(Document tileDoc) {
@@ -150,7 +150,7 @@ public class GameData {
 			nameToTile.put(name, t);
 
 		}
-		JRelay.info("Loaded " + tiles.keySet().size() + " Tiles...");
+		//JRelay.info("Loaded " + tiles.keySet().size() + " Tiles...");
 	}
 
 	public static void parseObjects(Document objectDoc) {
@@ -192,7 +192,7 @@ public class GameData {
 			nameToObject.put(name, o);
 
 		}
-		JRelay.info("Loaded " + objects.keySet().size() + " Objects...");
+		//JRelay.info("Loaded " + objects.keySet().size() + " Objects...");
 	}
 
 	public static void parsePackets(Document packetDoc) {
@@ -238,7 +238,7 @@ public class GameData {
 			servers.put(addr, s);
 
 		}
-		JRelay.info("Loaded " + abbrToServer.keySet().size() + " Servers...");
+		//JRelay.info("Loaded " + abbrToServer.keySet().size() + " Servers...");
 	}
 
 	public static Projectile parseProjectile(Node node) {

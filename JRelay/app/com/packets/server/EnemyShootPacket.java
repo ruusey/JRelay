@@ -11,11 +11,11 @@ public class EnemyShootPacket extends Packet{
 
 	public byte bulletId;
 	public int ownerId;
-	public int containerType;
+	public int bulletType;
 	public Location startingPos = new Location();
 	public float angle;
 	public int damage;
-	public int numShots;
+	public byte numShots;
 	public float angleInc;
 	
 
@@ -24,7 +24,7 @@ public class EnemyShootPacket extends Packet{
 	public void parseFromInput(DataInput in) throws IOException {
 		this.bulletId = in.readByte();
 		this.ownerId = in.readInt();
-		this.containerType = in.readByte();
+		this.bulletType = in.readByte();
 		this.startingPos.parseFromInput(in);
 		this.angle = in.readFloat();
 		this.damage = in.readShort();
@@ -42,7 +42,7 @@ public class EnemyShootPacket extends Packet{
 	public void writeToOutput(DataOutput out) throws IOException {
 		out.writeByte(this.bulletId);
 		out.writeInt(this.ownerId);
-		out.writeByte(this.containerType);
+		out.writeByte(this.bulletType);
 		this.startingPos.writeToOutput(out);
 		out.writeFloat(this.angle);
 		out.writeShort(this.damage);

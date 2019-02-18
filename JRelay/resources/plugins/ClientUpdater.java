@@ -102,13 +102,13 @@ public class ClientUpdater extends JPlugin {
 //		}
 //		onTiles=false;
     	user.playerData.parse(packet);
-        if (user.state.accId != null) return;
+       // if (user.state.accId != null) return;
         State randomRealmState = null;
         State resolvedState = null;
 
         for (State cstate : JRelay.instance.userStates.values()){
         	try {
-        		if (cstate.accId.equals(user.playerData.accountId)){
+        		if (cstate.accId!=null&&cstate.accId.equals(user.playerData.accountId)){
             		resolvedState = cstate;
             		for(State state : JRelay.instance.userStates.values()) {
             			if(state.lastHello!=null && state.lastHello.gameId==-3){
@@ -119,16 +119,16 @@ public class ClientUpdater extends JPlugin {
                     {
                         resolvedState.conTargetAddress = randomRealmState.lastRealm.host;
                         resolvedState.lastRealm = randomRealmState.lastRealm;
-                        JRelay.instance.userStates.remove(randomRealmState.GUID);
+                        JRelay.instance.userStates.inverse().remove(resolvedState);
                     }
-                    else if (resolvedState.lastHello.gameId == -2 && ((MapInfoPacket)user.state.getState("MapInfo")).name.equals("Nexus"))
+                    else if (resolvedState.lastHello.gameId == -2 && ((MapInfoPacket)user.state.getState("MapInfo")).name.equalsIgnoreCase("Nexus"))
                     {
-                        resolvedState.conTargetAddress = JRelay.instance.remoteHost;
+                        resolvedState.conTargetAddress = GameData.abbrToServer.get("USS").address;
                     }
             		
             	}
         	}catch(Exception e) {
-        		
+        		e.printStackTrace();
         	}
         	
                 
@@ -136,9 +136,9 @@ public class ClientUpdater extends JPlugin {
         if (resolvedState == null){
         	user.state.accId = user.playerData.accountId;
         }else{
-            for (Entry<String,Object> pair : user.state.states.entrySet())
+            for (Entry<String,Object> pair : user.state.state.entrySet())
                 resolvedState.setState(pair.getKey(), pair.getValue());
-            for (Entry<String,Object> pair : user.state.states.entrySet())
+            for (Entry<String,Object> pair : user.state.state.entrySet())
                 resolvedState.setState(pair.getKey(), pair.getValue());
             
             user.state = resolvedState;

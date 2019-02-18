@@ -1,5 +1,4 @@
 package com.data;
-
 public class StatsType {
 	public static StatsType MaximumHP = new StatsType(0);
     public static StatsType HP = new StatsType(1);

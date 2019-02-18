@@ -92,9 +92,9 @@ public class User implements Runnable {
 		
 		this.disconnect();
 		try {
-			this.localSocket.close();
+			//this.localSocket.close();
 		} catch (Exception e) {
-			// e.printStackTrace();
+			 e.printStackTrace();
 		}
 		
 		destroy();
@@ -337,6 +337,7 @@ public class User implements Runnable {
 			this.remoteSocket = new Socket(this.state.conTargetAddress, this.state.conTargetPort);
 			this.remoteSocket.setTcpNoDelay(true);
 			this.sendServerPacket(state);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -344,7 +345,7 @@ public class User implements Runnable {
 	}
 
 	public void saveState() {
-		JRelay.instance.userStates.replace(this.state.GUID, this.state);
+		JRelay.instance.userStates.forcePut(this.state.GUID, this.state);
 	}
 
 	@Override
@@ -394,11 +395,11 @@ public class User implements Runnable {
 						e.printStackTrace();
 						if (!(e instanceof SocketException)) {
 							JRelay.error(e.getMessage() + " End of remote stream.");
-								this.disconnect();
+								this.kick();
 							 e.printStackTrace();
 						} else {
 							JRelay.error(e.getMessage() + " End of remote stream.");
-							this.disconnect();
+							this.kick();
 						}
 						
 					}
@@ -452,14 +453,17 @@ public class User implements Runnable {
 
 					this.localNoDataTime = System.currentTimeMillis();
 				} else if (System.currentTimeMillis() - this.localNoDataTime >= 10000) {
-
+					
 					throw new SocketException("Local data read timeout");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				if (!shutdown) {
-					//this.kick();
+				if (shutdown) {
+					this.kick();
 				}
+			}
+			if (shutdown) {
+				this.kick();
 			}
 		}
 

@@ -103,7 +103,7 @@ public class PlayerData // TODO: Add the rest of the stats
 
     public void parse(int id, int intValue, String stringValue)
     {
-        if (id == StatsType.MaximumHP.type) maxHealth = intValue;
+        if (id== StatsType.MaximumHP.type) maxHealth = intValue;
         else if (id == StatsType.HP.type) health = intValue;
         else if (id == StatsType.MaximumMP.type) maxMana = intValue;
         else if (id == StatsType.MP.type) mana = intValue;
@@ -133,7 +133,8 @@ public class PlayerData // TODO: Add the rest of the stats
         else if (id == StatsType.Name.type) name = stringValue;
         else if (id == StatsType.Credits.type) realmGold = intValue;
         else if (id == StatsType.MerchandisePrice.type) price = intValue;
-        //else if (id == 37) CanEnterPortal = bool.Parse(stringValue);
+        else if (id == StatsType.AccountId.type) accountId = stringValue;
+        //else if (id == 37.type) CanEnterPortal = bool.Parse(stringValue.type);
         else if (id == StatsType.AccountId.type) accountId = stringValue;
         else if (id == StatsType.AccountFame.type) accountFame = intValue; //fame you got when you died
         else if (id == StatsType.HealthBonus.type) healthBonus = intValue;
@@ -144,6 +145,7 @@ public class PlayerData // TODO: Add the rest of the stats
         else if (id == StatsType.VitalityBonus.type) vitalityBonus = intValue;
         else if (id == StatsType.WisdomBonus.type) wisdomBonus = intValue;
         else if (id == StatsType.DexterityBonus.type) dexterityBonus = intValue;
+        
         else if (id == StatsType.RankRequired.type) nameChangeRankRequired = intValue;
         else if (id == StatsType.NameChosen.type) nameChosen = intValue > 0;
         else if (id == StatsType.CharacterFame.type) characterFame = intValue; //fame on this character

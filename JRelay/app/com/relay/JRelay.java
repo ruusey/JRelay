@@ -52,8 +52,9 @@ public final class JRelay implements Runnable {
 	public static int MAPTEST_GAMEID = -6;
 	public static final String GAME_VERSION = "X31.3.0";
 	public static final String JRELAY_VERSION = "1.4.1";
-	public static final boolean PROD = true;
+	public static final boolean PROD = false;
 	//public static final String DEFAULT_SERVER = GameData.abbrToServer.get("USS").address;
+	public static String dir = System.getProperty("user.dir");
 	public static String APP_LOC = "";
 	public static String RES_LOC = "";
 	public static String APP_PKG = "";
@@ -307,8 +308,8 @@ public final class JRelay implements Runnable {
 				while (!JRelay.instance.newUsers.isEmpty()) {
 					User user = JRelay.instance.newUsers.remove(0);
 					Thread userThread = new Thread(user);
-					connections.add(userThread);
-					userThread.run();
+					//connections.add(userThread);
+					userThread.start();
 					JRelay.info("Client recieved...");
 				}
 			}
@@ -396,7 +397,7 @@ public final class JRelay implements Runnable {
 	}
 
 	public State getState(User client, byte[] key) {
-		String keyString = null;
+		String keyString = "";
 		try {
 			keyString = new String(key, "UTF-8");
 		} catch (Exception e) {
@@ -404,8 +405,7 @@ public final class JRelay implements Runnable {
 		}
 		String guid = key.length == 0 ? "n/a" : keyString;
 
-		State newState = new State(client, UUID.randomUUID().toString().replace("-", ""));
-		userStates.forcePut(newState.GUID, newState);
+		State newState = new State(client, guid);
 		if (!guid.equals("n/a")) {
 			State lastState = userStates.get(guid);
 
@@ -413,6 +413,9 @@ public final class JRelay implements Runnable {
 			newState.conTargetPort = lastState.conTargetPort;
 			newState.conRealKey = lastState.conRealKey;
 
+		}else {
+			newState = new State(client, UUID.randomUUID().toString().replace("-", ""));
+			userStates.forcePut(newState.GUID, newState);
 		}
 
 		return newState;

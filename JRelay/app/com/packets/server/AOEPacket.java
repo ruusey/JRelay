@@ -36,7 +36,7 @@ public class AOEPacket extends Packet {
 		this.pos.writeToOutput(out);
 		out.writeFloat(this.radius);
 		out.writeShort(this.damage);
-		out.writeByte(this.effect);
+		out.writeByte((byte)this.effect);
 		out.writeFloat(this.duration);
 		out.writeShort(this.origType);
 		out.writeInt(this.color);

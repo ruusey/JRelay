@@ -41,14 +41,15 @@ public class ReconnectHandler extends JPlugin {
 	public void onHello(Packet pack) {
 		HelloPacket packet = (HelloPacket) pack;
 		State thisState = JRelay.instance.getState(user, packet.key);
+		
 		user.state=thisState;
 		user.state.lastHello=packet;
-		user.state.locationName="n/a";
 		if (user.state.conRealKey.length != 0) {
 			packet.key = user.state.conRealKey;
 			user.state.conRealKey = new byte[0];
 		}
 		user.connect(packet);
+		
 		pack.send=false;
 	}
 
@@ -77,10 +78,12 @@ public class ReconnectHandler extends JPlugin {
 	}
 
 	public void onReconnect(Packet pack) {
-		ReconnectPacket packet = (ReconnectPacket) pack;
-		JRelay.info(pack.toString());
-		if (packet.host.contains(".com")) {
-			java.net.InetAddress addr = null;
+		ReconnectPacket ppacket = (ReconnectPacket) pack;
+		ReconnectPacket packet = CloneReconnectPacket(user, ppacket);
+        user.state.lastReconnect = CloneReconnectPacket(user, packet);
+        //packet.send=false;
+        if (packet.host.contains(".com")) {
+        	java.net.InetAddress addr = null;
 			try {
 				addr = InetAddress.getByName(packet.host);
 			} catch (UnknownHostException e) {
@@ -89,59 +92,61 @@ public class ReconnectHandler extends JPlugin {
 			}
 			  String host = addr.getHostName();
 			  packet.host=host;
-		}
-			
-
-		if (packet.name.toLowerCase().contains("nexusportal")) {
-			ReconnectPacket recon = new ReconnectPacket();
-			recon.isFromArena = false;
-			recon.gameId = packet.gameId;
-			recon.host = packet.host == "" ? user.state.conTargetAddress
-					: packet.host;
-			recon.port = packet.port == -1 ? user.state.conTargetPort
-					: packet.port;
-			recon.key = packet.key;
-			recon.keyTime = packet.keyTime;
-			recon.name = packet.name;
-			user.state.lastRealm = recon;
-			
-		} else if (!packet.name.equals("") && !packet.name.contains("vault")
-				&& packet.gameId != -2) {
-			ReconnectPacket drecon = new ReconnectPacket();
-			
-			drecon.isFromArena = false;
-			drecon.gameId = packet.gameId;
-			drecon.host = packet.host == "" ? user.state.conTargetAddress
-					: packet.host;
-			drecon.port = packet.port == -1 ? user.state.conTargetPort
-					: packet.port;
-			drecon.key = packet.key;
-			drecon.keyTime = packet.keyTime;
-			drecon.name = packet.name;
-			user.state.lastDungeon = drecon;
-		}
-		
-		if (packet.port != -1)
-			user.state.conTargetPort = packet.port;
-
-		if (!packet.host.equals(""))
-			user.state.conTargetAddress = packet.host;
-
-		if (packet.key.length != 0)
-			user.state.conRealKey = packet.key;
-
-		try {
-			packet.key = (user.state.GUID).getBytes("UTF-8");
-		} catch (Exception e) {
+        }
+        
+        if (packet.name.toLowerCase().contains("nexusportal")) {
+            user.state.lastRealm = CloneReconnectPacket(user, packet);
+        }
+        else if (((!packet.name.equals("")) 
+                    && (!packet.name.contains("vault") 
+                    && (packet.gameId != -2)))) {
+            user.state.lastDungeon = CloneReconnectPacket(user, packet);
+        }
+        
+        if ((packet.port != -1)) {
+            user.state.conTargetPort = packet.port;
+        }
+        
+        if ((!packet.host.equals(""))) {
+            user.state.conTargetAddress = packet.host;
+        }
+        
+        if ((packet.key.length != 0)) {
+            user.state.conRealKey = packet.key;
+        }
+        
+        //  Tell the client to connect to the proxy
+        try {
+			ppacket.key = (user.state.GUID).getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-        packet.host = "localhost";
-        packet.port = 2050;
-       // user.saveState();
-
+        ppacket.host = "localhost";
+        ppacket.port = 2050;
+        //user.saveState();
+        sendReconnect(user, ppacket);
 	}
-	
+	 public static ReconnectPacket CloneReconnectPacket(User client, ReconnectPacket packet)
+     {
+         ReconnectPacket clone = null;
+		try {
+			clone = (ReconnectPacket)Packet.create(PacketType.RECONNECT);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         clone.isFromArena = false;
+         clone.gameId = packet.gameId;
+         clone.host = packet.host.equals("") ? client.state.conTargetAddress : packet.host;
+         clone.port = packet.port == -1 ? client.state.conTargetPort : packet.port;
+         clone.key = packet.key;
+         clone.stats = packet.stats;
+         clone.keyTime = packet.keyTime;
+         clone.name = packet.name;
+
+         return clone;
+     }
 	public void onConnectCommand(String command, String[] args) {
 		
 		if (args.length == 2) {
@@ -205,14 +210,6 @@ public class ReconnectHandler extends JPlugin {
 			reconnect.key = (user.state.GUID).getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-		}
-		if(reconnect.host.length()==0){
-			user.state.conTargetAddress = DEFAULT_SERVER;
-			user.state.conTargetPort = 2050;
-			reconnect.key=user.state.conRealKey;
-		}else{
-			user.state.conTargetAddress=host;
-			user.state.conTargetPort=2050;
 		}
 		reconnect.host = "localhost";
 		reconnect.port = 2050;

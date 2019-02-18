@@ -23,20 +23,20 @@ public class State
     public ReconnectPacket lastDungeon = null;
     public HelloPacket lastHello = null;
     public ReconnectPacket lastReconnect = null;
-    public BiMap<String, Object> states;
+    public BiMap<String, Object> state;
 
     public State(User user, String id)
     {
         this.user=user;
         GUID = id;
-        states = HashBiMap.create();
+        state = HashBiMap.create();
     }
 
     public void setState(String stateName,Object o){
-    	states.forcePut(stateName,  o);
+    	state.forcePut(stateName,  o);
     }
     public Object getState(String stateName){
-    	return states.getOrDefault(stateName, null);
+    	return state.getOrDefault(stateName, null);
     }
     
 }

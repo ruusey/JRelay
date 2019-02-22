@@ -91,7 +91,7 @@ public class AutoNexus extends JPlugin {
 			public void run() {
 				try {
 					Thread.sleep(800);
-					sendToClient(EventUtils.createNotification(user.playerData.ownerObjectId, "AutoNexus at "+nexusPercent*100));
+					sendToClient(EventUtils.CreateOryxNotification("AutoNexus", "AutoNexus at "+nexusPercent*100));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

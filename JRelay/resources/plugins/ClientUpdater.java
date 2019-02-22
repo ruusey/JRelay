@@ -2,6 +2,7 @@ package plugins;
 
 import java.util.Map.Entry;
 
+import com.app.JRelayGUI;
 import com.data.GameData;
 import com.data.PacketType;
 import com.data.State;
@@ -123,7 +124,7 @@ public class ClientUpdater extends JPlugin {
                     }
                     else if (resolvedState.lastHello.gameId == -2 && ((MapInfoPacket)user.state.getState("MapInfo")).name.equalsIgnoreCase("Nexus"))
                     {
-                        resolvedState.conTargetAddress = GameData.abbrToServer.get("USS").address;
+                        resolvedState.conTargetAddress = JRelayGUI.DEFAULT_SERVER;
                     }
             		
             	}

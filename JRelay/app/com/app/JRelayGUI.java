@@ -129,7 +129,8 @@ public class JRelayGUI extends Application {
 	    @Override
 	    public void handle(WindowEvent event) {
 		JRelay.instance.shutdown();
-		System.exit(0);
+		Platform.exit();
+        System.exit(0);
 		
 	    }
 	});

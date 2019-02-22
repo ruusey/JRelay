@@ -68,6 +68,10 @@ public class JRelayGUI extends Application {
     public static boolean relayStarted = false;
     public static ArrayList<TextField> settings;
     public static Stage app;
+    
+    public static float anPercent = 0.25f;
+    public static int starFiler = 10;
+    public static String DEFAULT_SERVER = GameData.abbrToServer.get("USS").address;
     public static boolean savedLog = false;
 
     public static void main(String[] args) {

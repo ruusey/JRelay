@@ -1,6 +1,7 @@
 package com.jr2;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.Executors;
 
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
@@ -8,6 +9,8 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import com.crypto.RC4;
 import com.data.GameData;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
 import com.models.Packet;
 import com.util.ClassFinder;
 
@@ -32,10 +35,13 @@ public class Main {
 	public static RC4 localSendRC4;
 	public static RC4 remoteRecvRC4;
 	public static RC4 remoteSendRC4;
+	public static String remoteHost;
+	
 	public static void main(String[] args) throws Exception {
 		//ClassFinder.getClassOfPackage("com.packets.server");
 		GameData.loadData();
    	    Packet.init();
+   	    remoteHost = GameData.nameToServer.get("USEast").address;
    	    localRecvRC4 = new RC4(key0);
 		localSendRC4 = new RC4(key1);
 		remoteRecvRC4 = new RC4(key1);
@@ -49,7 +55,7 @@ public class Main {
 		connector.setConnectTimeoutMillis(30 * 1000L);
 
 		ClientToProxyIoHandler handler = new ClientToProxyIoHandler(connector,
-				new InetSocketAddress("52.91.68.60", 2050));
+				new InetSocketAddress(remoteHost, 2050));
 
 		// Start proxy.
 		acceptor.setHandler(handler);

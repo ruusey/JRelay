@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map.Entry;
 
+import com.app.JRelayGUI;
 import com.data.GameData;
 import com.data.PacketType;
 import com.data.shared.Entity;
@@ -21,7 +22,7 @@ import com.relay.User;
 
 public class Core extends JPlugin {
 	public boolean onTiles = false;
-	public int starFilter = 10;
+	public int starFilter = JRelayGUI.starFiler;
 	public Core(User user) {
 		super(user);
 
@@ -61,7 +62,7 @@ public class Core extends JPlugin {
 				EventUtils.createText("ChatFilter",args[1]+" must be an integer 0-75");
 				return;
 			}
-			
+			JRelayGUI.starFiler=starFilter;
 			TextPacket packet = EventUtils.createText("ChatFilter", "Set minimum chat star requirement to "+starFilter);
 			sendToClient(packet);
 		}

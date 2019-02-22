@@ -17,9 +17,9 @@ public class Formatter {
 //		for(String string : ss) {
 //		    System.out.println(string);
 //		}
-		System.out.println(s.substring(0,26));
-		System.out.println(s.substring(26,s.length()));
-		//return;
+//		System.out.println(s.substring(0,26));
+//		System.out.println(s.substring(26,s.length()));
+//		//return;
 		
 //		try {
 //			String workingDir = JRelayGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();

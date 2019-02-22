@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import javax.swing.SwingUtilities;
 
+import com.app.JRelayGUI;
 import com.data.GameData;
 import com.data.PacketType;
 import com.data.State;
@@ -18,7 +19,7 @@ import com.relay.User;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 public class ReconnectHandler extends JPlugin {
-	public static final String DEFAULT_SERVER = GameData.abbrToServer.get("USS").address;
+	
 	public ReconnectHandler(User user) {
 		super(user);
 		
@@ -33,7 +34,7 @@ public class ReconnectHandler extends JPlugin {
 				"onHello");
 		user.hookCommand("jcon", ReconnectHandler.class, "onConnectCommand");
 		user.hookCommand("jconnect", ReconnectHandler.class, "onConnectCommand");
-		user.hookCommand("jserver", ReconnectHandler.class, "onConnectCommand");
+		user.hookCommand("defserver", ReconnectHandler.class, "changeDefaultServer");
 		user.hookCommand("jrecon", ReconnectHandler.class, "onReconCommand");
 		user.hookCommand("jdrecon", ReconnectHandler.class, "onDreconCommand");
 	}
@@ -125,7 +126,7 @@ public class ReconnectHandler extends JPlugin {
         ppacket.host = "localhost";
         ppacket.port = 2050;
         //user.saveState();
-        sendReconnect(user, ppacket);
+        //sendReconnect(user, ppacket);
 	}
 	 public static ReconnectPacket CloneReconnectPacket(User client, ReconnectPacket packet)
      {
@@ -147,6 +148,39 @@ public class ReconnectHandler extends JPlugin {
 
          return clone;
      }
+	 public void changeDefaultServer(String command, String[] args) {
+			
+			if (args.length == 2) {
+				JRelay.info("Connecting client to " +args[1].toUpperCase());
+				if (GameData.abbrToServer.containsKey(args[1].toUpperCase())) {
+					ReconnectPacket reconnect = null;
+					try {
+						reconnect = (ReconnectPacket) Packet
+								.create(PacketType.RECONNECT);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					reconnect.host = GameData.abbrToServer.get(args[1]
+							.toUpperCase()).address;
+					reconnect.port = 2050;
+					reconnect.gameId = -2;
+					reconnect.stats="";
+					reconnect.name = "Nexus";
+					reconnect.isFromArena = false;
+					reconnect.key = new byte[0];
+					reconnect.keyTime = 0;
+					JRelayGUI.DEFAULT_SERVER=reconnect.host;
+					sendReconnect(user, reconnect);
+				} else {
+					try {
+						user.sendClientPacket(EventUtils.createText("JRelay",
+								"Unknown server specified!"));
+					} catch (Exception e) {
+
+					}
+				}
+			}
+		}
 	public void onConnectCommand(String command, String[] args) {
 		
 		if (args.length == 2) {

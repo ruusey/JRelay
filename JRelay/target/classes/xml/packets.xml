@@ -391,16 +391,4 @@
 		<PacketName>REALMHEROLEFTMSG</PacketName>
 		<PacketID>111</PacketID>
 	</Packet>
-	<Packet>
-		<PacketName>CHATHELLOMSG</PacketName>
-		<PacketID>106</PacketID>
-	</Packet>
-	<Packet>
-		<PacketName>CHATTOKENMSG</PacketName>
-		<PacketID>107</PacketID>
-	</Packet>
-	<Packet>
-		<PacketName>CHATLOGOUTMSG</PacketName>
-		<PacketID>108</PacketID>
-	</Packet>
 </Packets>

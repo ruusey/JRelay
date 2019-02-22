@@ -21,9 +21,11 @@ import com.util.ClassFinder;
 
 public abstract class Packet implements IData {
 	public boolean send = true;
-	private static List<Class<? extends Packet>> packetIdtoClassMap = new ArrayList<Class<? extends Packet>>(127);
-	private static List<Class<? extends Packet>> serverPacketClasses = new ArrayList<Class<? extends Packet>>();
-	private static List<Class<? extends Packet>> clientPacketClasses = new ArrayList<Class<? extends Packet>>();
+	public static List<Class<? extends Packet>> packetIdtoClassMap = new ArrayList<Class<? extends Packet>>(127);
+	public static List<Class<? extends Packet>> serverPacketClasses = new ArrayList<Class<? extends Packet>>();
+	public static List<Class<? extends Packet>> clientPacketClasses = new ArrayList<Class<? extends Packet>>();
+	public static List<Byte> clientPacketIds = new ArrayList<Byte>();
+	public static List<Byte> serverPacketIds = new ArrayList<Byte>();
 	public static void destroy() {
 		packetIdtoClassMap = new ArrayList<Class<? extends Packet>>(127);
 	}
@@ -49,6 +51,7 @@ public abstract class Packet implements IData {
 				int id = 0;
 				try{
 				    id = GameData.packetNameToId.get(name);
+				    
 				}catch(Exception e) {
 				    System.out.println("Packet("+packetClass.getName()+") did  not match "+name);
 				}
@@ -160,7 +163,12 @@ public abstract class Packet implements IData {
 		return classes;
 	}
 
-	
+	public static boolean isServerPacket(Packet packet) {
+		return serverPacketClasses.contains(packet.getClass());
+	}
+	public static boolean isClientPacket(Packet packet) {
+		return clientPacketClasses.contains(packet.getClass()); 
+	}
 	public static String buildMetaString(PacketMeta meta) {
 		String res = "";
 		for(String s : meta.entities) {

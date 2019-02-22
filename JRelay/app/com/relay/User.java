@@ -61,7 +61,8 @@ public class User implements Runnable {
 		if (this.remoteSocket != null) {
 			try {
 				this.remoteSocket.close();
-			} catch (Exception e) {
+				this.finalize();
+			} catch (Throwable e) {
 				JRelay.error(e.getMessage());
 				e.printStackTrace();
 			}
@@ -404,6 +405,9 @@ public class User implements Runnable {
 						
 					}
 				}
+				try {
+					Thread.sleep(10);
+				}catch(Exception e) {};
 				InputStream in = this.localSocket.getInputStream();
 				if (in.available() > 0) {
 					int bytesRead = in.read(this.localBuffer, this.localBufferIndex,

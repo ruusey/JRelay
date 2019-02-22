@@ -24,6 +24,13 @@
 		</plugins>
 	</build>
 	<dependencies>
+	<!-- https://mvnrepository.com/artifact/com.esotericsoftware/kryonet -->
+<dependency>
+    <groupId>com.esotericsoftware</groupId>
+    <artifactId>kryonet</artifactId>
+    <version>2.22.0-RC1</version>
+</dependency>
+	
 	<dependency>
     <groupId>org.apache.mina</groupId>
     <artifactId>mina-core</artifactId>

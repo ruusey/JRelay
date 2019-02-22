@@ -13,6 +13,13 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${dir.buildfile}/target/classes"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/kryonet/2.22.0-RC1/kryonet-2.22.0-RC1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/kryo/kryo/2.24.0/kryo-2.24.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/minlog/minlog/1.2/minlog-1.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/jsonbeans/0.7/jsonbeans-0.7.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/apache/mina/mina-core/2.0.19/mina-core-2.0.19.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"/>

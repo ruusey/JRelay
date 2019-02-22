@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import com.app.JRelayGUI;
 import com.data.ConditionEffect;
 import com.data.ConditionEffectIndex;
 import com.data.GameData;
@@ -44,7 +45,7 @@ import com.relay.User;
 
 public class AutoNexus extends JPlugin {
 	boolean enabled = true;
-	float nexusPercent = 0.25f;
+	float nexusPercent = JRelayGUI.anPercent;
 	public static ClientState st = null;
 	static int counter = 0;
 	static int delay = 10;
@@ -90,7 +91,7 @@ public class AutoNexus extends JPlugin {
 			public void run() {
 				try {
 					Thread.sleep(800);
-					sendToClient(EventUtils.CreateOryxNotification("AutoNexus", "AutoNexus at "+nexusPercent*100));
+					sendToClient(EventUtils.createNotification(user.playerData.ownerObjectId, "AutoNexus at "+nexusPercent*100));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -106,6 +107,7 @@ public class AutoNexus extends JPlugin {
 			try {
 				int anx=Integer.parseInt(args[1]);
 				this.nexusPercent=((float)anx)/100.0f;
+				JRelayGUI.anPercent=((float)anx)/100.0f;
 				TextPacket packet = EventUtils.CreateOryxNotification("AutoNexus"," AutoNexus percent now set to "+this.nexusPercent*100);
 				sendToClient(packet);
 			}catch(Exception e) {

@@ -131,7 +131,6 @@ public class JRelayGUI extends Application {
 		JRelay.instance.shutdown();
 		Platform.exit();
         System.exit(0);
-		
 	    }
 	});
 	log("JRelay for RotMG " + JRelay.GAME_VERSION);

@@ -53,7 +53,7 @@ public final class JRelay implements Runnable {
 	public static final String GAME_VERSION = "X31.3.1";
 	public static final String JRELAY_VERSION = "1.5.0";
 	public static final boolean PROD = true;
-	public static String DEFAULT_SERVER = GameData.abbrToServer.get("USS").address;
+	public static String DEFAULT_SERVER = JRelayGUI.DEFAULT_SERVER;
 	public static String dir = System.getProperty("user.dir");
 	public static String APP_LOC = "";
 	public static String RES_LOC = "";

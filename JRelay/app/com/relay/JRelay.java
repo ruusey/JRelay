@@ -98,7 +98,7 @@ public final class JRelay implements Runnable {
 	public static ArrayList<String> userPluginClasses = new ArrayList<String>();
 	public ClientUpdater updater = null;
 	public ReconnectHandler reconHandler = null;
-	 public static String DEFAULT_SERVER = GameData.abbrToServer.get("USS").address;
+	
 	public ArrayList<Thread> connections = new ArrayList<Thread>();
 	public static RSA rsa = new RSA();
 	public JRelay() {

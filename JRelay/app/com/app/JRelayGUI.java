@@ -71,7 +71,7 @@ public class JRelayGUI extends Application {
     
     public static float anPercent = 0.25f;
     public static int starFiler = 10;
-    public static String DEFAULT_SERVER = GameData.abbrToServer.get("USS").address;
+    public static String DEFAULT_SERVER = "54.183.179.205";
     public static boolean savedLog = false;
 
     public static void main(String[] args) {
@@ -129,7 +129,7 @@ public class JRelayGUI extends Application {
 	    @Override
 	    public void handle(WindowEvent event) {
 		JRelay.instance.shutdown();
-		Platform.exit();
+		System.exit(0);
 		
 	    }
 	});

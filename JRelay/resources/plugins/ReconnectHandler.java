@@ -151,7 +151,7 @@ public class ReconnectHandler extends JPlugin {
 	 public void changeDefaultServer(String command, String[] args) {
 			
 			if (args.length == 2) {
-				JRelay.info("Connecting client to " +args[1].toUpperCase());
+				JRelay.info("Changing default server to " +args[1].toUpperCase());
 				if (GameData.abbrToServer.containsKey(args[1].toUpperCase())) {
 					ReconnectPacket reconnect = null;
 					try {

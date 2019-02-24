@@ -268,7 +268,7 @@ public class GameData {
 		HashMap<String, Float> efxMap = new HashMap<String, Float>();
 		for (Node n : efx) {
 			float dur = Parse.parseFloat(Parse.attrDefault(n, "duration", "0"));
-			String effName = node.getText();
+			String effName =n.getText();
 			efxMap.put(effName, dur);
 		}
 		Projectile res = new Projectile(id, name, dmg, spd, size, life, maxDmg, minDmg, mag, amp, frq, wavy, parametric,

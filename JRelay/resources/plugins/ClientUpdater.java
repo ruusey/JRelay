@@ -85,23 +85,24 @@ public class ClientUpdater extends JPlugin {
 	public void onUpdate(Packet pack)
     {
 		UpdatePacket packet = (UpdatePacket)pack;
-//		if(onTiles) {
-//			for (Tile t : packet.tiles) {
-//				System.out.print(t.type+", ");
-//				Location l = new Location();
-//				Location myPos = user.playerData.pos;
-//				l.x=t.x;
-//				l.y=t.y;
-//				float dist = myPos.distanceTo(l);
-//				System.out.println(dist);
-//				if(dist<=1.0) {
-//					sendToClient(EventUtils.createText("Tiles", "On tile id: "+t.type+", name: "+GameData.tiles.get(t.type).name));
-//							
-//				}
-//				
-//			}
-//		}
-//		onTiles=false;
+		if(onTiles) {
+			for (Tile t : packet.tiles) {
+				System.out.print(t.type+", ");
+				Location l = new Location();
+				Location myPos = user.playerData.pos;
+				l.x=t.x;
+				l.y=t.y;
+				float dist = myPos.distanceTo(l);
+				System.out.println(dist);
+				if(dist<=1.0) {
+					sendToClient(EventUtils.createText("Tiles", "On tile id: "+t.type+", name: "+GameData.tiles.get(t.type).name));
+					onTiles=false;
+					break;
+				}
+				
+			}
+		}
+		
     	user.playerData.parse(packet);
        // if (user.state.accId != null) return;
         State randomRealmState = null;
@@ -122,7 +123,7 @@ public class ClientUpdater extends JPlugin {
                         resolvedState.lastRealm = randomRealmState.lastRealm;
                         JRelay.instance.userStates.inverse().remove(resolvedState);
                     }
-                    else if (resolvedState.lastHello.gameId == -2 && ((MapInfoPacket)user.state.getState("MapInfo")).name.equalsIgnoreCase("Nexus"))
+                    else if (resolvedState.lastHello.gameId == -2 && ((MapInfoPacket)user.state.state.get("MapInfo")).name.equalsIgnoreCase("Nexus"))
                     {
                         resolvedState.conTargetAddress = JRelayGUI.DEFAULT_SERVER;
                     }

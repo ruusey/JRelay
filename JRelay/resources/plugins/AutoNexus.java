@@ -29,6 +29,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.models.Object;
 import com.models.Packet;
 import com.models.Projectile;
@@ -62,19 +63,24 @@ public class AutoNexus extends JPlugin {
 				ArrayList<Projectile> targetList = Lists.newArrayList(e.Projectiles);
 				List<Projectile> piercing = targetList.stream().filter(x -> x.armorPiercing).collect(Collectors.toList());
 				List<Integer> piercingIds =  piercing.stream().map(x -> (int)x.id).collect(Collectors.toList());
-				Bullet.piercing.forcePut(e.id, new ArrayList<Integer>(piercingIds));
+				for(Integer id: piercingIds) {
+					Bullet.piercing.put(e.id, id);
+				}
 				List<Projectile> breaking = targetList.stream().filter(x -> x.StatusEffects.containsKey("Armor Broken")).collect(Collectors.toList());
 				List<Integer> breakingIds = breaking.stream().map(x -> (int)x.id).collect(Collectors.toList());
-				//System.out.println("Mapping "+e.Projectiles.length+" projectiles");
-				Bullet.breaking.forcePut(e.id, new ArrayList<Integer>(breakingIds));
+				for(Integer id: breakingIds) {
+					Bullet.breaking.put(e.id, id);
+				}
+				
+				
 
 			}
 				
 			
 			// user.HookPacket(PacketType.GROUNDDAMAGE, AutoNexus.class, OnPacket);
 		}
-		JRelay.info("Auto Nexus: Found " + Bullet.piercing.values().size() + " Armor Piercing Projectiles, Found "
-				+ Bullet.breaking.values().size() + " Armor Breaking Projectiles.");
+		JRelay.info("Auto Nexus: Found " + Bullet.piercing.size() + " Armor Piercing Projectiles, Found "
+				+ Bullet.breaking.size() + " Armor Breaking Projectiles.");
 		st = new ClientState(user);
 		user.hookCommand("anx", AutoNexus.class,"onJXCommand");
 		user.hookPacket(PacketType.UPDATE, AutoNexus.class, "UpdateAN");
@@ -86,7 +92,7 @@ public class AutoNexus extends JPlugin {
 				AutoNexus.class, "OnConnectAN");
 	}
 	public void OnConnectAN(Packet pack) {
-		
+		Bullet.destroyData();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -174,13 +180,13 @@ public class AutoNexus extends JPlugin {
 		/// Map of piercing projectiles
 		/// Object ID -> list of piercing projectile IDs
 		/// </summary>
-		public static BiMap<Integer, ArrayList<Integer>> piercing = HashBiMap.create();
+		public static ArrayListMultimap<Integer, Integer> piercing = ArrayListMultimap.create();
 
 		/// <summary>
 		/// Map of armor break projectiles
 		/// Object ID -> list of armor break projectile IDs
 		/// </summary>
-		public static BiMap<Integer, ArrayList<Integer>> breaking =HashBiMap.create();
+		public static ArrayListMultimap<Integer, Integer> breaking =ArrayListMultimap.create();
 
 		public static boolean IsPiercing(int enemyType, int projectileType) {
 			return piercing.containsKey(enemyType) && piercing.get(enemyType).contains(projectileType);

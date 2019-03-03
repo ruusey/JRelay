@@ -1,4 +1,4 @@
-# **JRelay** Beta 1.4.1 - RotMG X31.3.0
+# **JRelay** Beta 1.5.0 - RotMG X31.3.1
 
 #### A plugin-based Java man in the middle proxy for the browser flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/iOUNE86.png)
@@ -31,6 +31,7 @@ Functionality of **JRelay** is built using `Java Socket IO` to communicate with 
 - `Dom4J 1.6.1`
 - `Genson 1.4`
 - `Jaxen 1.6`
+- `Google Guava`
 ---
 # Deploying JRelay
 How to get **JRelay** up and running on your system.

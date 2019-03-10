@@ -45,7 +45,7 @@ public abstract class Packet implements IData {
 				try {
 					GameData.packetNameToId.containsKey(name);
 				} catch (Exception e) {
-					//JRelay.error(e.getLocalizedMessage());
+					JRelay.error(e.getLocalizedMessage());
 				}
 				
 				int id = 0;
@@ -67,11 +67,11 @@ public abstract class Packet implements IData {
 				Class<? extends Packet> p = packetIdtoClassMap.get(id);
 				if (p == null) {
 					PacketModel model = GameData.packetIdToName.get(id);
-					//JRelayGUI.warn("No class found for " + JRelay.gen.serialize(model));
+					JRelayGUI.warn("No class model found for Packet" + JRelay.gen.serialize(model));
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			JRelayGUI.error(e.getMessage());
 		}
 	}
 
@@ -102,8 +102,8 @@ public abstract class Packet implements IData {
 		packet.parseFromInput(stream);
 		int byteLength = packet.getBytes().length;
 		if (byteLength != bytes.length) {
-			System.out.println(packet + " byte length is " + byteLength + " after parsing, but was " + bytes.length
-					+ " before parsing. Try updating packet definitions");
+			JRelayGUI.error(packet + " byte length is " + byteLength + " after parsing, but was " + bytes.length
+					+ " before parsing. Please update ");
 			UnknownPacket ukp = new UnknownPacket();
 			ukp.setId(id);
 			return packet;

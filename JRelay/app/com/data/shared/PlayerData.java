@@ -103,69 +103,69 @@ public class PlayerData // TODO: Add the rest of the stats
 
     public void parse(int id, int intValue, String stringValue)
     {
-        if (id== StatsType.MaximumHP.type) maxHealth = intValue;
+        if (id== StatsType.maxHp.type) maxHealth = intValue;
         else if (id == StatsType.HP.type) health = intValue;
-        else if (id == StatsType.MaximumMP.type) maxMana = intValue;
+        else if (id == StatsType.maximumMP.type) maxMana = intValue;
         else if (id == StatsType.MP.type) mana = intValue;
-        else if (id == StatsType.NextLevelExperience.type) xpGoal = intValue;
-        else if (id == StatsType.Experience.type) xp = intValue;
-        else if (id == StatsType.Level.type) level = intValue;
-        else if (id == StatsType.Inventory0.type) slot[0] = intValue;
-        else if (id == StatsType.Inventory1.type) slot[1] = intValue;
-        else if (id == StatsType.Inventory2.type) slot[2] = intValue;
-        else if (id == StatsType.Inventory3.type) slot[3] = intValue;
-        else if (id == StatsType.Inventory4.type) slot[4] = intValue;
-        else if (id == StatsType.Inventory5.type) slot[5] = intValue;
-        else if (id == StatsType.Inventory6.type) slot[6] = intValue;
-        else if (id == StatsType.Inventory7.type) slot[7] = intValue;
-        else if (id == StatsType.Inventory8.type) slot[8] = intValue;
-        else if (id == StatsType.Inventory9.type) slot[9] = intValue;
-        else if (id == StatsType.Inventory10.type) slot[10] = intValue;
-        else if (id == StatsType.Inventory11.type) slot[11] = intValue;
-        else if (id == StatsType.Attack.type) attack = intValue;
-        else if (id == StatsType.Defense.type) defense = intValue;
-        else if (id == StatsType.Speed.type) speed = intValue;
-        else if (id == StatsType.Vitality.type) vitality = intValue;
-        else if (id == StatsType.Wisdom.type) wisdom = intValue;
-        else if (id == StatsType.Dexterity.type) dexterity = intValue;
-        else if (id == StatsType.Effects.type) effects = intValue;
-        else if (id == StatsType.Stars.type) stars = intValue;
-        else if (id == StatsType.Name.type) name = stringValue;
-        else if (id == StatsType.Credits.type) realmGold = intValue;
-        else if (id == StatsType.MerchandisePrice.type) price = intValue;
-        else if (id == StatsType.AccountId.type) accountId = stringValue;
+        else if (id == StatsType.nextLevelExperience.type) xpGoal = intValue;
+        else if (id == StatsType.experience.type) xp = intValue;
+        else if (id == StatsType.level.type) level = intValue;
+        else if (id == StatsType.inventory0.type) slot[0] = intValue;
+        else if (id == StatsType.inventory1.type) slot[1] = intValue;
+        else if (id == StatsType.inventory2.type) slot[2] = intValue;
+        else if (id == StatsType.inventory3.type) slot[3] = intValue;
+        else if (id == StatsType.inventory4.type) slot[4] = intValue;
+        else if (id == StatsType.inventory5.type) slot[5] = intValue;
+        else if (id == StatsType.inventory6.type) slot[6] = intValue;
+        else if (id == StatsType.inventory7.type) slot[7] = intValue;
+        else if (id == StatsType.inventory8.type) slot[8] = intValue;
+        else if (id == StatsType.inventory9.type) slot[9] = intValue;
+        else if (id == StatsType.inventory10.type) slot[10] = intValue;
+        else if (id == StatsType.inventory11.type) slot[11] = intValue;
+        else if (id == StatsType.attack.type) attack = intValue;
+        else if (id == StatsType.defense.type) defense = intValue;
+        else if (id == StatsType.speed.type) speed = intValue;
+        else if (id == StatsType.vitality.type) vitality = intValue;
+        else if (id == StatsType.wisdom.type) wisdom = intValue;
+        else if (id == StatsType.dexterity.type) dexterity = intValue;
+        else if (id == StatsType.effects.type) effects = intValue;
+        else if (id == StatsType.stars.type) stars = intValue;
+        else if (id == StatsType.name.type) name = stringValue;
+        else if (id == StatsType.credits.type) realmGold = intValue;
+        else if (id == StatsType.merchandisePrice.type) price = intValue;
+        else if (id == StatsType.accountId.type) accountId = stringValue;
         //else if (id == 37.type) CanEnterPortal = bool.Parse(stringValue.type);
-        else if (id == StatsType.AccountId.type) accountId = stringValue;
-        else if (id == StatsType.AccountFame.type) accountFame = intValue; //fame you got when you died
-        else if (id == StatsType.HealthBonus.type) healthBonus = intValue;
-        else if (id == StatsType.ManaBonus.type) manaBonus = intValue;
-        else if (id == StatsType.AttackBonus.type) attackBonus = intValue;
-        else if (id == StatsType.DefenseBonus.type) defenseBonus = intValue;
-        else if (id == StatsType.SpeedBonus.type) speedBonus = intValue;
-        else if (id == StatsType.VitalityBonus.type) vitalityBonus = intValue;
-        else if (id == StatsType.WisdomBonus.type) wisdomBonus = intValue;
-        else if (id == StatsType.DexterityBonus.type) dexterityBonus = intValue;
+        else if (id == StatsType.accountId.type) accountId = stringValue;
+        else if (id == StatsType.accountFame.type) accountFame = intValue; //fame you got when you died
+        else if (id == StatsType.healthBonus.type) healthBonus = intValue;
+        else if (id == StatsType.manaBonus.type) manaBonus = intValue;
+        else if (id == StatsType.attackBonus.type) attackBonus = intValue;
+        else if (id == StatsType.defenseBonus.type) defenseBonus = intValue;
+        else if (id == StatsType.speedBonus.type) speedBonus = intValue;
+        else if (id == StatsType.vitalityBonus.type) vitalityBonus = intValue;
+        else if (id == StatsType.wisdomBonus.type) wisdomBonus = intValue;
+        else if (id == StatsType.dexterityBonus.type) dexterityBonus = intValue;
         
-        else if (id == StatsType.RankRequired.type) nameChangeRankRequired = intValue;
-        else if (id == StatsType.NameChosen.type) nameChosen = intValue > 0;
-        else if (id == StatsType.CharacterFame.type) characterFame = intValue; //fame on this character
-        else if (id == StatsType.CharacterFameGoal.type) characterFameGoal = intValue;
-        else if (id == StatsType.Glowing.type) glowingEffect = intValue > -1;
-        else if (id == StatsType.GuildName.type) guildName = stringValue;
-        else if (id == StatsType.GuildRank.type) guildRank = intValue;
-        else if (id == StatsType.OxygenBar.type) breath = intValue;
-        else if (id == StatsType.HealthPotionCount.type) healthPotionCount = intValue;
-        else if (id == StatsType.MagicPotionCount.type) magicPotionCount = intValue;
-        else if (id == StatsType.Backpack0.type) backPack[0] = intValue;
-        else if (id == StatsType.Backpack1.type) backPack[1] = intValue;
-        else if (id == StatsType.Backpack2.type) backPack[2] = intValue;
-        else if (id == StatsType.Backpack3.type) backPack[3] = intValue;
-        else if (id == StatsType.Backpack4.type) backPack[4] = intValue;
-        else if (id == StatsType.Backpack5.type) backPack[5] = intValue;
-        else if (id == StatsType.Backpack6.type) backPack[6] = intValue;
-        else if (id == StatsType.Backpack7.type) backPack[7] = intValue;
-        else if (id == StatsType.HasBackpack.type) hasBackpack = intValue > 0;
-        else if (id == StatsType.Skin.type) skin = intValue;
+        else if (id == StatsType.rankRequired.type) nameChangeRankRequired = intValue;
+        else if (id == StatsType.nameChosen.type) nameChosen = intValue > 0;
+        else if (id == StatsType.characterFame.type) characterFame = intValue; //fame on this character
+        else if (id == StatsType.characterFameGoal.type) characterFameGoal = intValue;
+        else if (id == StatsType.glowing.type) glowingEffect = intValue > -1;
+        else if (id == StatsType.guildName.type) guildName = stringValue;
+        else if (id == StatsType.guildRank.type) guildRank = intValue;
+        else if (id == StatsType.oxygenBar.type) breath = intValue;
+        else if (id == StatsType.healthPotionCount.type) healthPotionCount = intValue;
+        else if (id == StatsType.magicPotionCount.type) magicPotionCount = intValue;
+        else if (id == StatsType.backpack0.type) backPack[0] = intValue;
+        else if (id == StatsType.backpack1.type) backPack[1] = intValue;
+        else if (id == StatsType.backpack2.type) backPack[2] = intValue;
+        else if (id == StatsType.backpack3.type) backPack[3] = intValue;
+        else if (id == StatsType.backpack4.type) backPack[4] = intValue;
+        else if (id == StatsType.backpack5.type) backPack[5] = intValue;
+        else if (id == StatsType.backpack6.type) backPack[6] = intValue;
+        else if (id == StatsType.backpack7.type) backPack[7] = intValue;
+        else if (id == StatsType.hasBackpack.type) hasBackpack = intValue > 0;
+        else if (id == StatsType.skin.type) skin = intValue;
     }
 
     public boolean hasConditionEffect(ConditionEffect effect)

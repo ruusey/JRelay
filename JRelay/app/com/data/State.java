@@ -1,7 +1,5 @@
 package com.data;
 
-import java.util.HashMap;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.packets.client.HelloPacket;

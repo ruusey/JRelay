@@ -4,17 +4,14 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map.Entry;
 
-import com.app.JRelayGUI;
 import com.data.GameData;
 import com.data.PacketType;
 import com.data.shared.Entity;
-import com.data.shared.Location;
 import com.data.shared.Tile;
 import com.event.EventUtils;
 import com.event.JPlugin;
 import com.models.ObjectMapper;
 import com.models.Packet;
-import com.packets.client.PlayerTextPacket;
 import com.packets.server.TextPacket;
 import com.packets.server.UpdatePacket;
 import com.relay.JRelay;
@@ -22,7 +19,7 @@ import com.relay.User;
 
 public class Core extends JPlugin {
 	public boolean onTiles = false;
-	public int starFilter = JRelayGUI.starFiler;
+	public int starFilter = JRelay.FILTER_LEVEL;
 	public Core(User user) {
 		super(user);
 
@@ -31,6 +28,7 @@ public class Core extends JPlugin {
 	@Override
 	public void attach() {
 		user.hookCommand("hi", Core.class, "onHiCommand");
+		user.hookCommand("maps", Core.class, "onMapsCommand");
 		user.hookCommand("jr", Core.class, "onJr");
 		user.hookCommand("filter", Core.class, "setStarFiler");
 		
@@ -38,22 +36,36 @@ public class Core extends JPlugin {
 		user.hookPacket(PacketType.TEXT, Core.class, "filterShops");
 
 	}
-	public void onHiCommand(String command, String[] args) {
+	public void onMapsCommand(String command, String[] args) {
 		if (args.length < 2) {
-			TextPacket packet = EventUtils.createText("hi", "Too few argumenets /hi [on/off]");
+			TextPacket packet = EventUtils.createOryxNotification("Maps", "Too few argumenets /maps [on/off]");
 			sendToClient(packet);
 		} else if (args[1].equals("on")) {
-			TextPacket packet = EventUtils.createText("hi", "Hello! heres some player data: name="
+			JRelay.PARSE_MAPS=true;
+			TextPacket packet = EventUtils.createOryxNotification("Maps", "Enabling object and tile maps");
+			sendToClient(packet);
+		} else if (args[1].equals("off")) {
+			JRelay.PARSE_MAPS=false;
+			TextPacket packet = EventUtils.createOryxNotification("Maps", "Disabling object and tile maps");
+			sendToClient(packet);
+		}
+	}
+	public void onHiCommand(String command, String[] args) {
+		if (args.length < 2) {
+			TextPacket packet = EventUtils.createOryxNotification("hi", "Too few argumenets /hi [on/off]");
+			sendToClient(packet);
+		} else if (args[1].equals("on")) {
+			TextPacket packet = EventUtils.createOryxNotification("Core", "Hello! heres some player data: name="
 					+ user.playerData.name + " fame=" + user.playerData.characterFame);
 			sendToClient(packet);
 		} else if (args[1].equals("off")) {
-			TextPacket packet = EventUtils.createText("hi", "Hello! no player data requested");
+			TextPacket packet = EventUtils.createOryxNotification("Core", "Hello! no player data requested");
 			sendToClient(packet);
 		}
 	}
 	public void setStarFiler(String command, String[] args) {
 		if (args.length < 2) {
-			TextPacket packet = EventUtils.createText("ChatFilter", "Too few argumenets /filter [#stars]");
+			TextPacket packet = EventUtils.createOryxNotification("ChatFilter", "Too few argumenets /filter [#stars]");
 			sendToClient(packet);
 		} else  {
 			try {
@@ -62,15 +74,15 @@ public class Core extends JPlugin {
 				EventUtils.createText("ChatFilter",args[1]+" must be an integer 0-75");
 				return;
 			}
-			JRelayGUI.starFiler=starFilter;
-			TextPacket packet = EventUtils.createText("ChatFilter", "Set minimum chat star requirement to "+starFilter);
+			JRelay.FILTER_LEVEL=starFilter;
+			TextPacket packet = EventUtils.createOryxNotification("ChatFilter", "Set minimum chat star requirement to "+starFilter);
 			sendToClient(packet);
 		}
 	}
 	
 	public void onJr(String command, String[] args) {
 		
-		TextPacket packet = EventUtils.createText("JRelay", "JRelay Alpha Build "+JRelay.JRELAY_VERSION+" for RotMG"+JRelay.GAME_VERSION+". Created by Ruusey");
+		TextPacket packet = EventUtils.createOryxNotification("JRelay", "JRelay Alpha Build "+JRelay.JRELAY_VERSION+" for RotMG"+JRelay.GAME_VERSION+". Created by Ruusey");
 		sendToClient(EventUtils.createNotification(
 				user.playerData.ownerObjectId, "JRelay Alpha Build "+JRelay.JRELAY_VERSION));
 		sendToClient(packet);
@@ -84,7 +96,7 @@ public class Core extends JPlugin {
 		
 	}
 	public void onUpdatePacket(Packet p) {
-		
+		if(!JRelay.PARSE_MAPS) return;
 		UpdatePacket pack = (UpdatePacket) p;
 		
 		for (Entry<ArrayList<String>, ArrayList<String>> entry : ObjectMapper.tiles.entrySet()) {

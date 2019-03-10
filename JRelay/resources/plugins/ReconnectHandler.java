@@ -16,7 +16,6 @@ import com.packets.client.HelloPacket;
 import com.packets.server.ReconnectPacket;
 import com.relay.JRelay;
 import com.relay.User;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 public class ReconnectHandler extends JPlugin {
 	
@@ -42,6 +41,11 @@ public class ReconnectHandler extends JPlugin {
 	public void onHello(Packet pack) {
 		HelloPacket packet = (HelloPacket) pack;
 		State thisState = JRelay.instance.getState(user, packet.key);
+		if(packet.key.length>2) {
+			JRelayGUI.log("Key: "+packet.key[0]+""+packet.key[1]+""+packet.key[2]+""+", User state: "+thisState.GUID+", "+thisState.conTargetAddress);
+		}else {
+			JRelayGUI.log("New User state: "+thisState.GUID+", "+thisState.conTargetAddress);
+		}
 		
 		user.state=thisState;
 		user.state.lastHello=packet;
@@ -82,7 +86,7 @@ public class ReconnectHandler extends JPlugin {
 		ReconnectPacket ppacket = (ReconnectPacket) pack;
 		ReconnectPacket packet = CloneReconnectPacket(user, ppacket);
         user.state.lastReconnect = CloneReconnectPacket(user, packet);
-        //packet.send=false;
+        //pack.send=false;
         if (packet.host.contains(".com")) {
         	java.net.InetAddress addr = null;
 			try {
@@ -125,8 +129,8 @@ public class ReconnectHandler extends JPlugin {
 		}
         ppacket.host = "localhost";
         ppacket.port = 2050;
-        //user.saveState();
-        //sendReconnect(user, ppacket);
+        sendToClient(ppacket);
+        //sendReconnect(user,ppacket);
 	}
 	 public static ReconnectPacket CloneReconnectPacket(User client, ReconnectPacket packet)
      {
@@ -151,7 +155,7 @@ public class ReconnectHandler extends JPlugin {
 	 public void changeDefaultServer(String command, String[] args) {
 			
 			if (args.length == 2) {
-				JRelay.info("Changing default server to " +args[1].toUpperCase());
+				JRelayGUI.log("Changing default server to " +args[1].toUpperCase());
 				if (GameData.abbrToServer.containsKey(args[1].toUpperCase())) {
 					ReconnectPacket reconnect = null;
 					try {
@@ -169,11 +173,11 @@ public class ReconnectHandler extends JPlugin {
 					reconnect.isFromArena = false;
 					reconnect.key = new byte[0];
 					reconnect.keyTime = 0;
-					JRelayGUI.DEFAULT_SERVER=reconnect.host;
+					JRelay.DEFAULT_SERVER=reconnect.host;
 					sendReconnect(user, reconnect);
 				} else {
 					try {
-						user.sendClientPacket(EventUtils.createText("JRelay",
+						user.sendClientPacket(EventUtils.createOryxNotification("JRelay",
 								"Unknown server specified!"));
 					} catch (Exception e) {
 

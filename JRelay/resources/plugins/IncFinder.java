@@ -44,7 +44,7 @@ public class IncFinder extends JPlugin {
 					if (statData.intValue == INC_ID)
 						inc = true;
 
-				if ((inc && statData.id == StatsType.Name.type)
+				if ((inc && statData.id == StatsType.name.type)
 						&& !(statData.stringValue.equals(user.playerData.name))) {
 					if (!(incHolders.containsKey(entity.status.objectId)))
 						incHolders.put(entity.status.objectId, statData.stringValue);

@@ -1,6 +1,7 @@
 package plugins;
 
 import com.data.PacketType;
+import com.data.StatsType;
 import com.event.JPlugin;
 import com.models.Packet;
 import com.packets.server.UpdatePacket;
@@ -25,7 +26,7 @@ public class Glow extends JPlugin {
 	for (int i = 0; i < update.newObjs.length; i++) {
 	    if (update.newObjs[i].status.objectId == user.playerData.ownerObjectId) {
 		for (int j = 0; j < update.newObjs[i].status.data.length; j++) {
-		    if (update.newObjs[i].status.data[j].id == 59)
+		    if (update.newObjs[i].status.data[j].id == StatsType.glowing.type)
 			update.newObjs[i].status.data[j].intValue = 100;
 		}
 	    }

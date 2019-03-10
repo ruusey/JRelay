@@ -9,6 +9,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+
+import com.app.JRelayGUI;
 import com.crypto.*;
 import com.data.PacketType;
 import com.data.State;
@@ -61,14 +63,14 @@ public class User implements Runnable {
 		if (this.remoteSocket != null) {
 			try {
 				this.remoteSocket.close();
-				this.finalize();
 			} catch (Throwable e) {
-				JRelay.error(e.getMessage());
+				JRelayGUI.error(e.getMessage());
 				e.printStackTrace();
 			}
 			this.remoteSocket = null;
 
 		}
+		JRelayGUI.log("Client disconnected...");
 	}
 
 	public void destroy() {
@@ -89,17 +91,8 @@ public class User implements Runnable {
 	}
 
 	public void kick() {
-
-		
 		this.disconnect();
-		try {
-			//this.localSocket.close();
-		} catch (Exception e) {
-			 e.printStackTrace();
-		}
-		
-		destroy();
-		JRelay.info("Client disconnected...");
+		this.destroy();	
 
 	}
 

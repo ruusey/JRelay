@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.app.JRelayGUI;
 import com.google.common.reflect.ClassPath;
 import com.jr2.Main;
 import com.models.Packet;

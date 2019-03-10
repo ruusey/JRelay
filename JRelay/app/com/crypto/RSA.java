@@ -80,6 +80,7 @@ public class RSA {
 		return null;
 	}
 
+	@SuppressWarnings("unused")
 	private static String sha1string(String string) {
 		return RSA.hexString(RSA.sha1(RSA.stringToBytes(string)));
 	}

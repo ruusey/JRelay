@@ -42,7 +42,7 @@ public class EventUtils {
 		alert.color = color;
 		return alert;
 	}
-	 public static TextPacket CreateOryxNotification(String sender, String message)
+	 public static TextPacket createOryxNotification(String sender, String message)
      {
          TextPacket tpacket = null;
 		try {
@@ -60,6 +60,7 @@ public class EventUtils {
          tpacket.text = "<JRelay> " + message;
          return tpacket;
      }
+	 
 	 
 
 }

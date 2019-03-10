@@ -5,7 +5,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.constants.TextKey;
-import com.data.StatsType;
 
 
 public class StatData implements IData {

@@ -15,10 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.Vector;
@@ -26,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.app.JRelayGUI;
-import com.app.ResourceMonitor;
 import com.crypto.RSA;
 import com.data.GameData;
 import com.data.PacketType;
@@ -52,9 +48,13 @@ public final class JRelay implements Runnable {
 	public static int MAPTEST_GAMEID = -6;
 	public static final String GAME_VERSION = "X31.3.1";
 	public static final String JRELAY_VERSION = "1.5.0";
+	
 	public static final boolean PROD = true;
-	public static String DEFAULT_SERVER = JRelayGUI.DEFAULT_SERVER;
-	public static String dir = System.getProperty("user.dir");
+	public static boolean PARSE_MAPS = true;
+	public static String DEFAULT_SERVER = "";
+	public static float AUTONEXUS_PERCENT;
+	public static int FILTER_LEVEL;
+	
 	public static String APP_LOC = "";
 	public static String RES_LOC = "";
 	public static String APP_PKG = "";
@@ -157,7 +157,9 @@ public final class JRelay implements Runnable {
 			TextField remotePort = new TextField(p.getProperty("remotePort"));
 			TextField key0 = new TextField(p.getProperty("key0"));
 			TextField key1 = new TextField(p.getProperty("key1"));
-
+			TextField anx = new TextField(p.getProperty("anx"));
+			TextField filter = new TextField(p.getProperty("filter"));
+			
 			ArrayList<TextField> setting = new ArrayList<TextField>();
 			setting.add(listenHost);
 			setting.add(listenPort);
@@ -168,6 +170,8 @@ public final class JRelay implements Runnable {
 			setting.add(remotePort);
 			setting.add(key0);
 			setting.add(key1);
+			setting.add(anx);
+			setting.add(filter);
 
 			return setting;
 		} catch (Exception e) {
@@ -193,6 +197,11 @@ public final class JRelay implements Runnable {
 			this.remotePort = Integer.parseInt(p.getProperty("remotePort"));
 			this.key0 = p.getProperty("key0");
 			this.key1 = p.getProperty("key1");
+			JRelay.AUTONEXUS_PERCENT=Float.parseFloat(p.getProperty("anx"));
+			JRelay.FILTER_LEVEL=Integer.parseInt(p.getProperty("filter"));
+			
+			
+			JRelay.DEFAULT_SERVER = this.remoteHost;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -210,6 +219,9 @@ public final class JRelay implements Runnable {
 			p.setProperty("remotePort", String.valueOf(this.remotePort));
 			p.setProperty("key0", this.key0);
 			p.setProperty("key1", this.key1);
+			p.setProperty("anx", String.valueOf(JRelay.AUTONEXUS_PERCENT));
+			p.setProperty("filter", String.valueOf(JRelay.FILTER_LEVEL));
+			
 			File file = new File(RES_LOC + "settings.properties");
 			if (!file.isFile()) {
 				try {
@@ -235,6 +247,8 @@ public final class JRelay implements Runnable {
 			Boolean.valueOf(settings.get(2).getText());
 			Integer.valueOf(settings.get(4).getText());
 			Integer.valueOf(settings.get(6).getText());
+			Float.valueOf(settings.get(9).getText());
+			Integer.valueOf(settings.get(10).getText());
 			p.setProperty("listenHost", settings.get(0).getText());
 			p.setProperty("listenPort", settings.get(1).getText());
 			p.setProperty("useExternalProxy", settings.get(2).getText());
@@ -244,6 +258,8 @@ public final class JRelay implements Runnable {
 			p.setProperty("remotePort", settings.get(6).getText());
 			p.setProperty("key0", settings.get(7).getText());
 			p.setProperty("key1", settings.get(8).getText());
+			p.setProperty("anx",  settings.get(9).getText());
+			p.setProperty("filter",  settings.get(10).getText());
 			File file = new File(RES_LOC + "settings.properties");
 
 			try {
@@ -263,7 +279,7 @@ public final class JRelay implements Runnable {
 		JRelay.instance.connections = null;
 		GameData.destroy();
 		listenSocket.stop();
-		JRelay.info("Proxy Shutdown");
+		JRelayGUI.log("Proxy Shutdown");
 		System.gc();
 	}
 
@@ -310,7 +326,7 @@ public final class JRelay implements Runnable {
 					Thread userThread = new Thread(user);
 					//connections.add(userThread);
 					userThread.start();
-					JRelay.info("Client recieved...");
+					JRelayGUI.log("Client recieved...");
 				}
 			}
 //			Iterator<User> i = JRelay.instance.users.iterator();
@@ -320,7 +336,7 @@ public final class JRelay implements Runnable {
 //				user.kick();
 //			}
 		} else {
-			JRelay.info(
+			JRelayGUI.error(
 					"Failure starting the local listener. Make sure there is not an instance of JRelay running already.");
 		}
 	}
@@ -359,12 +375,7 @@ public final class JRelay implements Runnable {
 			pluginsToLoad = plugins.listFiles();
 			for(File f: pluginsToLoad) {
 				classesToLoad.add(f.getName());
-			}
-			System.out.println("Located Plugin Directory "+pluginDir);
-			
-			for(String s : classesToLoad) {
-				System.out.println("Located Plugin "+s);
-			}
+			}	
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -380,13 +391,13 @@ public final class JRelay implements Runnable {
 				clazz = clazz.substring(0, clazz.lastIndexOf("."));
 				JPlugin obj = (JPlugin) cl.loadClass("plugins."+clazz)
 						.getDeclaredConstructor(User.class).newInstance(user);
-				JRelay.info("Attached plugin " + obj.getClass().getName() + " to user");
+				JRelayGUI.log("Attached plugin " + obj.getClass().getName() + " to user");
 				JRelay.instance.pluginData.add(new PluginMetaData(obj.getAuthor(), obj.getName(), obj.getDescription(),
 						obj.getCommands(), obj.getPackets()));
 
 				JRelay.instance.userPlugins.put(obj.getClass().getSimpleName(), obj);
 			} catch (Exception e) {
-				JRelay.error("Unable to load plugin "+clazz+"... make sure your plugin is structured correctly");
+				JRelayGUI.error("Unable to load plugin "+clazz+"... make sure your plugin is structured correctly");
 			}
 		}
 

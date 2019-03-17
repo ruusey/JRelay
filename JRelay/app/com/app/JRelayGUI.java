@@ -57,8 +57,8 @@ import javafx.stage.WindowEvent;
 import plugins.ReconnectHandler;
 
 public class JRelayGUI extends Application {
-	public static final int APP_WIDTH = 550;
-	public static final int APP_HEIGHT = 400;
+	public static final int APP_WIDTH = 640;
+	public static final int APP_HEIGHT = 480;
 	public static Label proxyStatus;
 	public static TextArea console;
 	public static TableView connections;
@@ -115,7 +115,7 @@ public class JRelayGUI extends Application {
 		tabs.getTabs().get(2).setContent(buildServerBox());
 		componentLayout.setTop(hb);
 		componentLayout.setCenter(tabs);
-		// startPluginUpdate();
+		
 
 		root.getChildren().add(componentLayout);
 		// Add the Scene to the Stage
@@ -130,6 +130,7 @@ public class JRelayGUI extends Application {
 			}
 		});
 		log("JRelay for RotMG " + JRelay.GAME_VERSION);
+		startPluginUpdate();
 //	Thread td = new Thread(new ResourceMonitor());
 //	td.start();
 
@@ -440,10 +441,10 @@ public class JRelayGUI extends Application {
 		informationTab.setContent(information);
 		tabPane.getTabs().add(informationTab);
 
-//		Tab pluginsTab = new Tab();
-//		pluginsTab.setGraphic(createLabel("Plugins", 16));
-//		pluginsTab.setContent(buildPluginsTable());
-//		tabPane.getTabs().add(pluginsTab);
+		Tab pluginsTab = new Tab();
+		pluginsTab.setGraphic(createLabel("Plugins", 16));
+		pluginsTab.setContent(buildPluginsTable());
+		tabPane.getTabs().add(pluginsTab);
 
 		Tab settingsTab = new Tab();
 		settingsTab.setGraphic(createLabel("Settings", 16));
@@ -528,7 +529,7 @@ public class JRelayGUI extends Application {
 	}
 
 	public TableView<String> buildPluginsTable() {
-
+		plugins=null;
 		TableView<String> table = new TableView<String>();
 		table.setPlaceholder(new Label("No plugins attached"));
 		final Label label = new Label("Plugins");
@@ -550,7 +551,7 @@ public class JRelayGUI extends Application {
 				while (true) {
 					updatePlugins();
 					try {
-						Thread.sleep(400);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						JRelay.error(e.getMessage());
 					}
@@ -568,9 +569,9 @@ public class JRelayGUI extends Application {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				for (int i = 0; i < plugins.getItems().size(); i++) {
-					plugins.getItems().clear();
-				}
+				
+				plugins.getItems().clear();
+				
 			}
 		});
 

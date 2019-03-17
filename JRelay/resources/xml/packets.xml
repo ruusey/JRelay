@@ -391,4 +391,8 @@
 		<PacketName>REALMHEROLEFTMSG</PacketName>
 		<PacketID>111</PacketID>
 	</Packet>
+	<Packet>
+		<PacketName>RESETDAILYQUESTS</PacketName>
+		<PacketID>112</PacketID>
+	</Packet>
 </Packets>

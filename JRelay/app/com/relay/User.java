@@ -60,24 +60,15 @@ public class User implements Runnable {
 
 	public void disconnect() {
 		this.shutdown = true;
-		if (this.remoteSocket != null) {
-			try {
-				this.remoteSocket.close();
-			} catch (Throwable e) {
-				JRelayGUI.error(e.getMessage());
-				e.printStackTrace();
-			}
-			this.remoteSocket = null;
-
-		}
-		JRelayGUI.log("Client disconnected...");
+		
 	}
 
 	public void destroy() {
 		try {
+			this.finalize();
 			this.localSocket.close();
 			this.remoteSocket.close();
-		}catch(Exception e) {
+		}catch(Throwable e) {
 			e.printStackTrace();
 		}
 		this.localBuffer=null;
@@ -88,6 +79,7 @@ public class User implements Runnable {
 		this.remoteSendRC4 = null;
 		this.state = null;
 		this.playerData = null;
+		
 	}
 
 	public void kick() {
@@ -97,13 +89,13 @@ public class User implements Runnable {
 	}
 
 	public void handleClientPacket(Packet packet) {
-		if (packet.send) {
+		if (packet.send && !this.shutdown) {
 			sendToServer(packet);
 		}
 	}
 
 	public void handleServerPacket(Packet packet) {
-		if (packet.send) {
+		if (packet.send && !this.shutdown) {
 			sendToClient(packet);
 		}
 	}
@@ -455,13 +447,11 @@ public class User implements Runnable {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				if (shutdown) {
-					this.kick();
-				}
+//				if (shutdown) {
+//					this.kick();
+//				}
 			}
-			if (shutdown) {
-				this.kick();
-			}
+			
 		}
 
 	}

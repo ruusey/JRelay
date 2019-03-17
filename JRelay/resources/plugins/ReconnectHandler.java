@@ -99,9 +99,9 @@ public class ReconnectHandler extends JPlugin {
 			  packet.host=host;
         }
         
-        if (packet.name.toLowerCase().contains("nexusportal")) {
-            user.state.lastRealm = CloneReconnectPacket(user, packet);
-        }
+//        if (packet.name.toLowerCase().contains("nexusportal")) {
+//            user.state.lastRealm = CloneReconnectPacket(user, packet);
+//        }
         else if (((!packet.name.equals("")) 
                     && (!packet.name.contains("vault") 
                     && (packet.gameId != -2)))) {

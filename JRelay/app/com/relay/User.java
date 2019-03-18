@@ -43,8 +43,17 @@ public class User implements Runnable {
 	public long localNoDataTime = System.currentTimeMillis();
 	public long remoteNoDataTime = System.currentTimeMillis();
 	public boolean shutdown = false;
+	
+	/** The user plugin instances. */
 	public ArrayList<String> userPluginInstances = new ArrayList<String>();
 
+	
+	/**
+	 * Instantiates a new user.
+	 *
+	 * @param localSocket the local socket
+	 * @throws Exception the exception
+	 */
 	public User(Socket localSocket) throws Exception {
 		if (localSocket == null) {
 			throw new NullPointerException();
@@ -55,12 +64,11 @@ public class User implements Runnable {
 		this.localSendRC4 = new RC4(JRelay.instance.key1);
 		this.remoteRecvRC4 = new RC4(JRelay.instance.key1);
 		this.remoteSendRC4 = new RC4(JRelay.instance.key0);
-		System.out.println(localSocket);
+		JRelayGUI.log("Listening on "+localSocket.toString());
 	}
 
 	public void disconnect() {
 		this.shutdown = true;
-		
 	}
 
 	public void destroy() {
@@ -82,12 +90,20 @@ public class User implements Runnable {
 		
 	}
 
+	/**
+	 * Kick this user and destroy resources.
+	 */
 	public void kick() {
 		this.disconnect();
 		this.destroy();	
 
 	}
 
+	/**
+	 * Handle inbound client packet.
+	 *
+	 * @param packet the packet
+	 */
 	public void handleClientPacket(Packet packet) {
 		if (packet.send && !this.shutdown) {
 			sendToServer(packet);
@@ -109,6 +125,9 @@ public class User implements Runnable {
 		}
 	}
 
+	/**
+	 * @param packet
+	 */
 	public void sendToServer(Packet packet) {
 		try {
 			this.sendServerPacket(packet);
@@ -382,7 +401,7 @@ public class User implements Runnable {
 						if (!(e instanceof SocketException)) {
 							JRelay.error(e.getMessage() + " End of remote stream.");
 								this.kick();
-							 e.printStackTrace();
+								e.printStackTrace();
 						} else {
 							JRelay.error(e.getMessage() + " End of remote stream.");
 							this.kick();
@@ -390,9 +409,10 @@ public class User implements Runnable {
 						
 					}
 				}
-				try {
-					Thread.sleep(10);
+				
+				try {Thread.sleep(10);
 				}catch(Exception e) {};
+				
 				InputStream in = this.localSocket.getInputStream();
 				if (in.available() > 0) {
 					int bytesRead = in.read(this.localBuffer, this.localBufferIndex,

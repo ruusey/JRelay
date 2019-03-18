@@ -57,7 +57,7 @@ import javafx.stage.WindowEvent;
 import plugins.ReconnectHandler;
 
 public class JRelayGUI extends Application {
-	public static final int APP_WIDTH = 640;
+	public static final int APP_WIDTH = 620;
 	public static final int APP_HEIGHT = 480;
 	public static Label proxyStatus;
 	public static TextArea console;
@@ -109,9 +109,10 @@ public class JRelayGUI extends Application {
 			JRelay.info("GameData unable to load. Exiting...");
 			System.exit(0);
 		}
-
-		tabs.getTabs().get(2).setGraphic(createLabel("Servers", 16));
-		tabs.getTabs().get(2).setContent(buildServerBox());
+		
+//		tabs.getTabs().get(2).setGraphic(createLabel("Servers", 16));
+//		//tabs.getTabs().get(2).setStyle("-fx-text-fill:grey;");
+//		tabs.getTabs().get(2).setContent(buildServerBox());
 		componentLayout.setTop(hb);
 		componentLayout.setCenter(tabs);
 
@@ -177,7 +178,7 @@ public class JRelayGUI extends Application {
 
 	public VBox buildConsole() {
 		final VBox consolePane = new VBox();
-		consolePane.setPadding(new Insets(10, 0, 0, 1));
+		consolePane.setPadding(new Insets(5, 5, 5, 5));
 		final HBox consoleOptions = new HBox();
 
 		Separator separator1 = new Separator();
@@ -196,8 +197,8 @@ public class JRelayGUI extends Application {
 		// CONSOLE TEXT AREA
 		TextArea con = new TextArea();
 		con.setEditable(false);
-		con.setPrefWidth(APP_WIDTH / 2);
-		con.setPrefHeight(APP_HEIGHT / 2);
+		con.setPrefWidth(APP_WIDTH*2 / 3);
+		con.setPrefHeight(APP_HEIGHT*2 / 3);
 		con.setWrapText(false);
 		Label status = createLabel("Not Running", 16);
 		proxyStatus = status;
@@ -305,13 +306,16 @@ public class JRelayGUI extends Application {
 			s8.setOrientation(Orientation.HORIZONTAL);
 			Label l9 = createLabel("Autonexus", 15);
 			Separator s9 = new Separator();
-			s7.setOrientation(Orientation.HORIZONTAL);
+			s9.setOrientation(Orientation.HORIZONTAL);
 			Label l10 = createLabel("Star Filter", 15);
 			Separator s10 = new Separator();
-			s8.setOrientation(Orientation.HORIZONTAL);
+			s10.setOrientation(Orientation.HORIZONTAL);
+			Label l11 = createLabel("Home Server", 15);
+			Separator s11 = new Separator();
+			s11.setOrientation(Orientation.HORIZONTAL);
 
 			vbox1.getChildren().addAll(l, s, l1, s1, l2, s2, l3, s3, l4, s4, l5, s5, l6, s6, l7, s7, l8, s8, l9, s9,
-					l10, s10);
+					l10, s10,l11,s11);
 
 			VBox vbox2 = new VBox();
 			vbox2.setSpacing(5);
@@ -430,7 +434,7 @@ public class JRelayGUI extends Application {
 	public TabPane buildTabs() {
 		TabPane tabPane = new TabPane();
 		tabPane.setStyle("-fx-background-color:white;");
-		tabPane.setPadding(new Insets(10, 10, -10, 10));
+		tabPane.setPadding(new Insets(10, 10, 10, 10));
 		Tab informationTab = new Tab();
 
 		informationTab.setGraphic(createLabel("Information", 16));
@@ -446,12 +450,10 @@ public class JRelayGUI extends Application {
 		tabPane.getTabs().add(pluginsTab);
 
 		Tab settingsTab = new Tab();
+		settingsTab.setStyle("-fx-padding: 5px; -fx-border-insets: 5px; -fx-background-insets: 5px;");
 		settingsTab.setGraphic(createLabel("Settings", 16));
-		ScrollPane sp = buildSettingsBox();
-		if (sp == null) {
-			sp = new ScrollPane();
-		}
-		settingsTab.setContent(sp);
+		
+		settingsTab.setContent(buildSettingsBox());
 		tabPane.getTabs().add(settingsTab);
 
 		Tab packetsTab = new Tab();
@@ -465,8 +467,8 @@ public class JRelayGUI extends Application {
 		aboutTab.setContent(createAboutTab());
 		tabPane.getTabs().add(aboutTab);
 		for (Tab t : tabPane.getTabs()) {
-			t.setStyle("-fx-background-color:grey; -fx-font-size:16;");
-			t.getGraphic().setStyle("-fx-text-fill:white;");
+			t.setStyle("-fx-background-color:white; -fx-font-size:16;");
+			t.getGraphic().setStyle("-fx-text-fill:grey;");
 		}
 		return tabPane;
 
@@ -477,7 +479,7 @@ public class JRelayGUI extends Application {
 
 		root.setPadding(new Insets(10, 0, 0, 0));
 		VBox serverPackets = new VBox();
-		serverPackets.getChildren().add(createLabel("Server", 18));
+		serverPackets.getChildren().add(createLabel("Server", 16));
 		serverPackets.getChildren().add(new Separator());
 
 		List<Class<? extends Packet>> sPacks = Packet.addServerPackets();
@@ -501,7 +503,7 @@ public class JRelayGUI extends Application {
 		List<Class<? extends Packet>> cPacks = Packet.addClientPackets();
 
 		for (Class<? extends Packet> pack : cPacks) {
-			Button b = createButton(pack.getSimpleName(), 12);
+			Button b = createButton(pack.getSimpleName(), 14);
 			PacketMeta cMeta = Packet.getClientPacketMeta(pack.getSimpleName());
 			b.setTooltip(new Tooltip(Packet.buildMetaString(cMeta)));
 			clientPackets.getChildren().add(b);
@@ -533,14 +535,14 @@ public class JRelayGUI extends Application {
 		table.setPlaceholder(new Label("No plugins attached"));
 		final Label label = new Label("Plugins");
 		label.setFont(new Font("Arial", 16));
-		// ScrollPane sp2 = new ScrollPane();
-		//
-		// sp2.setMaxHeight(JRelayGUI.APP_HEIGHT-150);
-		// sp2.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-		// sp2.setContent(table);
+		 ScrollPane sp2 = new ScrollPane();
+		
+		 sp2.setMaxHeight(JRelayGUI.APP_HEIGHT-150);
+		 sp2.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		 sp2.setContent(table);
 
 		plugins = table;
-		plugins.setPrefSize(300, 300);
+		plugins.setPrefSize(400, 400);
 		return table;
 	}
 

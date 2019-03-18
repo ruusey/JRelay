@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -49,6 +50,7 @@ public final class JRelay implements Runnable {
 	public static final String GAME_VERSION = "X31.4.0";
 	public static final String JRELAY_VERSION = "1.5.1";
 	
+	public static final boolean DEBUG = false;
 	public static final boolean PROD = true;
 	public static boolean PARSE_MAPS = true;
 	public static String DEFAULT_SERVER = "";
@@ -159,6 +161,7 @@ public final class JRelay implements Runnable {
 			TextField key1 = new TextField(p.getProperty("key1"));
 			TextField anx = new TextField(p.getProperty("anx"));
 			TextField filter = new TextField(p.getProperty("filter"));
+			TextField server = new TextField(p.getProperty("server"));
 			
 			ArrayList<TextField> setting = new ArrayList<TextField>();
 			setting.add(listenHost);
@@ -172,6 +175,7 @@ public final class JRelay implements Runnable {
 			setting.add(key1);
 			setting.add(anx);
 			setting.add(filter);
+			setting.add(server);
 
 			return setting;
 		} catch (Exception e) {
@@ -199,9 +203,7 @@ public final class JRelay implements Runnable {
 			this.key1 = p.getProperty("key1");
 			JRelay.AUTONEXUS_PERCENT=Float.parseFloat(p.getProperty("anx"));
 			JRelay.FILTER_LEVEL=Integer.parseInt(p.getProperty("filter"));
-			
-			
-			JRelay.DEFAULT_SERVER = this.remoteHost;
+			JRelay.DEFAULT_SERVER = GameData.abbrToServer.get(p.getProperty("server").toUpperCase()).address;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -221,7 +223,7 @@ public final class JRelay implements Runnable {
 			p.setProperty("key1", this.key1);
 			p.setProperty("anx", String.valueOf(JRelay.AUTONEXUS_PERCENT));
 			p.setProperty("filter", String.valueOf(JRelay.FILTER_LEVEL));
-			
+			p.setProperty("server", String.valueOf(JRelay.DEFAULT_SERVER));
 			File file = new File(RES_LOC + "settings.properties");
 			if (!file.isFile()) {
 				try {
@@ -260,6 +262,7 @@ public final class JRelay implements Runnable {
 			p.setProperty("key1", settings.get(8).getText());
 			p.setProperty("anx",  settings.get(9).getText());
 			p.setProperty("filter",  settings.get(10).getText());
+			p.setProperty("server",  settings.get(11).getText());
 			File file = new File(RES_LOC + "settings.properties");
 
 			try {
@@ -329,12 +332,12 @@ public final class JRelay implements Runnable {
 					JRelayGUI.log("Client recieved...");
 				}
 			}
-//			Iterator<User> i = JRelay.instance.users.iterator();
-//			while (i.hasNext()) {
-//				
-//				User user = i.next();
-//				user.kick();
-//			}
+			Iterator<User> i = JRelay.instance.users.iterator();
+			while (i.hasNext()) {
+				
+				User user = i.next();
+				user.kick();
+			}
 		} else {
 			JRelayGUI.error(
 					"Failure starting the local listener. Make sure there is not an instance of JRelay running already.");
@@ -345,6 +348,9 @@ public final class JRelay implements Runnable {
 		JRelay.instance.users.removeAll(toRemove);
 	}
 
+	/**
+	 * Load user plugins.
+	 */
 	public static void loadUserPlugins() {
 		Path p = Paths.get(RES_LOC + "plugins\\");
 		File f = p.toFile();

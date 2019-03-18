@@ -1,4 +1,4 @@
-# **JRelay** Beta 1.5.0 - RotMG X31.3.1
+# **JRelay** Beta 1.5.1 - RotMG X31.4.0
 
 #### A plugin-based Java man in the middle proxy for the browser flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/iOUNE86.png)
@@ -688,6 +688,10 @@ Example Map:
 2. Choose weather your map will be an `ObjectMap` or a `TileMap`. Tile Maps are used to replace game tiles with other tiles while Object Maps are used to replace game object with other objects. Ex. You cant change Sand to be Medusas, the game wont like you very much. Add your corresponding map type entry to your `<Map>` as `<TileMap/>` or `<ObjectMap/>`.
 
 3. Underneath your map type declaration add a tag type `<Entry/>`. The entry tag has two attributes: `start` and `end`. Both tags are required and should be filled with corresponding tiles and object mapping syntax. You can have as many entries per map as you like.
+
+4. If you want to create a TileMap check out the 'xml/tiles.xml' for some neat substitutions for tiles in game
+
+5. For Object maps, anything and everything might go. ObjectMaps carry a high risk of getting disconnected... Especially if you replace all nexus tiles with Medusas
 
 ### Object Map Syntax
 `JRelay` object maps use a custom syntax to make your life easier. There are three main parts to object map syntax.

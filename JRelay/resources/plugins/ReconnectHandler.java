@@ -206,7 +206,7 @@ public class ReconnectHandler extends JPlugin {
 				reconnect.isFromArena = false;
 				reconnect.key = new byte[0];
 				reconnect.keyTime = 0;
-				
+				JRelay.DEFAULT_SERVER=reconnect.host;
 				sendReconnect(user, reconnect);
 			} else {
 				try {
@@ -261,6 +261,7 @@ public class ReconnectHandler extends JPlugin {
 		reconnect.key = key;
 		reconnect.host = host;
 		reconnect.port = port;
+		JRelay.DEFAULT_SERVER=host;
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class EnemyShootPacket extends Packet{
 		out.writeFloat(this.angle);
 		out.writeShort(this.damage);
 		
-		if(this.numShots!=1 && this.angleInc!=0){
+		if(this.numShots>1 && this.angleInc>0){
 			out.writeByte(this.numShots);
 			out.writeFloat(this.angleInc);
 		}

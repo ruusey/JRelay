@@ -68,7 +68,6 @@ public class JRelayGUI extends Application {
 	public static ArrayList<TextField> settings;
 	public static Stage app;
 
-	
 	public static boolean savedLog = false;
 
 	public static void main(String[] args) {
@@ -115,7 +114,6 @@ public class JRelayGUI extends Application {
 		tabs.getTabs().get(2).setContent(buildServerBox());
 		componentLayout.setTop(hb);
 		componentLayout.setCenter(tabs);
-		
 
 		root.getChildren().add(componentLayout);
 		// Add the Scene to the Stage
@@ -312,7 +310,8 @@ public class JRelayGUI extends Application {
 			Separator s10 = new Separator();
 			s8.setOrientation(Orientation.HORIZONTAL);
 
-			vbox1.getChildren().addAll(l, s, l1, s1, l2, s2, l3, s3, l4, s4, l5, s5, l6, s6, l7, s7, l8, s8,l9, s9, l10, s10);
+			vbox1.getChildren().addAll(l, s, l1, s1, l2, s2, l3, s3, l4, s4, l5, s5, l6, s6, l7, s7, l8, s8, l9, s9,
+					l10, s10);
 
 			VBox vbox2 = new VBox();
 			vbox2.setSpacing(5);
@@ -449,8 +448,8 @@ public class JRelayGUI extends Application {
 		Tab settingsTab = new Tab();
 		settingsTab.setGraphic(createLabel("Settings", 16));
 		ScrollPane sp = buildSettingsBox();
-		if(sp==null) {
-			sp=new ScrollPane();
+		if (sp == null) {
+			sp = new ScrollPane();
 		}
 		settingsTab.setContent(sp);
 		tabPane.getTabs().add(settingsTab);
@@ -529,7 +528,7 @@ public class JRelayGUI extends Application {
 	}
 
 	public TableView<String> buildPluginsTable() {
-		plugins=null;
+		plugins = null;
 		TableView<String> table = new TableView<String>();
 		table.setPlaceholder(new Label("No plugins attached"));
 		final Label label = new Label("Plugins");
@@ -565,23 +564,18 @@ public class JRelayGUI extends Application {
 	}
 
 	public void updatePlugins() {
-
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				
-				plugins.getItems().clear();
-				
-			}
-		});
+		if (plugins.getItems().size() > 1)
+			return;
 
 		ArrayList<PluginMetaData> pluginData = JRelay.instance.pluginData;
 		if (pluginData.size() > 0) {
-			for (PluginMetaData entry : pluginData) {
-				Platform.runLater(new Runnable() {
 
-					@Override
-					public void run() {
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					plugins.getItems().clear();
+					for (PluginMetaData entry : pluginData) {
 						String res = "Author - " + entry.getAuthor() + "\n";
 						res += "Name - " + entry.getName() + "\n";
 						res += "Description - " + entry.getDescription() + "\n";
@@ -619,9 +613,11 @@ public class JRelayGUI extends Application {
 						}
 						plugins.getItems().add(Arrays.asList(values));
 					}
-				});
-			}
+
+				}
+			});
 		}
+
 	}
 
 	public VBox createAboutTab() {

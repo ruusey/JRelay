@@ -20,6 +20,7 @@ import com.relay.User;
 public class Core extends JPlugin {
 	public boolean onTiles = false;
 	public int starFilter = JRelay.FILTER_LEVEL;
+
 	public Core(User user) {
 		super(user);
 
@@ -31,25 +32,27 @@ public class Core extends JPlugin {
 		user.hookCommand("maps", Core.class, "onMapsCommand");
 		user.hookCommand("jr", Core.class, "onJr");
 		user.hookCommand("filter", Core.class, "setStarFiler");
-		
+
 		user.hookPacket(PacketType.UPDATE, Core.class, "onUpdatePacket");
 		user.hookPacket(PacketType.TEXT, Core.class, "filterShops");
 
 	}
+
 	public void onMapsCommand(String command, String[] args) {
 		if (args.length < 2) {
 			TextPacket packet = EventUtils.createOryxNotification("Maps", "Too few argumenets /maps [on/off]");
 			sendToClient(packet);
 		} else if (args[1].equals("on")) {
-			JRelay.PARSE_MAPS=true;
+			JRelay.PARSE_MAPS = true;
 			TextPacket packet = EventUtils.createOryxNotification("Maps", "Enabling object and tile maps");
 			sendToClient(packet);
 		} else if (args[1].equals("off")) {
-			JRelay.PARSE_MAPS=false;
+			JRelay.PARSE_MAPS = false;
 			TextPacket packet = EventUtils.createOryxNotification("Maps", "Disabling object and tile maps");
 			sendToClient(packet);
 		}
 	}
+
 	public void onHiCommand(String command, String[] args) {
 		if (args.length < 2) {
 			TextPacket packet = EventUtils.createOryxNotification("hi", "Too few argumenets /hi [on/off]");
@@ -63,42 +66,47 @@ public class Core extends JPlugin {
 			sendToClient(packet);
 		}
 	}
+
 	public void setStarFiler(String command, String[] args) {
 		if (args.length < 2) {
 			TextPacket packet = EventUtils.createOryxNotification("ChatFilter", "Too few argumenets /filter [#stars]");
 			sendToClient(packet);
-		} else  {
+		} else {
 			try {
-				starFilter=Integer.parseInt(args[1]);
-			}catch(Exception e) {
-				EventUtils.createText("ChatFilter",args[1]+" must be an integer 0-75");
+				starFilter = Integer.parseInt(args[1]);
+			} catch (Exception e) {
+				EventUtils.createText("ChatFilter", args[1] + " must be an integer 0-75");
 				return;
 			}
-			JRelay.FILTER_LEVEL=starFilter;
-			TextPacket packet = EventUtils.createOryxNotification("ChatFilter", "Set minimum chat star requirement to "+starFilter);
+			JRelay.FILTER_LEVEL = starFilter;
+			TextPacket packet = EventUtils.createOryxNotification("ChatFilter",
+					"Set minimum chat star requirement to " + starFilter);
 			sendToClient(packet);
 		}
 	}
-	
+
 	public void onJr(String command, String[] args) {
-		
-		TextPacket packet = EventUtils.createOryxNotification("JRelay", "JRelay Alpha Build "+JRelay.JRELAY_VERSION+" for RotMG"+JRelay.GAME_VERSION+". Created by Ruusey");
-		sendToClient(EventUtils.createNotification(
-				user.playerData.ownerObjectId, "JRelay Alpha Build "+JRelay.JRELAY_VERSION));
+
+		TextPacket packet = EventUtils.createOryxNotification("JRelay", "JRelay Alpha Build " + JRelay.JRELAY_VERSION
+				+ " for RotMG" + JRelay.GAME_VERSION + ". Created by Ruusey");
+		sendToClient(EventUtils.createNotification(user.playerData.ownerObjectId,
+				"JRelay Alpha Build " + JRelay.JRELAY_VERSION));
 		sendToClient(packet);
 
 	}
-	
-	
+
 	public void filterShops(Packet p) {
 		TextPacket pack = (TextPacket) p;
-		if(pack.numStars<starFilter)pack.send=false;
-		
+		if (pack.numStars < starFilter)
+			pack.send = false;
+
 	}
+
 	public void onUpdatePacket(Packet p) {
-		if(!JRelay.PARSE_MAPS) return;
+		if (!JRelay.PARSE_MAPS)
+			return;
 		UpdatePacket pack = (UpdatePacket) p;
-		
+
 		for (Entry<ArrayList<String>, ArrayList<String>> entry : ObjectMapper.tiles.entrySet()) {
 			for (String from : entry.getKey()) {
 				if (from.equals(ObjectMapper.ALL_SELECTOR)) {
@@ -114,7 +122,7 @@ public class Core extends JPlugin {
 				} else {
 					int id = GameData.nameToTile.get(from).id;
 					for (Tile t : pack.tiles) {
-						
+
 						if (t.type == id) {
 							if (entry.getValue().size() == 1) {
 								t.type = GameData.nameToTile.get(entry.getValue().get(0)).id;
@@ -159,12 +167,13 @@ public class Core extends JPlugin {
 				}
 			}
 		}
-		
+
 		sendToClient(pack);
 		p.send = false;
 	}
-	public double distTo(int x0,int y0,float x,float y) {
-		return Math.sqrt((x0-x)*(x0-x)+(y0-y)*(y0-y));
+
+	public double distTo(int x0, int y0, float x, float y) {
+		return Math.sqrt((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y));
 	}
 
 	@Override

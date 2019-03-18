@@ -44,6 +44,7 @@ public class ReconnectHandler extends JPlugin {
 		if(packet.key.length>2) {
 			JRelayGUI.log("Key: "+packet.key[0]+""+packet.key[1]+""+packet.key[2]+""+", User state: "+thisState.GUID+", "+thisState.conTargetAddress);
 		}else {
+			
 			JRelayGUI.log("New User state: "+thisState.GUID+", "+thisState.conTargetAddress);
 		}
 		
@@ -84,9 +85,8 @@ public class ReconnectHandler extends JPlugin {
 
 	public void onReconnect(Packet pack) {
 		ReconnectPacket ppacket = (ReconnectPacket) pack;
-		ReconnectPacket packet = CloneReconnectPacket(user, ppacket);
-        user.state.lastReconnect = CloneReconnectPacket(user, packet);
-        //pack.send=false;
+		ReconnectPacket packet = cloneReconnectPacket(user, ppacket);
+        user.state.lastReconnect = cloneReconnectPacket(user, packet);
         if (packet.host.contains(".com")) {
         	java.net.InetAddress addr = null;
 			try {
@@ -99,13 +99,13 @@ public class ReconnectHandler extends JPlugin {
 			  packet.host=host;
         }
         
-//        if (packet.name.toLowerCase().contains("nexusportal")) {
-//            user.state.lastRealm = CloneReconnectPacket(user, packet);
-//        }
+        if (packet.name.toLowerCase().contains("nexusportal")) {
+            user.state.lastRealm = cloneReconnectPacket(user, packet);
+        }
         else if (((!packet.name.equals("")) 
                     && (!packet.name.contains("vault") 
                     && (packet.gameId != -2)))) {
-            user.state.lastDungeon = CloneReconnectPacket(user, packet);
+            user.state.lastDungeon = cloneReconnectPacket(user, packet);
         }
         
         if ((packet.port != -1)) {
@@ -132,7 +132,7 @@ public class ReconnectHandler extends JPlugin {
         sendToClient(ppacket);
         //sendReconnect(user,ppacket);
 	}
-	 public static ReconnectPacket CloneReconnectPacket(User client, ReconnectPacket packet)
+	 public static ReconnectPacket cloneReconnectPacket(User client, ReconnectPacket packet)
      {
          ReconnectPacket clone = null;
 		try {

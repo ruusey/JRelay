@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.SwingUtilities;
 
+import com.app.JRelayGUI;
 import com.data.ConditionEffect;
 import com.data.ConditionEffectIndex;
 import com.data.GameData;
@@ -45,7 +46,8 @@ public class AutoNexus extends JPlugin {
 
 	@Override
 	public void attach() {
-
+		int piercingProj = 0;
+		int breakingProj = 0;
 		for (Object e : GameData.objects.values()) {
 			if (e.enemy) {
 				ArrayList<Projectile> targetList = Lists.newArrayList(e.Projectiles);
@@ -53,12 +55,14 @@ public class AutoNexus extends JPlugin {
 						.collect(Collectors.toList());
 				List<Integer> piercingIds = piercing.stream().map(x -> (int) x.id).collect(Collectors.toList());
 				for (Integer id : piercingIds) {
+					piercingProj++;
 					Bullet.piercing.put(e.id, id);
 				}
 				List<Projectile> breaking = targetList.stream().filter(x -> x.StatusEffects.containsKey("Armor Broken"))
 						.collect(Collectors.toList());
 				List<Integer> breakingIds = breaking.stream().map(x -> (int) x.id).collect(Collectors.toList());
 				for (Integer id : breakingIds) {
+					breakingProj++;
 					Bullet.breaking.put(e.id, id);
 				}
 
@@ -66,8 +70,8 @@ public class AutoNexus extends JPlugin {
 
 			// user.HookPacket(PacketType.GROUNDDAMAGE, AutoNexus.class, OnPacket);
 		}
-		JRelay.info("Auto Nexus: Found " + Bullet.piercing.size() + " Armor Piercing Projectiles, Found "
-				+ Bullet.breaking.size() + " Armor Breaking Projectiles.");
+		JRelayGUI.log("Auto Nexus: Found " + piercingProj + " Armor Piercing Projectiles, Found "
+				+ breakingProj + " Armor Breaking Projectiles.");
 		st = new ClientState(user);
 		user.hookCommand("anx", AutoNexus.class, "onJXCommand");
 		user.hookPacket(PacketType.UPDATE, AutoNexus.class, "UpdateAN");
@@ -200,23 +204,23 @@ public class AutoNexus extends JPlugin {
 		}
 
 		// owner ID of bullet
-		public int OwnerID;
+		public int ownerId;
 
 		// the ID of the bullet
-		public int ID;
+		public int id;
 
 		// the type of projectile
-		public int ProjectileID;
+		public int projectileId;
 
 		// raw damage
-		public int Damage;
+		public int damage;
 
 		public Bullet(int ownerID, int iD, int projectileID, int damage) {
 			super();
-			OwnerID = ownerID;
-			ID = iD;
-			ProjectileID = projectileID;
-			Damage = damage;
+			ownerId = ownerID;
+			id = iD;
+			projectileId = projectileID;
+			this.damage = damage;
 		}
 	}
 
@@ -226,13 +230,13 @@ public class AutoNexus extends JPlugin {
 		public boolean safe = true;
 
 		public boolean Armored = false;
-		public boolean ArmorBroken = false;
+		public boolean armorBroken = false;
 
 		// enemy id -> projectiles
-		public BiMap<Integer, ArrayList<Bullet>> BulletMap = HashBiMap.create();
+		public BiMap<Integer, ArrayList<Bullet>> bulletMap = HashBiMap.create();
 
 		// enemy id -> enemy type
-		public BiMap<Integer, Short> EnemyTypeMap = HashBiMap.create();
+		public BiMap<Integer, Short> enemyMap = HashBiMap.create();
 
 		public User client;
 
@@ -241,15 +245,15 @@ public class AutoNexus extends JPlugin {
 		}
 
 		public void destroyData() {
-			BulletMap.clear();
-			EnemyTypeMap.clear();
+			bulletMap.clear();
+			enemyMap.clear();
 		}
 
 		public void Update(UpdatePacket update) {
 
 			for (Entity e : update.newObjs) {
-				if (!EnemyTypeMap.containsKey(e.status.objectId)) {
-					Short ins = EnemyTypeMap.forcePut(e.status.objectId, e.objectType);
+				if (!enemyMap.containsKey(e.status.objectId)) {
+					Short ins = enemyMap.forcePut(e.status.objectId, e.objectType);
 					if (ins != null) {
 						System.out.println("Added new enemyType " + e.objectType);
 					}
@@ -268,24 +272,24 @@ public class AutoNexus extends JPlugin {
 						if (stat.id == StatsType.HP.type)
 							HP = stat.intValue;
 
-			ArmorBroken = client.playerData.hasConditionEffect(ConditionEffect.ArmorBroken);
-			if (ArmorBroken) {
-				sendToClient(EventUtils.createText("AutoNexus", " Armor Broken!"));
-			}
-			Armored = client.playerData.hasConditionEffect(ConditionEffect.Armored);
-			if (Armored) {
-				sendToClient(EventUtils.createText("AutoNexus", " Player Armored!"));
-			}
+			armorBroken = client.playerData.hasConditionEffect(ConditionEffect.ArmorBroken);
+//			if (ArmorBroken) {
+//				sendToClient(EventUtils.createText("AutoNexus", " Armor Broken!"));
+//			}
+//			Armored = client.playerData.hasConditionEffect(ConditionEffect.Armored);
+//			if (Armored) {
+//				sendToClient(EventUtils.createText("AutoNexus", " Player Armored!"));
+//			}
 
 		}
 
 		private void MapBullet(Bullet b) {
-			if (!BulletMap.containsKey(b.OwnerID)) {
+			if (!bulletMap.containsKey(b.ownerId)) {
 
-				BulletMap.forcePut(b.OwnerID, new ArrayList<Bullet>());
+				bulletMap.forcePut(b.ownerId, new ArrayList<Bullet>());
 
 			}
-			BulletMap.get(b.OwnerID).add(b);
+			bulletMap.get(b.ownerId).add(b);
 
 		}
 
@@ -302,12 +306,12 @@ public class AutoNexus extends JPlugin {
 			int def = client.playerData.defense;
 
 			if (ConditionEffectIndex.valueOf(aoe.effect) == ConditionEffectIndex.ArmorBroken)
-				ArmorBroken = true;
+				armorBroken = true;
 
 			if (Armored)
 				def *= 2;
 
-			if (ArmorBroken)
+			if (armorBroken)
 				def = 0;
 
 			return Math.max(Math.max(aoe.damage - def, 0), (int) (0.15f * aoe.damage));
@@ -316,25 +320,25 @@ public class AutoNexus extends JPlugin {
 		private int PredictDamage(Bullet b) {
 			int def = client.playerData.defense;
 
-			if (EnemyTypeMap.containsKey(b.OwnerID)
-					&& Bullet.IsArmorBreaking(EnemyTypeMap.get(b.OwnerID), b.ProjectileID) && !ArmorBroken) {
-				ArmorBroken = true;
+			if (enemyMap.containsKey(b.ownerId)
+					&& Bullet.IsArmorBreaking(enemyMap.get(b.ownerId), b.projectileId) && !armorBroken) {
+				armorBroken = true;
 			}
 
 			if (Armored) {
 				def *= 2;
 			}
 
-			if (ArmorBroken || (EnemyTypeMap.containsKey(b.OwnerID)
-					&& Bullet.IsPiercing(EnemyTypeMap.get(b.OwnerID), b.ProjectileID))) {
+			if (armorBroken || (enemyMap.containsKey(b.ownerId)
+					&& Bullet.IsPiercing(enemyMap.get(b.ownerId), b.projectileId))) {
 				def = 0;
 			}
 
-			return Math.max(Math.max(b.Damage - def, 0), (int) (0.15f * b.Damage));
+			return Math.max(Math.max(b.damage - def, 0), (int) (0.15f * b.damage));
 		}
 
 		private boolean ApplyDamage(int dmg) {
-			// System.out.println("Applying damage "+dmg);
+			
 			if (!safe)
 				return false;
 			HP -= dmg;
@@ -344,8 +348,18 @@ public class AutoNexus extends JPlugin {
 				try {
 					client.sendToServer(Packet.create(PacketType.ESCAPE));
 					
-					sendToClient(EventUtils.createOryxNotification("AutoNexus",
-							"Saved You At " + HP + " health!"));
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								Thread.sleep(800);
+								sendToClient(EventUtils.createOryxNotification("AutoNexus",
+										"Saved You At " + HP + " health!"));
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					
 
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -359,8 +373,8 @@ public class AutoNexus extends JPlugin {
 
 		public void PlayerHit(PlayerHitPacket phit) {
 
-			for (Bullet b : BulletMap.get(phit.objectId))
-				if (b.ID == phit.bulletId) {
+			for (Bullet b : bulletMap.get(phit.objectId))
+				if (b.id == phit.bulletId) {
 					phit.send = ApplyDamage(PredictDamage(b));
 					break;
 				}

@@ -34,7 +34,7 @@ public class Core extends JPlugin {
 		user.hookCommand("filter", Core.class, "setStarFiler");
 
 		user.hookPacket(PacketType.UPDATE, Core.class, "onUpdatePacket");
-		user.hookPacket(PacketType.TEXT, Core.class, "filterShops");
+		user.hookPacket(PacketType.TEXT, Core.class, "filterChat");
 
 	}
 
@@ -58,8 +58,8 @@ public class Core extends JPlugin {
 			TextPacket packet = EventUtils.createOryxNotification("hi", "Too few argumenets /hi [on/off]");
 			sendToClient(packet);
 		} else if (args[1].equals("on")) {
-			TextPacket packet = EventUtils.createOryxNotification("Core", "Hello! heres some player data: name="
-					+ user.playerData.name + " fame=" + user.playerData.characterFame);
+			TextPacket packet = EventUtils.createOryxNotification("Core", "Hello! here's some player data: Name="
+					+ user.playerData.name + " Class=" + user.playerData.cls.name());
 			sendToClient(packet);
 		} else if (args[1].equals("off")) {
 			TextPacket packet = EventUtils.createOryxNotification("Core", "Hello! no player data requested");
@@ -95,9 +95,9 @@ public class Core extends JPlugin {
 
 	}
 
-	public void filterShops(Packet p) {
+	public void filterChat(Packet p) {
 		TextPacket pack = (TextPacket) p;
-		if (pack.numStars < starFilter)
+		if (pack.numStars < starFilter && !pack.name.contains("#"))
 			pack.send = false;
 
 	}

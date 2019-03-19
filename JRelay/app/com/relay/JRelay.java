@@ -279,6 +279,12 @@ public final class JRelay implements Runnable {
 	}
 
 	public void shutdown() {
+		try {
+			//this.
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		JRelay.instance.connections = null;
 		GameData.destroy();
 		listenSocket.stop();
@@ -329,13 +335,14 @@ public final class JRelay implements Runnable {
 					Thread userThread = new Thread(user);
 					//connections.add(userThread);
 					userThread.start();
-					JRelayGUI.log("Client recieved...");
+					JRelayGUI.log("Client recieved");
 				}
 			}
 			Iterator<User> i = JRelay.instance.users.iterator();
 			while (i.hasNext()) {
 				
 				User user = i.next();
+				JRelayGUI.log("Client disconnected");
 				user.kick();
 			}
 		} else {

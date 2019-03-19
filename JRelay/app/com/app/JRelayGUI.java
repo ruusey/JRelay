@@ -105,10 +105,7 @@ public class JRelayGUI extends Application {
 
 		TabPane tabs = buildTabs();
 		tabs.getTabs().get(0).setContent(buildConsole());
-		if (!GameData.loadData()) {
-			JRelay.info("GameData unable to load. Exiting...");
-			System.exit(0);
-		}
+		
 		
 //		tabs.getTabs().get(2).setGraphic(createLabel("Servers", 16));
 //		//tabs.getTabs().get(2).setStyle("-fx-text-fill:grey;");
@@ -128,6 +125,12 @@ public class JRelayGUI extends Application {
 				System.exit(0);
 			}
 		});
+		if (!GameData.loadData()) {
+			JRelayGUI.error("GameData unable to load. Exiting...");
+			System.exit(0);
+		}else {
+			JRelayGUI.log("GameData loaded succesfully.");
+		}
 		log("JRelay for RotMG " + JRelay.GAME_VERSION);
 		//startPluginUpdate();
 //	Thread td = new Thread(new ResourceMonitor());
@@ -212,7 +215,7 @@ public class JRelayGUI extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				saveConsole();
-				createPopup("Saved Console Log", "Ok");
+				createPopup("Console log saved under 'logs/'", "Ok");
 
 			}
 		});
@@ -229,7 +232,7 @@ public class JRelayGUI extends Application {
 			Files.write(file, console.getText().getBytes());
 
 		} catch (Exception e) {
-			JRelay.error(e.getMessage());
+			JRelayGUI.error(e.getMessage());
 		}
 
 	}
@@ -246,7 +249,7 @@ public class JRelayGUI extends Application {
 
 		VBox root = new VBox();
 		for (Server s : GameData.servers.values()) {
-			Button sButton = createButton(s.name, 12);
+			Button sButton = createButton(s.name, 16);
 			hookServerChange(sButton);
 			root.getChildren().add(sButton);
 		}
@@ -270,13 +273,13 @@ public class JRelayGUI extends Application {
 			JRelayGUI.settings = JRelay.instance.getSettings();
 			VBox vbox = new VBox();
 			vbox.setSpacing(5);
-			vbox.setPadding(new Insets(10, 0, 0, 10));
+			vbox.setPadding(new Insets(10, 10, 10, 10));
 			vbox.getChildren().addAll(JRelayGUI.settings);
 
 			VBox vbox1 = new VBox();
 			vbox.setStyle("fx-text-align:right;");
 			vbox1.setSpacing(5);
-			vbox1.setPadding(new Insets(10, 0, 0, 10));
+			vbox1.setPadding(new Insets(10, 10, 10, 10));
 			Label l = createLabel("Listen Host", 16);
 			Separator s = new Separator();
 			s.setOrientation(Orientation.HORIZONTAL);
@@ -319,7 +322,7 @@ public class JRelayGUI extends Application {
 
 			VBox vbox2 = new VBox();
 			vbox2.setSpacing(5);
-			vbox2.setPadding(new Insets(10, 0, 0, 10));
+			vbox2.setPadding(new Insets(10, 10, 10, 10));
 
 			Button save = new Button("Save");
 			hookSaveSettings(save);
@@ -331,7 +334,7 @@ public class JRelayGUI extends Application {
 			GridPane.setColumnIndex(vbox2, 2);
 			pane.getChildren().addAll(vbox1, vbox, vbox2);
 			ScrollPane sp2 = new ScrollPane();
-			sp2.setPadding(new Insets(10, 0, 0, 0));
+			sp2.setPadding(new Insets(10, 10, 10, 10));
 			sp2.setMaxHeight(JRelayGUI.APP_HEIGHT - 150);
 			sp2.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 			sp2.setContent(pane);
@@ -352,13 +355,13 @@ public class JRelayGUI extends Application {
 					public void run() {
 						Server toConnect = GameData.nameToServer.get(b.getText());
 						if (toConnect == null) {
-							System.out.println("server not found");
+							JRelayGUI.error("Server not found!");
 							return;
 						} else {
-							System.out.println(toConnect.name);
+							JRelayGUI.log(toConnect.name);
 							ReconnectHandler recon = JRelay.instance.reconHandler;
 							if (recon == null) {
-								System.out.println("Handler was null!");
+								JRelayGUI.error("Handler was null!");
 								return;
 							}
 							recon.onConnectCommand("/jcon " + toConnect.abbreviation,
@@ -550,7 +553,9 @@ public class JRelayGUI extends Application {
 		Runnable task = new Runnable() {
 			public void run() {
 				while (true) {
-					updatePlugins();
+					if(updatePlugins()) {
+						break;
+					}
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
@@ -560,14 +565,13 @@ public class JRelayGUI extends Application {
 			}
 		};
 		Thread backgroundThread = new Thread(task);
-		backgroundThread.setDaemon(true);
 		backgroundThread.start();
 
 	}
 
-	public void updatePlugins() {
+	public boolean updatePlugins() {
 		if (plugins.getItems().size() > 1)
-			return;
+			return false;
 
 		ArrayList<PluginMetaData> pluginData = JRelay.instance.pluginData;
 		if (pluginData.size() > 0) {
@@ -618,7 +622,9 @@ public class JRelayGUI extends Application {
 
 				}
 			});
+			
 		}
+		return true;
 
 	}
 

@@ -129,7 +129,7 @@ public class JRelayGUI extends Application {
 			}
 		});
 		log("JRelay for RotMG " + JRelay.GAME_VERSION);
-		startPluginUpdate();
+		//startPluginUpdate();
 //	Thread td = new Thread(new ResourceMonitor());
 //	td.start();
 
@@ -479,13 +479,13 @@ public class JRelayGUI extends Application {
 
 		root.setPadding(new Insets(10, 0, 0, 0));
 		VBox serverPackets = new VBox();
-		serverPackets.getChildren().add(createLabel("Server", 16));
+		serverPackets.getChildren().add(createLabel("Server", 18));
 		serverPackets.getChildren().add(new Separator());
 
 		List<Class<? extends Packet>> sPacks = Packet.addServerPackets();
 
 		for (Class<? extends Packet> pack : sPacks) {
-			Button b = createButton(pack.getSimpleName(), 12);
+			Button b = createButton(pack.getSimpleName(), 14);
 			PacketMeta sMeta = Packet.getServerPacketMeta(pack.getSimpleName());
 			b.setTooltip(new Tooltip(Packet.buildMetaString(sMeta)));
 			serverPackets.getChildren().add(b);
@@ -542,7 +542,7 @@ public class JRelayGUI extends Application {
 		 sp2.setContent(table);
 
 		plugins = table;
-		plugins.setPrefSize(400, 400);
+		plugins.setPrefSize(400, 350);
 		return table;
 	}
 

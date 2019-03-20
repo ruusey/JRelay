@@ -131,8 +131,8 @@ public class JRelayGUI extends Application {
 		
 		log("JRelay for RotMG " + JRelay.GAME_VERSION);
 		//startPluginUpdate();
-//	Thread td = new Thread(new ResourceMonitor());
-//	td.start();
+	Thread td = new Thread(new ResourceMonitor());
+	td.start();
 
 	}
 

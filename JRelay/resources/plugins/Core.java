@@ -32,12 +32,13 @@ public class Core extends JPlugin {
 		user.hookCommand("maps", Core.class, "onMapsCommand");
 		user.hookCommand("jr", Core.class, "onJr");
 		user.hookCommand("filter", Core.class, "setStarFiler");
+		
 
 		user.hookPacket(PacketType.UPDATE, Core.class, "onUpdatePacket");
 		user.hookPacket(PacketType.TEXT, Core.class, "filterChat");
 
 	}
-
+	
 	public void onMapsCommand(String command, String[] args) {
 		if (args.length < 2) {
 			TextPacket packet = EventUtils.createOryxNotification("Maps", "Too few argumenets /maps [on/off]");
@@ -55,7 +56,7 @@ public class Core extends JPlugin {
 
 	public void onHiCommand(String command, String[] args) {
 		if (args.length < 2) {
-			TextPacket packet = EventUtils.createOryxNotification("hi", "Too few argumenets /hi [on/off]");
+			TextPacket packet = EventUtils.createOryxNotification("Core", "Too few argumenets /hi [on/off]");
 			sendToClient(packet);
 		} else if (args[1].equals("on")) {
 			TextPacket packet = EventUtils.createOryxNotification("Core", "Hello! here's some player data: Name="
@@ -75,7 +76,8 @@ public class Core extends JPlugin {
 			try {
 				starFilter = Integer.parseInt(args[1]);
 			} catch (Exception e) {
-				EventUtils.createText("ChatFilter", args[1] + " must be an integer 0-75");
+				TextPacket packet = EventUtils.createOryxNotification("ChatFilter", args[1] + " must be an integer 0-75");
+				sendToClient(packet);
 				return;
 			}
 			JRelay.FILTER_LEVEL = starFilter;

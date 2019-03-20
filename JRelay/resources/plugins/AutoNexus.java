@@ -84,6 +84,7 @@ public class AutoNexus extends JPlugin {
 
 	public void OnConnectAN(Packet pack) {
 		Bullet.destroyData();
+		st.destroyData();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -346,6 +347,8 @@ public class AutoNexus extends JPlugin {
 			if (enabled && (float) HP / client.playerData.maxHealth <= nexusPercent) {
 
 				try {
+					Bullet.destroyData();
+					st.destroyData();
 					client.sendToServer(Packet.create(PacketType.ESCAPE));
 					
 					SwingUtilities.invokeLater(new Runnable() {

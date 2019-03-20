@@ -203,7 +203,7 @@ public final class JRelay implements Runnable {
 			this.key1 = p.getProperty("key1");
 			JRelay.AUTONEXUS_PERCENT=Float.parseFloat(p.getProperty("anx"));
 			JRelay.FILTER_LEVEL=Integer.parseInt(p.getProperty("filter"));
-			JRelay.DEFAULT_SERVER = GameData.abbrToServer.get(p.getProperty("server").toUpperCase()).address;
+			JRelay.DEFAULT_SERVER = (p.getProperty("server"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -280,7 +280,7 @@ public final class JRelay implements Runnable {
 
 	public void shutdown() {
 		try {
-			//this.
+			this.finalize();
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -102,7 +102,10 @@ public class JRelayGUI extends Application {
 		hb.getChildren().addAll(imv, header);
 
 		BorderPane componentLayout = new BorderPane();
-
+		if (!GameData.loadData()) {
+			JRelayGUI.error("GameData unable to load. Exiting...");
+			System.exit(0);
+		}
 		TabPane tabs = buildTabs();
 		tabs.getTabs().get(0).setContent(buildConsole());
 		
@@ -125,12 +128,7 @@ public class JRelayGUI extends Application {
 				System.exit(0);
 			}
 		});
-		if (!GameData.loadData()) {
-			JRelayGUI.error("GameData unable to load. Exiting...");
-			System.exit(0);
-		}else {
-			JRelayGUI.log("GameData loaded succesfully.");
-		}
+		
 		log("JRelay for RotMG " + JRelay.GAME_VERSION);
 		//startPluginUpdate();
 //	Thread td = new Thread(new ResourceMonitor());

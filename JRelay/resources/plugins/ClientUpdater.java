@@ -99,11 +99,16 @@ public class ClientUpdater extends JPlugin {
                     {
                         resolvedState.conTargetAddress = randomRealmState.lastRealm.host;
                         resolvedState.lastRealm = randomRealmState.lastRealm;
-                        //JRelay.instance.userStates.inverse().remove(resolvedState);
+                        JRelay.instance.userStates.inverse().remove(resolvedState);
                     }
                     else if (resolvedState.lastHello.gameId == -2 && ((MapInfoPacket)user.state.state.get("MapInfo")).name.equalsIgnoreCase("Nexus"))
                     {
-                        resolvedState.conTargetAddress = GameData.abbrToServer.get(JRelay.DEFAULT_SERVER).address;
+                    	if(JRelay.DEFAULT_SERVER.contains(".")) {
+                    		resolvedState.conTargetAddress=JRelay.DEFAULT_SERVER;
+                    	}else {
+                    		resolvedState.conTargetAddress = GameData.abbrToServer.get(JRelay.DEFAULT_SERVER).address;
+                    	}
+                        
                     }
             		
             	}

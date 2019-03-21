@@ -89,9 +89,10 @@ public class JRelayGUI extends Application {
 		Scene scene = new Scene(root, APP_WIDTH, APP_HEIGHT, Color.WHITE);
 		scene.getStylesheets().addAll("app.css");
 		
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		root.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
+            	log("key down");
                 switch (event.getCode()) {
                     case G:    goNorth = true; break;
                     case H:  goSouth = true; break;
@@ -104,20 +105,7 @@ public class JRelayGUI extends Application {
             }
         });
 
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case G:    goNorth = false; break;
-                    case H:  goSouth = false; break;
-                    case J:  goWest  = false; break;
-                    case K: goEast  = false; break;
-                    case SHIFT: running = false; break;
-				default:
-					break;
-                }
-            }
-        });
+       
 
 		ImageView imv = new ImageView();
 		Image logo = new Image("icon.png");

@@ -21,6 +21,7 @@ import com.models.PacketMeta;
 import com.models.Server;
 import com.relay.JRelay;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -45,6 +46,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -67,7 +69,7 @@ public class JRelayGUI extends Application {
 	public static boolean relayStarted = false;
 	public static ArrayList<TextField> settings;
 	public static Stage app;
-
+	public static boolean running, goNorth, goSouth, goEast, goWest;
 	public static boolean savedLog = false;
 
 	public static void main(String[] args) {
@@ -86,6 +88,37 @@ public class JRelayGUI extends Application {
 		Group root = new Group();
 		Scene scene = new Scene(root, APP_WIDTH, APP_HEIGHT, Color.WHITE);
 		scene.getStylesheets().addAll("app.css");
+		
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case G:    goNorth = true; break;
+                    case H:  goSouth = true; break;
+                    case J:  goWest  = true; break;
+                    case K: goEast  = true; break;
+                    case SHIFT: running = true; break;
+				default:
+					break;
+                }
+            }
+        });
+
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case G:    goNorth = false; break;
+                    case H:  goSouth = false; break;
+                    case J:  goWest  = false; break;
+                    case K: goEast  = false; break;
+                    case SHIFT: running = false; break;
+				default:
+					break;
+                }
+            }
+        });
+
 		ImageView imv = new ImageView();
 		Image logo = new Image("icon.png");
 		imv.setImage(logo);

@@ -8,16 +8,7 @@ import com.models.Packet;
 
 public class KeyInfoRequestPacket extends Packet {
 
-
-
 	private int itemType;
-
-
-
-
-
-
-
 
 	@Override
 
@@ -27,8 +18,6 @@ public class KeyInfoRequestPacket extends Packet {
 
 	}
 
-
-
 	@Override
 
 	public void writeToOutput(DataOutput out) throws IOException {
@@ -37,7 +26,4 @@ public class KeyInfoRequestPacket extends Packet {
 
 	}
 
-
-
 }
-

@@ -73,10 +73,11 @@ public class User implements Runnable {
 
 	public void destroy() {
 		try {
-			this.finalize();
+			//this.finalize();
 			this.localSocket.close();
 			this.remoteSocket.close();
 		}catch(Throwable e) {
+			JRelayGUI.error(e.getMessage());
 			e.printStackTrace();
 		}
 		this.localBuffer=null;
@@ -120,7 +121,7 @@ public class User implements Runnable {
 		try {
 			this.sendClientPacket(packet);
 		} catch (Exception e) {
-			e.printStackTrace();
+			JRelayGUI.error(e.getMessage());
 			this.kick();
 		}
 	}
@@ -132,7 +133,8 @@ public class User implements Runnable {
 		try {
 			this.sendServerPacket(packet);
 		} catch (Exception e) {
-			e.printStackTrace();
+			JRelayGUI.error(e.getMessage());
+			//e.printStackTrace();
 			this.kick();
 		}
 	}
@@ -167,7 +169,7 @@ public class User implements Runnable {
 		try {
 			method = location.getMethod(callback, Packet.class);
 		} catch (Exception e) {
-			JRelay.error(e.getMessage());
+			JRelayGUI.error(e.getMessage());
 			e.printStackTrace();
 		}
 		for (Entry<PacketType, ArrayList<Method>> hook : JRelay.instance.packetHooks.entrySet()) {
@@ -191,7 +193,7 @@ public class User implements Runnable {
 			}
 
 		} else {
-			JRelay.error("The callback " + callback + " is already bound");
+			JRelayGUI.error("The callback " + callback + " is already bound");
 		}
 
 	}
@@ -203,7 +205,7 @@ public class User implements Runnable {
 			method = location.getMethod(callback, Packet.class);
 		} catch (Exception e) {
 
-			JRelay.error(e.getMessage());
+			JRelayGUI.error(e.getMessage());
 			e.printStackTrace();
 		}
 		for (Entry<PacketType, ArrayList<Method>> hook : JRelay.instance.requiredPacketHooks.entrySet()) {
@@ -231,7 +233,7 @@ public class User implements Runnable {
 			}
 
 		} else {
-			JRelay.error("The callback " + callback + " is already bound");
+			JRelayGUI.error("The callback " + callback + " is already bound");
 		}
 
 	}
@@ -245,13 +247,13 @@ public class User implements Runnable {
 			method = location.getMethod(callback, String.class, String[].class);
 		} catch (Exception e) {
 
-			JRelay.error(e.getMessage());
+			JRelayGUI.error(e.getMessage());
 			e.printStackTrace();
 		}
 		if (method != null) {
 			JRelay.instance.commandHooks.put(command, method);
 		} else {
-			JRelay.error("The callback " + callback + " is already bound");
+			JRelayGUI.error("The callback " + callback + " is already bound");
 		}
 	}
 
@@ -270,7 +272,7 @@ public class User implements Runnable {
 
 				} catch (Exception e) {
 					JRelay.error(e.getMessage() + e.getCause().toString());
-					e.printStackTrace();
+					this.kick();
 				}
 
 			}
@@ -290,6 +292,7 @@ public class User implements Runnable {
 					}
 				} catch (Exception e) {
 					JRelay.error(e.getMessage());
+					this.kick();
 					e.printStackTrace();
 				}
 

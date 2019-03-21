@@ -8,7 +8,7 @@ import com.models.Packet;
 
 public class RealmHeroLeftMsgPacket extends Packet {
 
-	public int heroesLeft = 1;
+	public int heroesLeft;
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

@@ -318,12 +318,10 @@ public final class JRelay implements Runnable {
 	@Override
 	public void run() {
 		try {
-
 			ObjectMapper.buildMap();
 			Packet.init();
 			loadUserPlugins();
 			
-
 		} catch (Exception e) {
 			JRelay.error(e.getMessage());
 		}
@@ -333,7 +331,6 @@ public final class JRelay implements Runnable {
 				while (!JRelay.instance.newUsers.isEmpty()) {
 					User user = JRelay.instance.newUsers.remove(0);
 					Thread userThread = new Thread(user);
-					//connections.add(userThread);
 					userThread.start();
 					JRelayGUI.log("Client recieved");
 				}
@@ -351,12 +348,12 @@ public final class JRelay implements Runnable {
 		}
 	}
 
-	public void removeInactiveUsers(List<User> toRemove) {
-		JRelay.instance.users.removeAll(toRemove);
-	}
+//	public void removeInactiveUsers(List<User> toRemove) {
+//		JRelay.instance.users.removeAll(toRemove);
+//	}
 
 	/**
-	 * Load user plugins.
+	 * Load user plugins from the plugins directory.
 	 */
 	public static void loadUserPlugins() {
 		Path p = Paths.get(RES_LOC + "plugins\\");
@@ -369,10 +366,10 @@ public final class JRelay implements Runnable {
 		}
 	}
 
-	public void reloadPlugins() {
-		JRelay.userPluginClasses = new ArrayList<String>();
-		loadUserPlugins();
-	}
+//	public void reloadPlugins() {
+//		JRelay.userPluginClasses = new ArrayList<String>();
+//		loadUserPlugins();
+//	}
 
 	public void attachUserPlugins(User user) {
 		// ATTACH PLUGIN EVENTS TO SPECIFIC USERS

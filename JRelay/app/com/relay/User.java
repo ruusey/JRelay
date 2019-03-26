@@ -44,21 +44,20 @@ public class User implements Runnable {
 	public long remoteNoDataTime = System.currentTimeMillis();
 	public boolean shutdown = false;
 	
-	/** The user plugin instances. */
+	/** This users plugin instances. */
 	public ArrayList<String> userPluginInstances = new ArrayList<String>();
 
-	
+
 	/**
 	 * Instantiates a new user.
 	 *
-	 * @param localSocket the local socket
+	 * @param localSocket the local socket the client connected to.
 	 * @throws Exception the exception
 	 */
 	public User(Socket localSocket) throws Exception {
 		if (localSocket == null) {
 			throw new NullPointerException();
 		}
-
 		this.localSocket = localSocket;
 		this.localRecvRC4 = new RC4(JRelay.instance.key0);
 		this.localSendRC4 = new RC4(JRelay.instance.key1);
@@ -67,13 +66,18 @@ public class User implements Runnable {
 		JRelayGUI.log("Listening on "+localSocket.toString());
 	}
 
+	/**
+	 * Trigger a disconnection from the server and shuts down communicaiton.
+	 */
 	public void disconnect() {
 		this.shutdown = true;
 	}
-
+	
+	/**
+	 * Nullifies all resources and closes all sockets associated with this user.
+	 */
 	public void destroy() {
 		try {
-			//this.finalize();
 			this.localSocket.close();
 			this.remoteSocket.close();
 		}catch(Throwable e) {
@@ -88,7 +92,6 @@ public class User implements Runnable {
 		this.remoteSendRC4 = null;
 		this.state = null;
 		this.playerData = null;
-		
 	}
 
 	/**
@@ -99,24 +102,31 @@ public class User implements Runnable {
 		this.destroy();	
 
 	}
-
 	/**
 	 * Handle inbound client packet.
 	 *
-	 * @param packet the packet
+	 * @param packet the received from the client to be sent to the server.
 	 */
 	public void handleClientPacket(Packet packet) {
 		if (packet.send && !this.shutdown) {
 			sendToServer(packet);
 		}
 	}
-
+	/**
+	 * Handle inbound server packet.
+	 *
+	 * @param packet the received from the server to be sent to the client.
+	 */
 	public void handleServerPacket(Packet packet) {
 		if (packet.send && !this.shutdown) {
 			sendToClient(packet);
 		}
 	}
-
+	/**
+	 * Send a packet to the client. Protected by try/catch
+	 *
+	 * @param packet the packet to be sent.
+	 */
 	public void sendToClient(Packet packet) {
 		try {
 			this.sendClientPacket(packet);
@@ -126,21 +136,28 @@ public class User implements Runnable {
 		}
 	}
 
+	
 	/**
-	 * @param packet
+	 * Send a packet to the server. Protected by try/catch
+	 *
+	 * @param packet the packet to be sent.
 	 */
 	public void sendToServer(Packet packet) {
 		try {
 			this.sendServerPacket(packet);
 		} catch (Exception e) {
 			JRelayGUI.error(e.getMessage());
-			//e.printStackTrace();
 			this.kick();
 		}
 	}
 
+	/**
+	 * Send the client a packet.
+	 *
+	 * @param packet the packet to be sent
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void sendClientPacket(Packet packet) throws IOException {
-
 		byte[] packetBytes = packet.getBytes();
 		this.localSendRC4.cipher(packetBytes);
 		byte packetId = packet.id();
@@ -149,11 +166,9 @@ public class User implements Runnable {
 		out.writeInt(packetLength);
 		out.writeByte(packetId);
 		out.write(packetBytes);
-
 	}
 
 	public void sendServerPacket(Packet packet) throws IOException {
-
 		byte[] packetBytes = packet.getBytes();
 		this.remoteSendRC4.cipher(packetBytes);
 		byte packetId = packet.id();
@@ -164,6 +179,13 @@ public class User implements Runnable {
 		out.write(packetBytes);
 	}
 
+	/**
+	 * Hook a user plugin function on packet received.
+	 *
+	 * @param type the PacketType to trigger invocation.
+	 * @param location class location of the callback function
+	 * @param callback name of the callback function
+	 */
 	public void hookPacket(PacketType type, Class<? extends JPlugin> location, String callback) {
 		Method method = null;
 		try {
@@ -180,8 +202,7 @@ public class User implements Runnable {
 
 		}
 		if (method != null) {
-			// JRelay.info("Hooked " + method.getName() + " to packet '"
-			// + type.name() + "'");
+			
 			if (JRelay.instance.packetHooks.containsKey(type)) {
 				ArrayList<Method> pMethods = JRelay.instance.packetHooks.get(type);
 				pMethods.add(method);
@@ -198,13 +219,18 @@ public class User implements Runnable {
 
 	}
 
+	/**
+	 * Hook a required JRelay function on packet received.
+	 *
+	 * @param type PacketType to trigger invocation
+	 * @param location class the callback function is located in
+	 * @param callback name of the callback method
+	 */
 	public void hookRequiredPacket(PacketType type, Class<? extends JPlugin> location, String callback) {
 		Method method = null;
-
 		try {
 			method = location.getMethod(callback, Packet.class);
 		} catch (Exception e) {
-
 			JRelayGUI.error(e.getMessage());
 			e.printStackTrace();
 		}
@@ -213,31 +239,30 @@ public class User implements Runnable {
 			if (meth.contains(method)) {
 				return;
 			}
-
 		}
 		if (method != null) {
-			// JRelay.info("Hooked " + method.getName() + " to packet '"
-			// + type.name() + "'");
 			if (JRelay.instance.requiredPacketHooks.containsKey(type)) {
 				ArrayList<Method> pMethods = JRelay.instance.requiredPacketHooks.get(type);
 				pMethods.add(method);
-
 				JRelay.instance.requiredPacketHooks.replace(type, pMethods);
 
 			} else {
 				ArrayList<Method> pMethods = new ArrayList<Method>();
 				pMethods.add(method);
-
 				JRelay.instance.requiredPacketHooks.put(type, pMethods);
-
 			}
-
 		} else {
 			JRelayGUI.error("The callback " + callback + " is already bound");
 		}
-
 	}
 
+	/**
+	 * Hook a text command to this user.
+	 *
+	 * @param command the command to trigger the callback
+	 * @param location class location of the callback method
+	 * @param callback name of the callback method
+	 */
 	public void hookCommand(String command, Class<? extends JPlugin> location, String callback) {
 		Method method = null;
 		if (JRelay.instance.commandHooks.containsKey(command)) {
@@ -257,6 +282,11 @@ public class User implements Runnable {
 		}
 	}
 
+	/**
+	 * Invoke a required JRelay function on packet received.
+	 *
+	 * @param packet to be sent to the required invokable method.
+	 */
 	public void invokeOnPacketRequired(Packet packet) {
 
 		for (PacketType pt : JRelay.instance.requiredPacketHooks.keySet()) {
@@ -271,7 +301,7 @@ public class User implements Runnable {
 					}
 
 				} catch (Exception e) {
-					JRelay.error(e.getMessage() + e.getCause().toString());
+					JRelayGUI.error(e.getMessage());
 					this.kick();
 				}
 
@@ -280,6 +310,11 @@ public class User implements Runnable {
 
 	}
 
+	/**
+	 * Invoke a user plugin method on packet received.
+	 *
+	 * @param packet the packet
+	 */
 	public void invokeOnPacket(Packet packet) {
 
 		for (PacketType pt : JRelay.instance.packetHooks.keySet()) {
@@ -291,7 +326,7 @@ public class User implements Runnable {
 						method.invoke(JRelay.instance.userPlugins.get(m), packet);
 					}
 				} catch (Exception e) {
-					JRelay.error(e.getMessage());
+					JRelayGUI.error(e.getMessage());
 					this.kick();
 					e.printStackTrace();
 				}

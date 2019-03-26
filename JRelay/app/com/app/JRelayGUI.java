@@ -88,24 +88,32 @@ public class JRelayGUI extends Application {
 		Group root = new Group();
 		Scene scene = new Scene(root, APP_WIDTH, APP_HEIGHT, Color.WHITE);
 		scene.getStylesheets().addAll("app.css");
-		
+
 		root.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-            	log("key down");
-                switch (event.getCode()) {
-                    case G:    goNorth = true; break;
-                    case H:  goSouth = true; break;
-                    case J:  goWest  = true; break;
-                    case K: goEast  = true; break;
-                    case SHIFT: running = true; break;
+			@Override
+			public void handle(KeyEvent event) {
+				log("key down");
+				switch (event.getCode()) {
+				case G:
+					goNorth = true;
+					break;
+				case H:
+					goSouth = true;
+					break;
+				case J:
+					goWest = true;
+					break;
+				case K:
+					goEast = true;
+					break;
+				case SHIFT:
+					running = true;
+					break;
 				default:
 					break;
-                }
-            }
-        });
-
-       
+				}
+			}
+		});
 
 		ImageView imv = new ImageView();
 		Image logo = new Image("icon.png");
@@ -129,8 +137,7 @@ public class JRelayGUI extends Application {
 		}
 		TabPane tabs = buildTabs();
 		tabs.getTabs().get(0).setContent(buildConsole());
-		
-		
+
 //		tabs.getTabs().get(2).setGraphic(createLabel("Servers", 16));
 //		//tabs.getTabs().get(2).setStyle("-fx-text-fill:grey;");
 //		tabs.getTabs().get(2).setContent(buildServerBox());
@@ -149,11 +156,11 @@ public class JRelayGUI extends Application {
 				System.exit(0);
 			}
 		});
-		
+
 		log("JRelay for RotMG " + JRelay.GAME_VERSION);
-		//startPluginUpdate();
-	Thread td = new Thread(new ResourceMonitor());
-	td.start();
+		// startPluginUpdate();
+		Thread td = new Thread(new ResourceMonitor());
+		td.start();
 
 	}
 
@@ -219,8 +226,8 @@ public class JRelayGUI extends Application {
 		// CONSOLE TEXT AREA
 		TextArea con = new TextArea();
 		con.setEditable(false);
-		con.setPrefWidth(APP_WIDTH*2 / 3);
-		con.setPrefHeight(APP_HEIGHT*2 / 3);
+		con.setPrefWidth(APP_WIDTH * 2 / 3);
+		con.setPrefHeight(APP_HEIGHT * 2 / 3);
 		con.setWrapText(false);
 		Label status = createLabel("Not Running", 16);
 		proxyStatus = status;
@@ -337,7 +344,7 @@ public class JRelayGUI extends Application {
 			s11.setOrientation(Orientation.HORIZONTAL);
 
 			vbox1.getChildren().addAll(l, s, l1, s1, l2, s2, l3, s3, l4, s4, l5, s5, l6, s6, l7, s7, l8, s8, l9, s9,
-					l10, s10,l11,s11);
+					l10, s10, l11, s11);
 
 			VBox vbox2 = new VBox();
 			vbox2.setSpacing(5);
@@ -474,7 +481,7 @@ public class JRelayGUI extends Application {
 		Tab settingsTab = new Tab();
 		settingsTab.setStyle("-fx-padding: 5px; -fx-border-insets: 5px; -fx-background-insets: 5px;");
 		settingsTab.setGraphic(createLabel("Settings", 16));
-		
+
 		settingsTab.setContent(buildSettingsBox());
 		tabPane.getTabs().add(settingsTab);
 
@@ -541,15 +548,15 @@ public class JRelayGUI extends Application {
 
 	}
 
-	public void hookPluginRefreshButton(Button b) {
-		b.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				JRelay.instance.reloadPlugins();
-				log("Reloaded plugins");
-			}
-		});
-	}
+//	public void hookPluginRefreshButton(Button b) {
+//		b.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent e) {
+//				JRelay.instance.reloadPlugins();
+//				log("Reloaded plugins");
+//			}
+//		});
+//	}
 
 	public TableView<String> buildPluginsTable() {
 		plugins = null;
@@ -557,11 +564,11 @@ public class JRelayGUI extends Application {
 		table.setPlaceholder(new Label("No plugins attached"));
 		final Label label = new Label("Plugins");
 		label.setFont(new Font("Arial", 16));
-		 ScrollPane sp2 = new ScrollPane();
-		
-		 sp2.setMaxHeight(JRelayGUI.APP_HEIGHT-150);
-		 sp2.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-		 sp2.setContent(table);
+		ScrollPane sp2 = new ScrollPane();
+
+		sp2.setMaxHeight(JRelayGUI.APP_HEIGHT - 150);
+		sp2.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		sp2.setContent(table);
 
 		plugins = table;
 		plugins.setPrefSize(400, 350);
@@ -572,7 +579,7 @@ public class JRelayGUI extends Application {
 		Runnable task = new Runnable() {
 			public void run() {
 				while (true) {
-					if(updatePlugins()) {
+					if (updatePlugins()) {
 						break;
 					}
 					try {
@@ -596,7 +603,6 @@ public class JRelayGUI extends Application {
 		if (pluginData.size() > 0) {
 
 			Platform.runLater(new Runnable() {
-
 				@Override
 				public void run() {
 					plugins.getItems().clear();
@@ -633,7 +639,6 @@ public class JRelayGUI extends Application {
 								}
 								return new ReadOnlyStringWrapper(cellValue);
 							});
-
 							plugins.getColumns().add(col);
 						}
 						plugins.getItems().add(Arrays.asList(values));
@@ -641,7 +646,7 @@ public class JRelayGUI extends Application {
 
 				}
 			});
-			
+
 		}
 		return true;
 

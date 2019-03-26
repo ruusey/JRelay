@@ -3,6 +3,7 @@ package com.relay;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
@@ -12,10 +13,13 @@ import java.util.Map.Entry;
 
 import com.app.JRelayGUI;
 import com.crypto.*;
+import com.data.GameData;
 import com.data.PacketType;
 import com.data.State;
 import com.data.shared.PlayerData;
 import com.event.JPlugin;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 import com.models.Packet;
 import com.packets.client.HelloPacket;
 import com.packets.client.PlayerTextPacket;
@@ -43,10 +47,9 @@ public class User implements Runnable {
 	public long localNoDataTime = System.currentTimeMillis();
 	public long remoteNoDataTime = System.currentTimeMillis();
 	public boolean shutdown = false;
-	
+
 	/** This users plugin instances. */
 	public ArrayList<String> userPluginInstances = new ArrayList<String>();
-
 
 	/**
 	 * Instantiates a new user.
@@ -58,12 +61,19 @@ public class User implements Runnable {
 		if (localSocket == null) {
 			throw new NullPointerException();
 		}
+//		try {
+//			JRelay.instance.remoteHost=GameData.abbrToServer.get(JRelay.DEFAULT_SERVER).address;
+//		}catch(Exception e) {
+//			JRelay.instance.remoteHost=GameData.abbrToServer.get("USW").address;
+//			JRelayGUI.error("Invalid server specified defaulting to USW");
+//		}
+
 		this.localSocket = localSocket;
 		this.localRecvRC4 = new RC4(JRelay.instance.key0);
 		this.localSendRC4 = new RC4(JRelay.instance.key1);
 		this.remoteRecvRC4 = new RC4(JRelay.instance.key1);
 		this.remoteSendRC4 = new RC4(JRelay.instance.key0);
-		JRelayGUI.log("Listening on "+localSocket.toString());
+		JRelayGUI.log("Listening on " + localSocket.toString());
 	}
 
 	/**
@@ -72,7 +82,7 @@ public class User implements Runnable {
 	public void disconnect() {
 		this.shutdown = true;
 	}
-	
+
 	/**
 	 * Nullifies all resources and closes all sockets associated with this user.
 	 */
@@ -80,11 +90,11 @@ public class User implements Runnable {
 		try {
 			this.localSocket.close();
 			this.remoteSocket.close();
-		}catch(Throwable e) {
+		} catch (Throwable e) {
 			JRelayGUI.error(e.getMessage());
 			e.printStackTrace();
 		}
-		this.localBuffer=null;
+		this.localBuffer = null;
 		this.remoteBuffer = null;
 		this.localRecvRC4 = null;
 		this.localSendRC4 = null;
@@ -99,9 +109,10 @@ public class User implements Runnable {
 	 */
 	public void kick() {
 		this.disconnect();
-		this.destroy();	
+		this.destroy();
 
 	}
+
 	/**
 	 * Handle inbound client packet.
 	 *
@@ -112,6 +123,7 @@ public class User implements Runnable {
 			sendToServer(packet);
 		}
 	}
+
 	/**
 	 * Handle inbound server packet.
 	 *
@@ -122,6 +134,7 @@ public class User implements Runnable {
 			sendToClient(packet);
 		}
 	}
+
 	/**
 	 * Send a packet to the client. Protected by try/catch
 	 *
@@ -136,7 +149,6 @@ public class User implements Runnable {
 		}
 	}
 
-	
 	/**
 	 * Send a packet to the server. Protected by try/catch
 	 *
@@ -182,7 +194,7 @@ public class User implements Runnable {
 	/**
 	 * Hook a user plugin function on packet received.
 	 *
-	 * @param type the PacketType to trigger invocation.
+	 * @param type     the PacketType to trigger invocation.
 	 * @param location class location of the callback function
 	 * @param callback name of the callback function
 	 */
@@ -202,7 +214,7 @@ public class User implements Runnable {
 
 		}
 		if (method != null) {
-			
+
 			if (JRelay.instance.packetHooks.containsKey(type)) {
 				ArrayList<Method> pMethods = JRelay.instance.packetHooks.get(type);
 				pMethods.add(method);
@@ -222,7 +234,7 @@ public class User implements Runnable {
 	/**
 	 * Hook a required JRelay function on packet received.
 	 *
-	 * @param type PacketType to trigger invocation
+	 * @param type     PacketType to trigger invocation
 	 * @param location class the callback function is located in
 	 * @param callback name of the callback method
 	 */
@@ -259,7 +271,7 @@ public class User implements Runnable {
 	/**
 	 * Hook a text command to this user.
 	 *
-	 * @param command the command to trigger the callback
+	 * @param command  the command to trigger the callback
 	 * @param location class location of the callback method
 	 * @param callback name of the callback method
 	 */
@@ -376,11 +388,11 @@ public class User implements Runnable {
 
 	public void connect(HelloPacket state) {
 		try {
-			//System.out.println(this.state.conTargetAddress+" "+this.state.conTargetPort);
+			// System.out.println(this.state.conTargetAddress+" "+this.state.conTargetPort);
 			this.remoteSocket = new Socket(this.state.conTargetAddress, this.state.conTargetPort);
 			this.remoteSocket.setTcpNoDelay(true);
 			this.sendServerPacket(state);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -423,7 +435,7 @@ public class User implements Runnable {
 									this.remoteBufferIndex -= packetLength;
 									this.remoteRecvRC4.cipher(packetBytes);
 									Packet packet = Packet.create(packetId, packetBytes);
-									//System.out.println(JRelay.gen.serialize(packetId+" "+ packet));
+									// System.out.println(JRelay.gen.serialize(packetId+" "+ packet));
 									invokeOnPacketRequired(packet);
 									invokeOnPacket(packet);
 									handleServerPacket(packet);
@@ -437,21 +449,24 @@ public class User implements Runnable {
 					} catch (Exception e) {
 						e.printStackTrace();
 						if (!(e instanceof SocketException)) {
-							JRelay.error(e.getMessage() + " End of remote stream.");
-								this.kick();
-								e.printStackTrace();
+							JRelayGUI.error(e.getMessage() + " End of remote stream.");
+							this.kick();
+							e.printStackTrace();
 						} else {
-							JRelay.error(e.getMessage() + " End of remote stream.");
+							JRelayGUI.error(e.getMessage() + " End of remote stream.");
 							this.kick();
 						}
-						
 					}
 				}
+
+				try {
+					Thread.sleep(10);
+				} catch (Exception e) {
+				}
 				
-				try {Thread.sleep(10);
-				}catch(Exception e) {};
-				
+
 				InputStream in = this.localSocket.getInputStream();
+				
 				if (in.available() > 0) {
 					int bytesRead = in.read(this.localBuffer, this.localBufferIndex,
 							this.localBuffer.length - this.localBufferIndex);
@@ -475,14 +490,14 @@ public class User implements Runnable {
 							}
 							this.localBufferIndex -= packetLength;
 							this.localRecvRC4.cipher(packetBytes);
-							
+
 							Packet packet = null;
-							try{
+							try {
 								packet = Packet.create(packetId, packetBytes);
-							}catch(Exception e) {
+							} catch (Exception e) {
 								JRelay.error("Unable to read HELLO packet. Are your RC4 keys up to date?");
 							}
-							//System.out.println(JRelay.gen.serialize(packet));
+							// System.out.println(JRelay.gen.serialize(packet));
 							if (packet instanceof PlayerTextPacket) {
 								// ATTEMPT TO INVOKE COMMAND IF PLAYER TEXT
 								invokeOnCommand(packet);
@@ -500,7 +515,7 @@ public class User implements Runnable {
 
 					this.localNoDataTime = System.currentTimeMillis();
 				} else if (System.currentTimeMillis() - this.localNoDataTime >= 10000) {
-					
+
 					throw new SocketException("Local data read timeout");
 				}
 			} catch (Exception e) {
@@ -509,7 +524,7 @@ public class User implements Runnable {
 //					this.kick();
 //				}
 			}
-			
+
 		}
 
 	}

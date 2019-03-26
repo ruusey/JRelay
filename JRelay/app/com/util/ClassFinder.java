@@ -10,38 +10,32 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import com.google.common.reflect.ClassPath;
-import com.jr2.Main;
 import com.models.Packet;
+import com.relay.JRelay;
 
 public class ClassFinder {
 
 	private static final char PKG_SEPARATOR = '.';
-
 	private static final char DIR_SEPARATOR = '/';
 
-//    private static final String CLASS_FILE_SUFFIX = ".class";
-//
-//    private static final String BAD_PACKAGE_ERROR = "Unable to get resources from path '%s'. Are you sure the package '%s' exists?";
-	public static void main(String[] args) {
-
-	}
-
+	/**
+	 * Find all packet definitions in the specified package and load them.
+	 *
+	 * @param scannedPackage the scanned package
+	 * @return the list< class<? extends packet>> in the desired package.
+	 */
 	public static List<Class<? extends Packet>> find(String scannedPackage) {
 		String scannedPath = scannedPackage.replace(PKG_SEPARATOR, DIR_SEPARATOR);
-		// URL scannedUrl =
-		// Thread.currentThread().getContextClassLoader().getResource(scannedPath);
-
 		String workingDir = null;
 		List<Class<? extends Packet>> classes = new ArrayList<Class<? extends Packet>>();
 		try {
-			workingDir = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			workingDir = JRelay.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 			URL[] urls = { new URL("jar:file:" + workingDir + "!/") };
 			URLClassLoader cl = URLClassLoader.newInstance(urls);
 			JarFile jarFile = new JarFile(workingDir);
 			Enumeration<JarEntry> e = jarFile.entries();
 			while (e.hasMoreElements()) {
 				JarEntry je = e.nextElement();
-
 				if (je.isDirectory() || !je.getName().endsWith(".class")) {
 					continue;
 				}
@@ -54,14 +48,12 @@ public class ClassFinder {
 					if (!classes.contains(c)) {
 						classes.add(c);
 					}
-
 				}
 			}
 			jarFile.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return classes;
 	}
 
@@ -85,6 +77,5 @@ public class ClassFinder {
 			return null;
 		}
 		return classes;
-
 	}
 }

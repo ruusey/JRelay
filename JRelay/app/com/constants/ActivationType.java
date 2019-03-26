@@ -68,7 +68,6 @@ public class ActivationType {
 
 	public static final String OBJECT_TOSS = "ObjectToss";
 
-
 	public ActivationType() {
 		super();
 	}

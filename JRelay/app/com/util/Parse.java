@@ -10,60 +10,60 @@ import java.nio.charset.CharsetEncoder;
 import org.dom4j.Node;
 
 public class Parse {
-	public static boolean hasElement(Node node, String name) {
+	public static String attrDefault(final Node node, final String name, String def) {
+		def = "0";
+		final String value = node.valueOf("@" + name);
+		if ((value != null) && (value.length() != 0)) {
+			return value;
+		} else {
+			return def;
+		}
+	}
+
+	public static String decodeKey(final byte[] key) {
+		final CharsetDecoder newDecoder = Charset.forName("UTF8").newDecoder();
+		try {
+			return newDecoder.decode(ByteBuffer.wrap(key)).toString();
+		} catch (final CharacterCodingException e) {
+
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static String elemDefault(final Node node, final String name, final String def) {
+		final Node n = node.selectSingleNode(name);
+		if (n != null) {
+			return n.getText();
+		} else {
+			return def;
+		}
+	}
+
+	public static byte[] encodeKey(final String key) {
+		final CharsetEncoder newDecoder = Charset.forName("UTF8").newEncoder();
+		try {
+			return newDecoder.encode(CharBuffer.wrap(key.toCharArray())).array();
+		} catch (final CharacterCodingException e) {
+
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static boolean hasElement(final Node node, final String name) {
 		return node.selectSingleNode(name) != null;
 	}
 
-	public static String attrDefault(Node node, String name, String def) {
-		def="0";
-		String value = node.valueOf("@"+name);
-		if(value!=null && value.length()!=0){
-			
-			return value;
-		}else{
-			return def;
-		}
-		
+	public static float parseFloat(final String input) {
+		return Float.parseFloat(input);
 	}
 
-	public static String elemDefault(Node node, String name, String def) {
-		Node n = node.selectSingleNode(name);
-		if(n!=null){
-			return n.getText();
-		}else{
-			return def;
-		}
-	}
-
-	public static int parseHex(String input) {
+	public static int parseHex(final String input) {
 		return Integer.decode(input);
 	}
 
-	public static int parseInt(String input) {
+	public static int parseInt(final String input) {
 		return Integer.parseInt(input);
-	}
-
-	public static float parseFloat(String input) {
-		return Float.parseFloat(input);
-	}
-	public static String decodeKey(byte[] key) {
-		CharsetDecoder newDecoder = Charset.forName("UTF8").newDecoder();
-		try {
-			return newDecoder.decode(ByteBuffer.wrap(key)).toString();
-		} catch (CharacterCodingException e) {
-			
-			e.printStackTrace();
-			return null;
-		}
-	}
-	public static byte[] encodeKey(String key) {
-		CharsetEncoder newDecoder = Charset.forName("UTF8").newEncoder();
-		try {
-			return newDecoder.encode(CharBuffer.wrap(key.toCharArray())).array();
-		} catch (CharacterCodingException e) {
-			
-			e.printStackTrace();
-			return null;
-		}
 	}
 }

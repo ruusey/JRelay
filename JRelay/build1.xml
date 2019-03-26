@@ -1,42 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project JRelayAPI">
-    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
-    <!--ANT 1.7 is required                                        -->
-    <!--define folder properties-->
-    <property name="dir.buildfile" value="."/>
-    <property name="dir.workspace" value="D:/Workspace/RUWork"/>
-    <property name="dir.jarfile" value="D:/Deploys/JRelay"/>
-    <target name="create_run_jar">
-        <jar destfile="${dir.jarfile}/JRelay.jar" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="com.app.JRelayGUI"/>
-                <attribute name="Class-Path" value="."/>
-            </manifest>
-            <fileset dir="${dir.buildfile}/target/classes"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/kryonet/2.22.0-RC1/kryonet-2.22.0-RC1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/kryo/kryo/2.24.0/kryo-2.24.0.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/minlog/minlog/1.2/minlog-1.2.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/jsonbeans/0.7/jsonbeans-0.7.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/apache/mina/mina-core/2.0.19/mina-core-2.0.19.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/checkerframework/checker-qual/2.5.2/checker-qual-2.5.2.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/errorprone/error_prone_annotations/2.2.0/error_prone_annotations-2.2.0.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.58/bcprov-jdk15on-1.58.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/owlike/genson/1.4/genson-1.4.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/jaxen/jaxen/1.1.6/jaxen-1.1.6.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/javax/xml/bind/jaxb-api/2.2.11/jaxb-api-2.2.11.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/sun/xml/bind/jaxb-core/2.2.11/jaxb-core-2.2.11.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/com/sun/xml/bind/jaxb-impl/2.2.11/jaxb-impl-2.2.11.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ruusey/.m2/repository/javax/activation/activation/1.1.1/activation-1.1.1.jar"/>
-        </jar>
-    </target>
+<project default="create_run_jar"
+	name="Create Runnable Jar for Project JRelayAPI">
+	<!--this file was created by Eclipse Runnable JAR Export Wizard -->
+	<!--ANT 1.7 is required -->
+	<!--define folder properties -->
+	<property name="dir.buildfile" value="." />
+	<property name="dir.workspace" value="D:/Workspace/RUWork" />
+	<property name="dir.jarfile" value="D:/Deploys/JRelay" />
+	<target name="create_run_jar">
+		<jar destfile="${dir.jarfile}/JRelay.jar"
+			filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="com.app.JRelayGUI" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+			<fileset dir="${dir.buildfile}/target/classes" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/kryonet/2.22.0-RC1/kryonet-2.22.0-RC1.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/kryo/kryo/2.24.0/kryo-2.24.0.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/minlog/minlog/1.2/minlog-1.2.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/esotericsoftware/jsonbeans/0.7/jsonbeans-0.7.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/org/apache/mina/mina-core/2.0.19/mina-core-2.0.19.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/org/checkerframework/checker-qual/2.5.2/checker-qual-2.5.2.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/google/errorprone/error_prone_annotations/2.2.0/error_prone_annotations-2.2.0.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.58/bcprov-jdk15on-1.58.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/owlike/genson/1.4/genson-1.4.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/jaxen/jaxen/1.1.6/jaxen-1.1.6.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/javax/xml/bind/jaxb-api/2.2.11/jaxb-api-2.2.11.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/sun/xml/bind/jaxb-core/2.2.11/jaxb-core-2.2.11.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/com/sun/xml/bind/jaxb-impl/2.2.11/jaxb-impl-2.2.11.jar" />
+			<zipfileset excludes="META-INF/*.SF"
+				src="C:/Users/ruusey/.m2/repository/javax/activation/activation/1.1.1/activation-1.1.1.jar" />
+		</jar>
+	</target>
 </project>

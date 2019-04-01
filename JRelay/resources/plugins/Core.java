@@ -10,6 +10,7 @@ import com.data.GameData;
 import com.data.PacketType;
 import com.data.shared.Entity;
 import com.data.shared.Location;
+import com.data.shared.LocationRecord;
 import com.data.shared.StatData;
 import com.data.shared.Status;
 import com.data.shared.Tile;
@@ -17,6 +18,7 @@ import com.event.EventUtils;
 import com.event.JPlugin;
 import com.models.ObjectMapper;
 import com.models.Packet;
+import com.packets.client.MovePacket;
 import com.packets.server.GoToPacket;
 import com.packets.server.NewTickPacket;
 import com.packets.server.TextPacket;
@@ -27,7 +29,6 @@ import com.relay.User;
 public class Core extends JPlugin {
 	public boolean onTiles = false;
 	public int starFilter = JRelay.FILTER_LEVEL;
-	public ArrayList<Location> validTiles = new ArrayList<Location>();
 
 	public Core(User user) {
 		super(user);
@@ -43,61 +44,9 @@ public class Core extends JPlugin {
 
 		user.hookPacket(PacketType.UPDATE, Core.class, "onUpdatePacket");
 		user.hookPacket(PacketType.TEXT, Core.class, "filterChat");
-		//user.hookPacket(PacketType.NEWTICK, Core.class, "onNewTick");
 	}
-
-//	public void onNewTick(Packet pack) {
-//		
-//		NewTickPacket packet = (NewTickPacket) pack;
-//		Location me = user.playerData.pos;
-//		for (Status status : packet.statuses) {
-//			if(status.objectId==user.playerData.ownerObjectId) {
-//				//sendToClient(EventUtils.createOryxNotification("Move", "Found "+validTiles.size()+" moveable tiles"));
-//				GoToPacket go = null;
-//				try {
-//					go = (GoToPacket) Packet.create(PacketType.GOTO);
-//				} catch (Exception e) {
-//				}
-//				for(Location location : validTiles) {
-//					if (JRelayGUI.goEast) {
-//						sendToClient(EventUtils.createOryxNotification("Move", "Move East!"));
-//						go.objectId=user.playerData.ownerObjectId;
-//						go.pos=location;
-//						sendToClient(go);
-//						JRelayGUI.goEast=false;
-//						break;
-//					}
-//					if (JRelayGUI.goWest) {
-//						sendToClient(EventUtils.createOryxNotification("Move", "Move West!"));
-//						go.objectId=user.playerData.ownerObjectId;
-//						go.pos=location;
-//						sendToClient(go);
-//						JRelayGUI.goWest=false;
-//						break;
-//					}
-//					if (JRelayGUI.goNorth) {
-//						sendToClient(EventUtils.createOryxNotification("Move", "Move North!"));
-//						go.objectId=user.playerData.ownerObjectId;
-//						go.pos=location;
-//						sendToClient(go);
-//						JRelayGUI.goNorth=false;
-//						break;
-//					}
-//					if (JRelayGUI.goSouth) {
-//						sendToClient(EventUtils.createOryxNotification("Move", "Move South!"));
-//						go.objectId=user.playerData.ownerObjectId;
-//						go.pos=location;
-//						sendToClient(go);
-//						JRelayGUI.goSouth=false;
-//						break;
-//					}
-//				}
-//			}
-//			
-//			
-//		}
-//
-//	}
+	
+	
 
 	public void onMapsCommand(String command, String[] args) {
 		if (args.length < 2) {
@@ -170,17 +119,7 @@ public class Core extends JPlugin {
 			return;
 		UpdatePacket pack = (UpdatePacket) p;
 		
-		Location me = user.playerData.pos;
-		float maxDist = user.playerData.tilesPerTick();
-		for (Tile t1 : pack.tiles) {
-			Location loc = new Location();
-			loc.x = (float) t1.x;
-			loc.y = (float) t1.y;
-			if (me.distanceTo(loc) <= maxDist) {
-				validTiles.add(loc);
-			}
-
-		}
+		
 		//sendToClient(EventUtils.createOryxNotification("Move", "Max distance="+maxDist+" valid tiles="+validTiles.size()));
 		for (Entry<ArrayList<String>, ArrayList<String>> entry : ObjectMapper.tiles.entrySet()) {
 			for (String from : entry.getKey()) {

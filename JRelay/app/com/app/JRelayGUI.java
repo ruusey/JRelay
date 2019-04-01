@@ -24,6 +24,7 @@ import com.relay.JRelay;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -43,6 +44,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -62,7 +64,7 @@ public class JRelayGUI extends Application {
 	public static Label proxyStatus;
 	public static boolean relayStarted = false;
 	public static ArrayList<TextField> settings;
-
+	public static GlobalKeyBoard kb= new GlobalKeyBoard();
 	public static void createExceptionMessage(final String message, final String action) {
 		final Popup popup = new Popup();
 		popup.centerOnScreen();
@@ -147,6 +149,11 @@ public class JRelayGUI extends Application {
 	public TableView plugins;
 
 	public boolean savedLog = false;
+	public static boolean goNorth;
+	public static boolean goSouth;
+	public static boolean goWest;
+	public static boolean goEast;
+	public static boolean running;
 
 	public VBox buildConsole() {
 		final VBox consolePane = new VBox();
@@ -485,16 +492,17 @@ public class JRelayGUI extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) {
-
+		kb.hookKeys();
 		JRelayGUI.app = primaryStage;
 		primaryStage.getIcons().add(new Image("icon.png"));
 		primaryStage.setTitle("JRelay - RotMG Proxy");
 		primaryStage.setResizable(false);
 
 		final Group root = new Group();
-		final Scene scene = new Scene(root, JRelayGUI.APP_WIDTH, JRelayGUI.APP_HEIGHT, Color.WHITE);
+		 Scene scene = new Scene(root, JRelayGUI.APP_WIDTH, JRelayGUI.APP_HEIGHT, Color.WHITE);
 		scene.getStylesheets().addAll("app.css");
-
+		
+		
 		final ImageView imv = new ImageView();
 		final Image logo = new Image("icon.png");
 		imv.setImage(logo);
@@ -522,6 +530,7 @@ public class JRelayGUI extends Application {
 		componentLayout.setCenter(tabs);
 
 		root.getChildren().add(componentLayout);
+		
 		// Add the Scene to the Stage
 		primaryStage.setScene(scene);
 		primaryStage.show();

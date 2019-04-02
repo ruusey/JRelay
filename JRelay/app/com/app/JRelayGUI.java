@@ -1,5 +1,6 @@
 package com.app;
 
+import java.awt.AWTException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import com.event.PluginMetaData;
 import com.models.Packet;
 import com.models.PacketMeta;
 import com.models.Server;
+import com.move.models.VirtualKeyBoard;
 import com.relay.JRelay;
 
 import javafx.application.Application;
@@ -64,7 +66,7 @@ public class JRelayGUI extends Application {
 	public static Label proxyStatus;
 	public static boolean relayStarted = false;
 	public static ArrayList<TextField> settings;
-	public static GlobalKeyBoard kb= new GlobalKeyBoard();
+	public static VirtualKeyBoard kb;
 	public static void createExceptionMessage(final String message, final String action) {
 		final Popup popup = new Popup();
 		popup.centerOnScreen();
@@ -492,7 +494,7 @@ public class JRelayGUI extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) {
-		kb.hookKeys();
+		
 		JRelayGUI.app = primaryStage;
 		primaryStage.getIcons().add(new Image("icon.png"));
 		primaryStage.setTitle("JRelay - RotMG Proxy");
@@ -544,6 +546,12 @@ public class JRelayGUI extends Application {
 		this.startPluginUpdate();
 		final Thread td = new Thread(new ResourceMonitor());
 		td.start();
+		try {
+			kb = new VirtualKeyBoard();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void startPluginUpdate() {

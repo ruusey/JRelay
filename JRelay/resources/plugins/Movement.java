@@ -1,11 +1,15 @@
 package plugins;
 
+import java.awt.Event;
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.swing.event.ChangeEvent;
 
 import com.app.JRelayGUI;
 import com.data.CharacterClass;
@@ -17,7 +21,14 @@ import com.data.shared.PlayerData;
 import com.data.shared.StatData;
 import com.data.shared.Status;
 import com.event.JPlugin;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.models.Packet;
+import com.move.events.HealthChangedEventArgs;
+import com.move.events.KeyEventArgs;
+import com.move.events.LogEventsArgs;
+import com.move.models.Key;
+import com.move.models.Keys;
 import com.move.models.Target;
 import com.packets.client.GoToAckPacket;
 import com.packets.client.UsePortalPacket;
@@ -26,6 +37,9 @@ import com.packets.server.MapInfoPacket;
 import com.packets.server.NewTickPacket;
 import com.packets.server.UpdatePacket;
 import com.relay.User;
+
+import jdk.internal.joptsimple.util.RegexMatcher;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
 public class Movement extends JPlugin {
 
@@ -43,17 +57,60 @@ public class Movement extends JPlugin {
 	private boolean followTarget;
 	private int tickCount;
 	private boolean gotoRealm;
-	private boolean enabled=true;
+	private boolean enabled = true;
 	private boolean isInNexus;
 	private String currentMapName;
-
+	boolean wPressed;
+	boolean aPressed;
+	boolean sPressed;
+	boolean dPressed;
 	private float followThreshold = 1.5f;
-
+	public class HealthEventHandler {
+		  @Subscribe public void healthChanged(User u, HealthChangedEventArgs args) {
+		    user.playerData.health=(int) args.getHealth();
+		  }
+		}
+	public class KeyEventHandler {
+		  @Subscribe public void keyChanged(User u, KeyEventArgs args) {
+		   if(args.getValue()) {
+			   JRelayGUI.kb.keyPress(Key.codes.get(args.getKey().toString()));
+		   }else {
+			   JRelayGUI.kb.keyRelease(Key.codes.get(args.getKey().toString()));
+		   }
+		  }
+		}
+	public class LogHandler {
+		  @Subscribe public void logMessage(User u, LogEventsArgs args) {
+		    JRelayGUI.log("Client: "+user.playerData.name+" "+args.getMessage());
+		  }
+		}
+	public static EventBus bus = new EventBus();
+	
 	public Movement(User user) {
 		super(user);
-		// TODO Auto-generated constructor stub
+		bus.register(new LogHandler());
 	}
-
+	 public class A_PRESSED extends Movement {
+		 
+	        public A_PRESSED(User user) {
+			super(user);
+			// TODO Auto-generated constructor stub
+		}
+			public Boolean get() {
+	            return this.aPressed;
+	        }
+	        public void set(Boolean value) {
+	            if ((this.aPressed == value)) {
+	                return;
+	            }
+	            
+	            this.aPressed = value;
+	           // Window.SendMessage(this.flashPtr, value, Question, 256U, :, 257U, new IntPtr(65), IntPtr.Zero);
+	      
+	            
+	            bus.post(new KeyEventArgs(Keys.valueOf("a"), value));
+	        }
+	    }
 	@Override
 	public void attach() {
 		realmLocation.x = 134f;
@@ -65,11 +122,11 @@ public class Movement extends JPlugin {
 		playerPositions = new HashMap<Integer, Target>();
 		portals = new ArrayList<PortalData>();
 
-		//user.hookPacket(PacketType.UPDATE, Movement.class, "OnUpdate");
-		//user.hookPacket(PacketType.NEWTICK, Movement.class, "OnNewTick");
-		//user.hookPacket(PacketType.PLAYERHIT, Movement.class, "OnHit");
+		user.hookPacket(PacketType.UPDATE, Movement.class, "OnUpdate");
+		// user.hookPacket(PacketType.NEWTICK, Movement.class, "OnNewTick");
+		// user.hookPacket(PacketType.PLAYERHIT, Movement.class, "OnHit");
 		user.hookPacket(PacketType.MAPINFO, Movement.class, "OnMapInfo");
-		//user.hookPacket(PacketType.TEXT, Movement.class, "OnText");
+		// user.hookPacket(PacketType.TEXT, Movement.class, "OnText");
 		user.hookPacket(PacketType.GOTOACK, Movement.class, "OnGotoAck");
 	}
 
@@ -100,41 +157,35 @@ public class Movement extends JPlugin {
 		}
 	}
 
-	public void MoveToRealms(User client, boolean realmChosen)
-    {
-        if (client == null)
-        {
-            System.out.println("No client passed to MoveToRealms.");
-            return;
-        }
-        Location target = realmLocation;
+	public void MoveToRealms(User client, boolean realmChosen) {
+		if (client == null) {
+			System.out.println("No client passed to MoveToRealms.");
+			return;
+		}
+		Location target = realmLocation;
 
-        if (client.playerData == null)
-        {
-            try {
+		if (client.playerData == null) {
+			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            MoveToRealms(client,false);
-            return;
-        }
+			MoveToRealms(client, false);
+			return;
+		}
 
-        float healthPercentage = (float)client.playerData.health / (float)client.playerData.maxHealth;
-        if (healthPercentage < 0.95f)
-            target = fountainLocation;
-        String preferredRealmName=null;
-        String bestName = "";
-        if ((client.playerData.pos.y <- realmLocation.y + 1f && client.playerData.pos.y != 0) || realmChosen)
-        {
-            // When the client reaches the portals, evaluate the best option.
-            if (portals.size() != 0)
-            {
-                boolean hasNoPreferredRealm = true;
-                // Is there a preferred realm?
-                if (true)
-                {
+		float healthPercentage = (float) client.playerData.health / (float) client.playerData.maxHealth;
+		if (healthPercentage < 0.95f)
+			target = fountainLocation;
+		String preferredRealmName = null;
+		String bestName = "";
+		if ((client.playerData.pos.y < -realmLocation.y + 1f && client.playerData.pos.y != 0) || realmChosen) {
+			// When the client reaches the portals, evaluate the best option.
+			if (portals.size() != 0) {
+				boolean hasNoPreferredRealm = true;
+				// Is there a preferred realm?
+				if (true) {
 //                    if (portals.stream().anyMatch(predicate)(ptl -> string.Compare(ptl.Name, preferredRealmName, true) == 0))
 //                    {
 //                        hasNoPreferredRealm = false;
@@ -143,67 +194,62 @@ public class Movement extends JPlugin {
 //                        bestName = preferred.Name;
 //                        realmChosen = true;
 //                    } else
-                    {
-                        // The preferred realm doesn't exist anymore.
-                        //client.sendClientPacket(packet);(preferredRealmName + " not found. Choosing new realm");
-                        JRelayGUI.log("The realm \"" + preferredRealmName + "\" was not found. Choosing the best realm instead...");
-                        preferredRealmName = null;
-                    }
-                }
+					{
+						// The preferred realm doesn't exist anymore.
+						// client.sendClientPacket(packet);(preferredRealmName + " not found. Choosing
+						// new realm");
+						JRelayGUI.log("The realm \"" + preferredRealmName
+								+ "\" was not found. Choosing the best realm instead...");
+						preferredRealmName = null;
+					}
+				}
 
-                if (hasNoPreferredRealm)
-                {
-                    int bestCount = 0;
-                    if (portals.stream().filter(ptl -> ptl.population == 85).collect(Collectors.toList()).size() > 1)
-                    {
-                        for (PortalData pdata : portals.stream().filter(ptl -> ptl.population == 85).collect(Collectors.toList()))
-                        {
-                            int count = playerPositions.values().stream().filter(plr -> plr.getPosition().distanceSquaredTo(pdata.loc) <= 4).collect(Collectors.toList()).size();
-                            if (count > bestCount)
-                            {
-                                bestCount = count;
-                                bestName = pdata.name;
-                                target = pdata.loc;
-                                realmChosen = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        PortalData ptl = portals.stream().max(Comparator.comparing(PortalData::getPopulation)).get();
-                        target = ptl.loc;
-                        bestName = ptl.name;
-                        realmChosen = true;
-                    }
-                }
-            }
-            else
-                target = realmLocation;
-        }
+				if (hasNoPreferredRealm) {
+					int bestCount = 0;
+					if (portals.stream().filter(ptl -> ptl.population == 85).collect(Collectors.toList()).size() > 1) {
+						for (PortalData pdata : portals.stream().filter(ptl -> ptl.population == 85)
+								.collect(Collectors.toList())) {
+							int count = playerPositions.values().stream()
+									.filter(plr -> plr.getPosition().distanceSquaredTo(pdata.loc) <= 4)
+									.collect(Collectors.toList()).size();
+							if (count > bestCount) {
+								bestCount = count;
+								bestName = pdata.name;
+								target = pdata.loc;
+								realmChosen = true;
+							}
+						}
+					} else {
+						PortalData ptl = portals.stream().max(Comparator.comparing(PortalData::getPopulation)).get();
+						target = ptl.loc;
+						bestName = ptl.name;
+						realmChosen = true;
+					}
+				}
+			} else
+				target = realmLocation;
+		}
 
+		CalculateMovement(client, target, 0.5f);
 
-        CalculateMovement(client, target, 0.5f);
-
-        if (client.playerData.pos.distanceTo(target) < 1f && portals.size() != 0)
-        {
-            if (client.playerData.pos.distanceTo(target) <- client.playerData.tilesPerTick() && client.playerData.pos.distanceTo(target) > 0.01f)
-            {
-                if (client.connected)
-                {
-                    //ResetAllKeys();
-                    GoToPacket gotoPacket = null;
+		if (client.playerData.pos.distanceTo(target) < 1f && portals.size() != 0) {
+			if (client.playerData.pos.distanceTo(target) < -client.playerData.tilesPerTick()
+					&& client.playerData.pos.distanceTo(target) > 0.01f) {
+				if (client.connected) {
+					// ResetAllKeys();
+					GoToPacket gotoPacket = null;
 					try {
 						gotoPacket = (GoToPacket) Packet.create(PacketType.GOTO);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-                    gotoPacket.pos = target;
-                    gotoPacket.objectId = client.playerData.ownerObjectId;
-                    blockNextAck = true;
-                    client.sendToClient(gotoPacket);
-                }
-            }
+					gotoPacket.pos = target;
+					gotoPacket.objectId = client.playerData.ownerObjectId;
+					blockNextAck = true;
+					client.sendToClient(gotoPacket);
+				}
+			}
 //            if (client.state.lastRealm!=null)
 //            {
 //                // If the best realm is the last realm the client is connected to, send a reconnect.
@@ -215,26 +261,25 @@ public class Movement extends JPlugin {
 //                }
 //            }
 
-            JRelayGUI.log("Attempting connection.");
-            gotoRealm = false;
-            
-           //AttemptConnection(client, portals.sort(() -> {plt-> Collections.min(ptl.loc.DistanceSquaredTo(client.playerData.pos);}));
-        
-       try {
-		Thread.sleep(5);
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			JRelayGUI.log("Attempting connection.");
+			gotoRealm = false;
+
+			// AttemptConnection(client, portals.sort(() -> {plt->
+			// Collections.min(ptl.loc.DistanceSquaredTo(client.playerData.pos);}));
+
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (gotoRealm) {
+				MoveToRealms(client, realmChosen);
+			} else {
+				JRelayGUI.log("Stopped moving to realm.");
+			}
+		}
 	}
-        if (gotoRealm)
-        {
-            MoveToRealms(client, realmChosen);
-        }else
-        {
-        	 JRelayGUI.log("Stopped moving to realm.");
-        }
-        }
-    }
 
 	public void AttemptConnection(User client, int portalId) {
 		UsePortalPacket packet = null;
@@ -270,56 +315,119 @@ public class Movement extends JPlugin {
 		else
 			JRelayGUI.log("Bot disabled, cancelling connection attempt.");
 	}
-    private void CalculateMovement(User client, Location targetPosition, float tolerance)
+
+	public void OnUpdate(Packet p)
     {
-        // Left or right
-        if (client.playerData.pos.x < targetPosition.x - tolerance)
-        {
-            // Move right
-            JRelayGUI.kb.sendKeys.pressKeys("d");
-            JRelayGUI.kb.sendKeys.releaseKeys("a");
-        }
-        else if (client.playerData.pos.x <= targetPosition.x + tolerance)
-        {
-            // Stop moving
-        	JRelayGUI.kb.sendKeys.releaseKeys("d");
-        }
-        if (client.playerData.pos.x > targetPosition.x + tolerance)
-        {
-            // Move left
-        	JRelayGUI.kb.sendKeys.pressKeys("a");
-            JRelayGUI.kb.sendKeys.releaseKeys("d");
-        }
-        else if (client.playerData.pos.x >= targetPosition.x - tolerance)
-        {
-            // Stop moving
-        	JRelayGUI.kb.sendKeys.releaseKeys("a");
+        UpdatePacket packet = (UpdatePacket)p;
+
+        // Get new info.
+        for (Entity obj : packet.newObjs){
+            // Player info.
+            if(CharacterClass.valueOf((int)obj.objectType)!=null)
+            {
+                PlayerData playerData = new PlayerData(obj.status.objectId);
+                playerData.cls = CharacterClass.valueOf((int)obj.objectType);
+                playerData.pos = obj.status.pos;
+                for (StatData data : obj.status.data)
+                {
+                    playerData.parse(data.id, data.intValue, data.stringValue);
+                }
+
+                if (playerPositions.containsKey(obj.status.objectId))
+                    playerPositions.remove(obj.status.objectId);
+                playerPositions.put(obj.status.objectId, new Target(obj.status.objectId, playerData.name, playerData.pos));
+            }
+            // Portals.
+            if (obj.objectType == 1810)
+            {
+                for (StatData data : obj.status.data)
+                {
+                    if (data.stringValue != null)
+                    {
+                        // Get the portal info.
+                        // This regex matches the name and the player count of the portal.
+                        String pattern = "\\.(\\w+) \\((\\d+)";
+                        
+                        String[] match = data.stringValue.split(pattern);
+                        PortalData portal = new PortalData(Integer.parseInt(match[1].replace("/", "").replace(")", "")),obj.status.objectId, obj.status.pos, match[0]);
+                        if (portals.stream().anyMatch(ptl -> ptl.id == obj.status.objectId))
+                            portals.removeIf(ptl -> ptl.id == obj.status.objectId);
+                        portals.add(portal);
+                    }
+                }
+            }
+            // Enemies. Only look for enemies if EnableEnemyAvoidance is true.
+            
+            // Obstacles.
+            
         }
 
-        // Up or down
-        if (client.playerData.pos.y < targetPosition.y - tolerance)
+        // Remove old info
+        for (int dropId : packet.drops)
         {
-            // Move down
-        	JRelayGUI.kb.sendKeys.pressKeys("s");
-            JRelayGUI.kb.sendKeys.releaseKeys("w");
-        }
-        else if (client.playerData.pos.y <= targetPosition.y + tolerance)
-        {
-            // Stop moving
-        	JRelayGUI.kb.sendKeys.releaseKeys("s");
-        }
-        if (client.playerData.pos.y > targetPosition.y + tolerance)
-        {
-            // Move up
-        	JRelayGUI.kb.sendKeys.releaseKeys("s");;
-        	JRelayGUI.kb.sendKeys.pressKeys("w");
-        }
-        else if (client.playerData.pos.y >= targetPosition.y - tolerance)
-        {
-            // Stop moving
-        	JRelayGUI.kb.sendKeys.releaseKeys("w");
+            // Remove from players list.
+            if (playerPositions.containsKey(dropId))
+            {
+                if (followTarget && targets.stream().anyMatch(t -> t.getObjectId() == dropId))
+                {
+                    // If one of the players who left was also a target, remove them from the targets list.
+                    targets.removeIf(t -> t.getObjectId() == dropId);
+                    JRelayGUI.log(String.format("Dropping \"{0}\" from targets.", playerPositions.get(dropId).getName()));
+                    if (targets.size() == 0)
+                    {
+                    	
+                    }
+                }
+                playerPositions.remove(dropId);
+            }
+
+            // Remove from enemies list.
+           
+
+            if (portals.removeIf(ptl -> ptl.id == dropId))
+            	portals.removeIf(ptl -> ptl.id == dropId);
         }
     }
+
+	private void CalculateMovement(User client, Location targetPosition, float tolerance) {
+		// Left or right
+		if (client.playerData.pos.x < targetPosition.x - tolerance) {
+			// Move right
+			JRelayGUI.kb.pressKeys("d");
+			JRelayGUI.kb.releaseKeys("a");
+		} else if (client.playerData.pos.x <= targetPosition.x + tolerance) {
+			// Stop moving
+			JRelayGUI.kb.releaseKeys("d");
+		}
+		if (client.playerData.pos.x > targetPosition.x + tolerance) {
+			// Move left
+			JRelayGUI.kb.pressKeys("a");
+			JRelayGUI.kb.releaseKeys("d");
+		} else if (client.playerData.pos.x >= targetPosition.x - tolerance) {
+			// Stop moving
+			JRelayGUI.kb.releaseKeys("a");
+		}
+
+		// Up or down
+		if (client.playerData.pos.y < targetPosition.y - tolerance) {
+			// Move down
+			JRelayGUI.kb.pressKeys("s");
+			JRelayGUI.kb.releaseKeys("w");
+		} else if (client.playerData.pos.y <= targetPosition.y + tolerance) {
+			// Stop moving
+			JRelayGUI.kb.releaseKeys("s");
+		}
+		if (client.playerData.pos.y > targetPosition.y + tolerance) {
+			// Move up
+			JRelayGUI.kb.releaseKeys("s");
+			;
+			JRelayGUI.kb.pressKeys("w");
+		} else if (client.playerData.pos.y >= targetPosition.y - tolerance) {
+			// Stop moving
+			JRelayGUI.kb.releaseKeys("w");
+		}
+	}
+
 	@Override
 	public String getAuthor() {
 		// TODO Auto-generated method stub

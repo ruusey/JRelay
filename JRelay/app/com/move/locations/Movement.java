@@ -273,52 +273,52 @@ public class Movement extends JPlugin {
     private void CalculateMovement(User client, Location targetPosition, float tolerance)
     {
         // Left or right
-        if (client.playerData.pos.x < targetPosition.x - tolerance)
-        {
-            // Move right
-            JRelayGUI.kb.sendKeys.pressKeys("d");
-            JRelayGUI.kb.sendKeys.releaseKeys("a");
-        }
-        else if (client.playerData.pos.x <= targetPosition.x + tolerance)
-        {
-            // Stop moving
-        	JRelayGUI.kb.sendKeys.releaseKeys("d");
-        }
-        if (client.playerData.pos.x > targetPosition.x + tolerance)
-        {
-            // Move left
-        	JRelayGUI.kb.sendKeys.pressKeys("a");
-            JRelayGUI.kb.sendKeys.releaseKeys("d");
-        }
-        else if (client.playerData.pos.x >= targetPosition.x - tolerance)
-        {
-            // Stop moving
-        	JRelayGUI.kb.sendKeys.releaseKeys("a");
-        }
+    	  if (client.playerData.pos.x < targetPosition.x - tolerance)
+          {
+              // Move right
+              JRelayGUI.kb.pressKeys("d");
+              JRelayGUI.kb.releaseKeys("a");
+          }
+          else if (client.playerData.pos.x <= targetPosition.x + tolerance)
+          {
+              // Stop moving
+          	JRelayGUI.kb.releaseKeys("d");
+          }
+          if (client.playerData.pos.x > targetPosition.x + tolerance)
+          {
+              // Move left
+          	JRelayGUI.kb.pressKeys("a");
+              JRelayGUI.kb.releaseKeys("d");
+          }
+          else if (client.playerData.pos.x >= targetPosition.x - tolerance)
+          {
+              // Stop moving
+          	JRelayGUI.kb.releaseKeys("a");
+          }
 
-        // Up or down
-        if (client.playerData.pos.y < targetPosition.y - tolerance)
-        {
-            // Move down
-        	JRelayGUI.kb.sendKeys.pressKeys("s");
-            JRelayGUI.kb.sendKeys.releaseKeys("w");
-        }
-        else if (client.playerData.pos.y <= targetPosition.y + tolerance)
-        {
-            // Stop moving
-        	JRelayGUI.kb.sendKeys.releaseKeys("s");
-        }
-        if (client.playerData.pos.y > targetPosition.y + tolerance)
-        {
-            // Move up
-        	JRelayGUI.kb.sendKeys.releaseKeys("s");;
-        	JRelayGUI.kb.sendKeys.pressKeys("w");
-        }
-        else if (client.playerData.pos.y >= targetPosition.y - tolerance)
-        {
-            // Stop moving
-        	JRelayGUI.kb.sendKeys.releaseKeys("w");
-        }
+          // Up or down
+          if (client.playerData.pos.y < targetPosition.y - tolerance)
+          {
+              // Move down
+          	JRelayGUI.kb.pressKeys("s");
+              JRelayGUI.kb.releaseKeys("w");
+          }
+          else if (client.playerData.pos.y <= targetPosition.y + tolerance)
+          {
+              // Stop moving
+          	JRelayGUI.kb.releaseKeys("s");
+          }
+          if (client.playerData.pos.y > targetPosition.y + tolerance)
+          {
+              // Move up
+          	JRelayGUI.kb.releaseKeys("s");;
+          	JRelayGUI.kb.pressKeys("w");
+          }
+          else if (client.playerData.pos.y >= targetPosition.y - tolerance)
+          {
+              // Stop moving
+          	JRelayGUI.kb.releaseKeys("w");
+          }
     }
 	@Override
 	public String getAuthor() {

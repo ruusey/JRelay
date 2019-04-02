@@ -18,10 +18,11 @@ public class VirtualKeyBoard extends Robot
 
 	public void pressKeys(String keysCombination) throws IllegalArgumentException
 	{
+		System.out.print("Pressing keys: ");
 			for (String key : keysCombination.split("\\+"))
 			{
 				try
-				{   System.out.println(key);
+				{   System.out.print(key+" ");
 					this.keyPress((int) KeyEvent.class.getField("VK_" + key.toUpperCase()).getInt(null));
 					
 				} catch (IllegalAccessException e)
@@ -35,6 +36,7 @@ public class VirtualKeyBoard extends Robot
 				
 				
 			}
+			System.out.println();
 
 		
 	}
@@ -42,11 +44,12 @@ public class VirtualKeyBoard extends Robot
 	
 	public void releaseKeys(String keysConbination) throws IllegalArgumentException
 	{
+		System.out.print("Releasing keys: ");
 		
 			for (String key : keysConbination.split("\\+"))
 			{
 				try
-				{ // KeyRelease method inherited from java.awt.Robot
+				{ System.out.print(key+" ");
 					this.keyRelease((int) KeyEvent.class.getField("VK_" + key.toUpperCase()).getInt(null));
 				} catch (IllegalAccessException e)
 				{
@@ -56,7 +59,7 @@ public class VirtualKeyBoard extends Robot
 					throw new IllegalArgumentException(key.toUpperCase()+" is invalid key\n"+"VK_"+key.toUpperCase() + " is not defined in java.awt.event.KeyEvent");
 				}
 			}
-
+			System.out.println();
 		
 	}
 	

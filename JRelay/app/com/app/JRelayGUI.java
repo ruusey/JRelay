@@ -548,6 +548,7 @@ public class JRelayGUI extends Application {
 		td.start();
 		try {
 			kb = new VirtualKeyBoard();
+			kb.setAutoDelay(50);
 		} catch (AWTException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -579,6 +580,7 @@ public class JRelayGUI extends Application {
 	}
 
 	public boolean updatePlugins() {
+		
 		if (this.plugins.getItems().size() > 1) {
 			return false;
 		}

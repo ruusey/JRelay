@@ -31,4 +31,9 @@ public class Location implements IData {
 		return (float) Math.sqrt(this.distanceSquaredTo(location));
 	}
 
+	@Override
+	public String toString() {
+		return "Location [x=" + x + ", y=" + y + "]";
+	}
+
 }

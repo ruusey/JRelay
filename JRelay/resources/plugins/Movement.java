@@ -1,5 +1,6 @@
 package plugins;
 
+import java.awt.AWTException;
 import java.awt.Event;
 import java.awt.Window;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import com.move.locations.LocationUtils;
 import com.move.models.Key;
 import com.move.models.Keys;
 import com.move.models.Target;
+import com.move.models.VirtualKeyBoard;
 import com.packets.client.GoToAckPacket;
 import com.packets.client.UsePortalPacket;
 import com.packets.server.GoToPacket;
@@ -69,8 +71,9 @@ public class Movement extends JPlugin {
 	boolean aPressed;
 	boolean sPressed;
 	boolean dPressed;
+	public VirtualKeyBoard kb;
 	private float followThreshold = 1.5f;
-
+	
 	public class HealthEventHandler {
 		@Subscribe
 		public void healthChanged(HealthChangedEventArgs args) {
@@ -82,9 +85,9 @@ public class Movement extends JPlugin {
 		@Subscribe
 		public void keyChanged(KeyEventArgs args) {
 			if (args.getValue()) {
-				JRelayGUI.kb.pressKeys(args.getKey().toString());
+				kb.pressKeys(args.getKey().toString());
 			} else {
-				JRelayGUI.kb.releaseKeys(args.getKey().toString());
+				kb.releaseKeys(args.getKey().toString());
 			}
 		}
 	}
@@ -100,6 +103,13 @@ public class Movement extends JPlugin {
 
 	public Movement(User user) {
 		super(user);
+		try {
+			kb = new VirtualKeyBoard();
+			kb.setAutoDelay(50);
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		bus.register(new LogHandler());
 		bus.register(new KeyEventHandler());
 	}

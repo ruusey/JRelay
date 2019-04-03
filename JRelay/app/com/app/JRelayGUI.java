@@ -539,6 +539,7 @@ public class JRelayGUI extends Application {
 		primaryStage.setOnCloseRequest(event -> {
 			JRelay.instance.shutdown();
 			Platform.exit();
+			kb.releaseKeys("wasd");
 			System.exit(0);
 		});
 
@@ -546,13 +547,7 @@ public class JRelayGUI extends Application {
 		this.startPluginUpdate();
 		final Thread td = new Thread(new ResourceMonitor());
 		td.start();
-		try {
-			kb = new VirtualKeyBoard();
-			kb.setAutoDelay(50);
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
 	public void startPluginUpdate() {

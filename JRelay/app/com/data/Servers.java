@@ -28,6 +28,10 @@ public class Servers {
 		serverNames.put("EUSouth", "EUS");
 		serverNames.put("USSouth2", "USS2");
 		serverNames.put("USWest3", "USW3");
+		
+		serverNames.put("USEastT1", "USET1");
+		serverNames.put("EUWestT1", "UEWT1");
+		serverNames.put("AsiaSouthEastT1", "ASET1");
 
 	}
 	

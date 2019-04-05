@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.app.JRelayGUI;
+import com.app.ResourceMonitor;
 import com.crypto.RSA;
 import com.data.GameData;
 import com.data.PacketType;
@@ -62,7 +63,8 @@ public final class JRelay implements Runnable {
 	public static String APP_PKG = "";
 	public static String RES_PKG = "";
 	public static final JRelay instance = new JRelay();
-
+//	public static ResourceMonitor monitor =new ResourceMonitor();
+//	public static Thread td = new Thread(monitor);
 	public String listenHost = "";
 	public int listenPort = -1;
 
@@ -325,6 +327,7 @@ public final class JRelay implements Runnable {
 		} catch (Exception e) {
 			JRelay.error(e.getMessage());
 		}
+		//td.start();
 		if (JRelay.instance.listenSocket.start()) {
 			JRelayGUI.updateStatus("Running", "green");
 			while (!JRelay.instance.listenSocket.isClosed()) {

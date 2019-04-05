@@ -1,5 +1,17 @@
 Manifest-Version: 1.0
 Built-By: ruusey
+Class-Path: /J_lib/system-hook-3.3.jar /J_lib/kryonet-2.22.0-RC1.jar /
+ J_lib/kryo-2.24.0.jar /J_lib/minlog-1.2.jar /J_lib/objenesis-2.1.jar 
+ /J_lib/jsonbeans-0.7.jar /J_lib/mina-core-2.0.19.jar /J_lib/slf4j-api
+ -1.7.25.jar /J_lib/guava-27.0.1-jre.jar /J_lib/failureaccess-1.0.1.ja
+ r /J_lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.j
+ ar /J_lib/jsr305-3.0.2.jar /J_lib/checker-qual-2.5.2.jar /J_lib/error
+ _prone_annotations-2.2.0.jar /J_lib/j2objc-annotations-1.1.jar /J_lib
+ /animal-sniffer-annotations-1.17.jar /J_lib/bcprov-jdk15on-1.58.jar /
+ J_lib/dom4j-1.6.1.jar /J_lib/xml-apis-1.0.b2.jar /J_lib/genson-1.4.ja
+ r /J_lib/jaxen-1.1.6.jar /J_lib/jaxb-api-2.2.11.jar /J_lib/jaxb-core-
+ 2.2.11.jar /J_lib/jaxb-impl-2.2.11.jar /J_lib/activation-1.1.1.jar
 Build-Jdk: 1.8.0_201
 Created-By: Maven Integration for Eclipse
+Main-Class: com.app.JRelayGUI
 

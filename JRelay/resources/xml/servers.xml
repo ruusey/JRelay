@@ -160,4 +160,25 @@
 		<Long>0.00</Long>
 		<Usage>0.00</Usage>
 	</Server>
+   
+
+    <!-- Testing Servers -->
+    <Server>
+    <Name>USEastT1</Name>
+        <DNS>52.23.182.99</DNS>
+        <Lat>0.00</Lat>
+        <Long>0.00</Long>
+        <Usage>0.00</Usage>
+   </Server>
+    <Server>
+        <Name>EUWestT1</Name>
+        <DNS>54.76.7.193</DNS>
+        <Lat>0.00</Lat><Long>0.00</Long>
+        <Usage>0.00</Usage></Server>
+    <Server>
+        <Name>AsiaSouthEastT1</Name>
+        <DNS>52.74.176.120</DNS>
+        <Lat>0.00</Lat><Long>0.00</Long>
+        <Usage>0.00</Usage>
+    </Server>
 </Servers>

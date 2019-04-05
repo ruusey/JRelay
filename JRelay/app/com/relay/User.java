@@ -101,7 +101,9 @@ public class User implements Runnable {
 		this.remoteRecvRC4 = null;
 		this.remoteSendRC4 = null;
 		this.state = null;
+		this.userPluginInstances = null;
 		this.playerData = null;
+		
 	}
 
 	/**
@@ -109,6 +111,12 @@ public class User implements Runnable {
 	 */
 	public void kick() {
 		this.disconnect();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.destroy();
 
 	}
@@ -178,6 +186,7 @@ public class User implements Runnable {
 		out.writeInt(packetLength);
 		out.writeByte(packetId);
 		out.write(packetBytes);
+		out.flush();
 	}
 
 	public void sendServerPacket(Packet packet) throws IOException {
@@ -189,6 +198,7 @@ public class User implements Runnable {
 		out.writeInt(packetLength);
 		out.writeByte(packetId);
 		out.write(packetBytes);
+		out.flush();
 	}
 
 	/**
@@ -398,11 +408,9 @@ public class User implements Runnable {
 		}
 
 	}
-
 	public void saveState() {
 		JRelay.instance.userStates.forcePut(this.state.GUID, this.state);
 	}
-
 	@Override
 	public void run() {
 		while (!shutdown) {
@@ -411,8 +419,8 @@ public class User implements Runnable {
 					try {
 						InputStream in = this.remoteSocket.getInputStream();
 						if (in.available() > 0) {
-							int bytesRead = this.remoteSocket.getInputStream().read(this.remoteBuffer,
-									this.remoteBufferIndex, this.remoteBuffer.length - this.remoteBufferIndex);
+							int bytesRead = this.remoteSocket.getInputStream().read(this.remoteBuffer, this.remoteBufferIndex,
+							    this.remoteBuffer.length - this.remoteBufferIndex);
 							if (bytesRead == -1) {
 								throw new SocketException("end of stream");
 							} else if (bytesRead > 0) {
@@ -420,8 +428,7 @@ public class User implements Runnable {
 
 								while (this.remoteBufferIndex >= 5) {
 									int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(this.remoteBuffer[0])
-											.put(this.remoteBuffer[1]).put(this.remoteBuffer[2])
-											.put(this.remoteBuffer[3]).rewind()).getInt();
+									    .put(this.remoteBuffer[1]).put(this.remoteBuffer[2]).put(this.remoteBuffer[3]).rewind()).getInt();
 									if (this.remoteBufferIndex < packetLength) {
 										break;
 									}
@@ -430,7 +437,7 @@ public class User implements Runnable {
 									System.arraycopy(this.remoteBuffer, 5, packetBytes, 0, packetLength - 5);
 									if (this.remoteBufferIndex > packetLength) {
 										System.arraycopy(this.remoteBuffer, packetLength, this.remoteBuffer, 0,
-												this.remoteBufferIndex - packetLength);
+										    this.remoteBufferIndex - packetLength);
 									}
 									this.remoteBufferIndex -= packetLength;
 									this.remoteRecvRC4.cipher(packetBytes);
@@ -463,21 +470,19 @@ public class User implements Runnable {
 					Thread.sleep(10);
 				} catch (Exception e) {
 				}
-				
 
 				InputStream in = this.localSocket.getInputStream();
-				
+
 				if (in.available() > 0) {
 					int bytesRead = in.read(this.localBuffer, this.localBufferIndex,
-							this.localBuffer.length - this.localBufferIndex);
+					    this.localBuffer.length - this.localBufferIndex);
 					if (bytesRead == -1) {
 						throw new SocketException("eof");
 					} else if (bytesRead > 0) {
 						this.localBufferIndex += bytesRead;
 						while (this.localBufferIndex >= 5) {
-							int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(this.localBuffer[0])
-									.put(this.localBuffer[1]).put(this.localBuffer[2]).put(this.localBuffer[3])
-									.rewind()).getInt();
+							int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(this.localBuffer[0]).put(this.localBuffer[1])
+							    .put(this.localBuffer[2]).put(this.localBuffer[3]).rewind()).getInt();
 							if (this.localBufferIndex < packetLength) {
 								break;
 							}
@@ -486,7 +491,7 @@ public class User implements Runnable {
 							System.arraycopy(this.localBuffer, 5, packetBytes, 0, packetLength - 5);
 							if (this.localBufferIndex > packetLength) {
 								System.arraycopy(this.localBuffer, packetLength, this.localBuffer, 0,
-										this.localBufferIndex - packetLength);
+								    this.localBufferIndex - packetLength);
 							}
 							this.localBufferIndex -= packetLength;
 							this.localRecvRC4.cipher(packetBytes);

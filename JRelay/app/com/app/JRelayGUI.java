@@ -67,6 +67,9 @@ public class JRelayGUI extends Application {
 	public static boolean relayStarted = false;
 	public static ArrayList<TextField> settings;
 	public static VirtualKeyBoard kb;
+	public static TableView connections;
+	public static TableView plugins;
+
 	public static void createExceptionMessage(final String message, final String action) {
 		final Popup popup = new Popup();
 		popup.centerOnScreen();
@@ -145,17 +148,7 @@ public class JRelayGUI extends Application {
 			JRelay.error(e.getMessage());
 		}
 	}
-
-	public TableView connections;
-
-	public TableView plugins;
-
 	public boolean savedLog = false;
-	public static boolean goNorth;
-	public static boolean goSouth;
-	public static boolean goWest;
-	public static boolean goEast;
-	public static boolean running;
 
 	public VBox buildConsole() {
 		final VBox consolePane = new VBox();
@@ -536,31 +529,36 @@ public class JRelayGUI extends Application {
 		// Add the Scene to the Stage
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	
 		primaryStage.setOnCloseRequest(event -> {
 			JRelay.instance.shutdown();
 			Platform.exit();
-			kb.releaseKeys("wasd");
+			
+			kb.releaseKeys("w+a+s+d");
 			System.exit(0);
+			
 		});
-
+		//ResourceMonitor monitor =new ResourceMonitor();
+		//final Thread td = new Thread(monitor);
+		//td.start();
 		JRelayGUI.log("JRelay for RotMG " + JRelay.GAME_VERSION);
-		this.startPluginUpdate();
-		final Thread td = new Thread(new ResourceMonitor());
-		td.start();
+		
+		
 		
 	}
 
-	public void startPluginUpdate() {
+	public static void startPluginUpdate() {
 		final Runnable task = new Runnable() {
 			@Override
 			public void run() {
-				while (!JRelayGUI.this.updatePlugins()) {
+				while (!JRelayGUI.updatePlugins()) {
 					try {
-						Thread.sleep(1000);
+						this.wait(1000);
 					} catch (final InterruptedException e) {
 						JRelayGUI.error(e.getMessage());
 					}
 				}
+				JRelayGUI.updatePlugins();
 				try {
 					this.finalize();
 				} catch (final Throwable e) {
@@ -571,12 +569,13 @@ public class JRelayGUI extends Application {
 		};
 		final Thread backgroundThread = new Thread(task);
 		backgroundThread.run();
+	
 
 	}
 
-	public boolean updatePlugins() {
+	public static boolean updatePlugins() {
 		
-		if (this.plugins.getItems().size() > 1) {
+		if (JRelayGUI.plugins.getItems().size() > 1) {
 			return false;
 		}
 
@@ -584,7 +583,7 @@ public class JRelayGUI extends Application {
 		if (pluginData.size() > 0) {
 
 			Platform.runLater(() -> {
-				JRelayGUI.this.plugins.getItems().clear();
+				JRelayGUI.plugins.getItems().clear();
 				for (final PluginMetaData entry : pluginData) {
 					String res = "Author - " + entry.getAuthor() + "\n";
 					res += "Name - " + entry.getName() + "\n";
@@ -605,7 +604,7 @@ public class JRelayGUI extends Application {
 					res += "Packets:\n" + packets;
 					final String[] values = new String[] { entry.name, res };
 					final String[] headers = new String[] { "Name", "Data" };
-					for (int i3 = JRelayGUI.this.plugins.getColumns().size(); i3 < headers.length; i3++) {
+					for (int i3 = JRelayGUI.plugins.getColumns().size(); i3 < headers.length; i3++) {
 						final TableColumn<List<String>, String> col = new TableColumn<>(headers[i3]);
 						final int colIndex = i3;
 						col.setCellValueFactory(data -> {
@@ -618,14 +617,17 @@ public class JRelayGUI extends Application {
 							}
 							return new ReadOnlyStringWrapper(cellValue);
 						});
-						JRelayGUI.this.plugins.getColumns().add(col);
+						JRelayGUI.plugins.getColumns().add(col);
 					}
-					JRelayGUI.this.plugins.getItems().add(Arrays.asList(values));
+					JRelayGUI.plugins.getItems().add(Arrays.asList(values));
 				}
 			});
-
+			return true;
+		}else {
+			return false;
 		}
-		return true;
+		
+		
 	}
 
 }

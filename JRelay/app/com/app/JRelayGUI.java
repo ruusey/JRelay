@@ -534,7 +534,7 @@ public class JRelayGUI extends Application {
 			JRelay.instance.shutdown();
 			Platform.exit();
 			
-			kb.releaseKeys("w+a+s+d");
+			//kb.releaseKeys("w+a+s+d");
 			System.exit(0);
 			
 		});

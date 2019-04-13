@@ -1,4 +1,4 @@
-# **JRelay** Beta 1.5.2 - RotMG X31.4.1
+# **JRelay** Beta 1.5.3 - RotMG X31.5.0
 
 #### A plugin-based Java man in the middle proxy for the browser flash game **Realm of the Mad God**
 ![alt text](https://i.imgur.com/iOUNE86.png)

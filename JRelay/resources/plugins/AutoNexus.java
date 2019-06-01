@@ -51,15 +51,14 @@ public class AutoNexus extends JPlugin {
 		for (Object e : GameData.objects.values()) {
 			if (e.enemy) {
 				ArrayList<Projectile> targetList = Lists.newArrayList(e.Projectiles);
-				List<Projectile> piercing = targetList.stream().filter(x -> x.armorPiercing)
-						.collect(Collectors.toList());
+				List<Projectile> piercing = targetList.stream().filter(x -> x.armorPiercing).collect(Collectors.toList());
 				List<Integer> piercingIds = piercing.stream().map(x -> (int) x.id).collect(Collectors.toList());
 				for (Integer id : piercingIds) {
 					piercingProj++;
 					Bullet.piercing.put(e.id, id);
 				}
 				List<Projectile> breaking = targetList.stream().filter(x -> x.StatusEffects.containsKey("Armor Broken"))
-						.collect(Collectors.toList());
+				    .collect(Collectors.toList());
 				List<Integer> breakingIds = breaking.stream().map(x -> (int) x.id).collect(Collectors.toList());
 				for (Integer id : breakingIds) {
 					breakingProj++;
@@ -70,8 +69,8 @@ public class AutoNexus extends JPlugin {
 
 			// user.HookPacket(PacketType.GROUNDDAMAGE, AutoNexus.class, OnPacket);
 		}
-		JRelayGUI.log("Auto Nexus: Found " + piercingProj + " Armor Piercing Projectiles, Found "
-				+ breakingProj + " Armor Breaking Projectiles.");
+		JRelayGUI.log("Auto Nexus: Found " + piercingProj + " Armor Piercing Projectiles, Found " + breakingProj
+		    + " Armor Breaking Projectiles.");
 		st = new ClientState(user);
 		user.hookCommand("anx", AutoNexus.class, "onJXCommand");
 		user.hookPacket(PacketType.UPDATE, AutoNexus.class, "UpdateAN");
@@ -89,8 +88,7 @@ public class AutoNexus extends JPlugin {
 			public void run() {
 				try {
 					Thread.sleep(800);
-					sendToClient(EventUtils.createOryxNotification("AutoNexus",
-							"AutoNexus at " + (nexusPercent * 100) + "%"));
+					sendToClient(EventUtils.createOryxNotification("AutoNexus", "AutoNexus at " + (nexusPercent * 100) + "%"));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -116,11 +114,10 @@ public class AutoNexus extends JPlugin {
 				this.nexusPercent = ((float) anx) / 100.0f;
 				JRelay.AUTONEXUS_PERCENT = ((float) anx) / 100.0f;
 				TextPacket packet = EventUtils.createOryxNotification("AutoNexus",
-						" AutoNexus percent now set to " + this.nexusPercent * 100);
+				    " AutoNexus percent now set to " + this.nexusPercent * 100);
 				sendToClient(packet);
 			} catch (Exception e) {
-				TextPacket packet = EventUtils.createOryxNotification("AutoNexus",
-						args[1] + " must be an integer 1-99");
+				TextPacket packet = EventUtils.createOryxNotification("AutoNexus", args[1] + " must be an integer 1-99");
 				sendToClient(packet);
 
 			}
@@ -162,9 +159,9 @@ public class AutoNexus extends JPlugin {
 	@Override
 	public String getDescription() {
 		return "Attempts to save you from death by nexusing before a fatal blow."
-				+ "\nUnlike other auto nexus systems, this one compensates for piercing attacks, broken armor, and even ground damage*."
-				+ "\nThis plugin will NOT make you completely invulnerable, but it will definitely help prevent you from dying!"
-				+ "\n\n*The exact damage value cannot be determined when taking ground damage, so for safety's sake the plugin will assume that you took the maximum damage possible for the appropriate tile.";
+		    + "\nUnlike other auto nexus systems, this one compensates for piercing attacks, broken armor, and even ground damage*."
+		    + "\nThis plugin will NOT make you completely invulnerable, but it will definitely help prevent you from dying!"
+		    + "\n\n*The exact damage value cannot be determined when taking ground damage, so for safety's sake the plugin will assume that you took the maximum damage possible for the appropriate tile.";
 	}
 
 	@Override
@@ -321,8 +318,8 @@ public class AutoNexus extends JPlugin {
 		private int PredictDamage(Bullet b) {
 			int def = client.playerData.defense;
 
-			if (enemyMap.containsKey(b.ownerId)
-					&& Bullet.IsArmorBreaking(enemyMap.get(b.ownerId), b.projectileId) && !armorBroken) {
+			if (enemyMap.containsKey(b.ownerId) && Bullet.IsArmorBreaking(enemyMap.get(b.ownerId), b.projectileId)
+			    && !armorBroken) {
 				armorBroken = true;
 			}
 
@@ -330,8 +327,8 @@ public class AutoNexus extends JPlugin {
 				def *= 2;
 			}
 
-			if (armorBroken || (enemyMap.containsKey(b.ownerId)
-					&& Bullet.IsPiercing(enemyMap.get(b.ownerId), b.projectileId))) {
+			if (armorBroken
+			    || (enemyMap.containsKey(b.ownerId) && Bullet.IsPiercing(enemyMap.get(b.ownerId), b.projectileId))) {
 				def = 0;
 			}
 
@@ -339,7 +336,7 @@ public class AutoNexus extends JPlugin {
 		}
 
 		private boolean ApplyDamage(int dmg) {
-			
+
 			if (!safe)
 				return false;
 			HP -= dmg;
@@ -350,19 +347,17 @@ public class AutoNexus extends JPlugin {
 					Bullet.destroyData();
 					st.destroyData();
 					client.sendToServer(Packet.create(PacketType.ESCAPE));
-					
+
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							try {
 								Thread.sleep(800);
-								sendToClient(EventUtils.createOryxNotification("AutoNexus",
-										"Saved You At " + HP + " health!"));
+								sendToClient(EventUtils.createOryxNotification("AutoNexus", "Saved You At " + HP + " health!"));
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
 						}
 					});
-					
 
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

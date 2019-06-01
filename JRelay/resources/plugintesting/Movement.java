@@ -1,4 +1,4 @@
-package plugins;
+package plugintesting;
 
 import java.awt.AWTException;
 import java.awt.Event;

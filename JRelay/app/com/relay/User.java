@@ -467,7 +467,7 @@ public class User implements Runnable {
 				}
 
 				try {
-					Thread.sleep(10);
+					Thread.sleep(100);
 				} catch (Exception e) {
 				}
 

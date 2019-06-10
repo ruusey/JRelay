@@ -101,6 +101,7 @@ public enum PacketType {
 	REALMHEROLEFTMSG(84),
 	RESETDAILYQUESTS(52);
 
+
 	public int id;
 	PacketType(int id){
 		this.id=id;

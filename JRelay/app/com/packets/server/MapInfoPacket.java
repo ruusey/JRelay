@@ -13,6 +13,7 @@ public class MapInfoPacket extends Packet {
 	public int height;
 	public String name;
 	public String displayName;
+	public String realmName;
 	public int difficulty;
 	public int fp;
 	public int background;
@@ -27,6 +28,7 @@ public class MapInfoPacket extends Packet {
 		this.height = in.readInt();
 		this.name = in.readUTF();
 		this.displayName = in.readUTF();
+		this.realmName= in.readUTF();
 		this.fp = in.readInt(); // TODO: fp is supposed to be unsigned
 		this.background = in.readInt();
 		this.difficulty = in.readInt();
@@ -48,6 +50,7 @@ public class MapInfoPacket extends Packet {
 		out.writeInt(this.height);
 		out.writeUTF(this.name);
 		out.writeUTF(this.displayName);
+		out.writeUTF(this.realmName);
 		out.writeInt(this.fp);
 		out.writeInt(this.background);
 		out.writeInt(this.difficulty);

@@ -25,6 +25,7 @@ public class HelloPacket extends Packet {
 	public String playPlatform;
 	public String platformToken;
 	public String userToken;
+	public String clientToken;
 
 	public void parseFromInput(DataInput in) throws IOException {
 
@@ -46,6 +47,7 @@ public class HelloPacket extends Packet {
 		playPlatform = in.readUTF();
 		platformToken = in.readUTF();
 		userToken = in.readUTF();
+		clientToken = in.readUTF();
 
 	}
 
@@ -68,6 +70,7 @@ public class HelloPacket extends Packet {
 		out.writeUTF(this.playPlatform);
 		out.writeUTF(this.platformToken);
 		out.writeUTF(this.userToken);
+		out.writeUTF(this.clientToken);
 
 	}
 	@Override

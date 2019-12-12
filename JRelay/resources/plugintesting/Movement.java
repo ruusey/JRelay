@@ -1,52 +1,36 @@
 package plugintesting;
 
 import java.awt.AWTException;
-import java.awt.Event;
-import java.awt.Window;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.swing.event.ChangeEvent;
 
 import com.app.JRelayGUI;
 import com.data.CharacterClass;
 import com.data.PacketType;
 import com.data.PortalData;
-import com.data.StatsType;
 import com.data.shared.Entity;
 import com.data.shared.Location;
 import com.data.shared.PlayerData;
 import com.data.shared.StatData;
-import com.data.shared.Status;
 import com.event.JPlugin;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.models.Packet;
 import com.move.events.HealthChangedEventArgs;
 import com.move.events.KeyEventArgs;
 import com.move.events.LogEventsArgs;
-import com.move.locations.LocationUtils;
-import com.move.models.Key;
 import com.move.models.Keys;
 import com.move.models.Target;
 import com.move.models.VirtualKeyBoard;
-import com.packets.client.GoToAckPacket;
 import com.packets.client.UsePortalPacket;
 import com.packets.server.GoToPacket;
 import com.packets.server.MapInfoPacket;
 import com.packets.server.NewTickPacket;
 import com.packets.server.UpdatePacket;
 import com.relay.User;
-
-import jdk.internal.joptsimple.util.RegexMatcher;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
 public class Movement extends JPlugin {
 

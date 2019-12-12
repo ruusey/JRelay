@@ -43,8 +43,8 @@ public class Formatter {
 			List<Node> list = packets.selectNodes("//Packet");
 			
 			for(Node node: list){
-				byte id = (byte) Parse.parseInt(Parse.elemDefault(node, "PacketID", "0"));
-				Parse.parseInt(Parse.elemDefault(node, "PacketID", "0"));
+				byte id = (byte) Parse.parseInt(Parse.elemDefault(node, "PacketId", "0"));
+				Parse.parseInt(Parse.elemDefault(node, "PacketId", "0"));
 				String name = Parse.elemDefault(node, "PacketName", "");
 				name = name.replaceAll("_", "");
 				System.out.println(name+"("+id+"),");

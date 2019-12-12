@@ -16,7 +16,8 @@ public class TextPacket extends Packet {
 	public String recipient;
 	public String text;
 	public String cleanText;
-	public boolean isSupported;
+	public boolean isSupporter;
+	public int starBg;
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {
@@ -27,7 +28,8 @@ public class TextPacket extends Packet {
 		this.recipient = in.readUTF();
 		this.text = in.readUTF();
 		this.cleanText = in.readUTF();
-		this.isSupported=in.readBoolean();
+		this.isSupporter=in.readBoolean();
+		this.starBg=in.readInt();
 	}
 
 	@Override
@@ -39,7 +41,8 @@ public class TextPacket extends Packet {
 		out.writeUTF(this.recipient);
 		out.writeUTF(this.text);
 		out.writeUTF(this.cleanText);
-		out.writeBoolean(this.isSupported);
+		out.writeBoolean(this.isSupporter);
+		out.writeInt(this.starBg);
 	}
 
 }

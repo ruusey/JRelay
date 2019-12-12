@@ -51,8 +51,8 @@ public final class JRelay implements Runnable {
 	public static final String GAME_VERSION = "X31.8.3";
 	public static final String JRELAY_VERSION = "1.7.0";
 	
-	public static final boolean DEBUG = false;
-	public static final boolean PROD = true;
+	public static final boolean DEBUG = true;
+	public static final boolean PROD = false;
 	public static boolean PARSE_MAPS = true;
 	public static String DEFAULT_SERVER = "";
 	public static float AUTONEXUS_PERCENT;

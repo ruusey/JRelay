@@ -73,6 +73,7 @@ public abstract class Packet implements IData {
 		} catch (Exception e) {
 			JRelayGUI.error(e.getMessage());
 		}
+		JRelayGUI.warn("Loaded: "+packetIdtoClassMap.size());
 	}
 
 	public static Packet create(PacketType id) throws Exception {

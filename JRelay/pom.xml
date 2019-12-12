@@ -5,14 +5,11 @@
 	<groupId>JRelay</groupId>
 	<artifactId>JRelay</artifactId>
 	<version>1.5.3</version>
-	
 	<build>
-		
 		<plugins>
 		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.6</version>
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
@@ -69,7 +66,6 @@
 			<artifactId>kryonet</artifactId>
 			<version>2.22.0-RC1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.mina</groupId>
 			<artifactId>mina-core</artifactId>
@@ -92,13 +88,11 @@
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.owlike</groupId>
 			<artifactId>genson</artifactId>
 			<version>1.4</version>
 		</dependency>
-
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>

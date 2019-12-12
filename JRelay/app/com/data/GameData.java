@@ -199,8 +199,8 @@ public class GameData {
 		List<Node> list = packetDoc.selectNodes("//Packet");
 
 		for (Node node : list) {
-			byte id = (byte) Parse.parseInt(Parse.elemDefault(node, "PacketID", "0"));
-			int baseId = Parse.parseInt(Parse.elemDefault(node, "PacketID", "0"));
+			byte id = (byte) Parse.parseInt(Parse.elemDefault(node, "PacketId", "0"));
+			int baseId = Parse.parseInt(Parse.elemDefault(node, "PacketId", "0"));
 			String name = Parse.elemDefault(node, "PacketName", "");
 
 			name = name.replaceAll("[^A-Za-z0-9]", "");
